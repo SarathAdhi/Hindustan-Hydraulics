@@ -5,6 +5,13 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var ConnectDB = require('./backend/db');
 var AuthRouter = require('./backend/routes/auth');
+var authController = require('./backend/controllers/auth');
+const { v4: uuidv4 } = require('uuid');
+const mongoose = require('mongoose');
+mongoose.set('strictQuery', true);
+
+// const uuid = uuidv4();
+// console.log('String' + uuid.replace(/-/gi, ""));
 
 
 const app = express();
@@ -17,7 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/auth', AuthRouter);
 
-app.get('/', (req, res) => {
+app.get('/', authController.protect, authController.restrictTo('user'), (req, res) => {
     res.json({
         "status": "success",
         "API": "Hindustan Web API",

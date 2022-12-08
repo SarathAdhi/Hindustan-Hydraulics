@@ -1,48 +1,121 @@
 const Auth = require('../schema/auth');
+const jwt = require('jsonwebtoken');
+const { v4: uuidv4 } = require('uuid');
+const fs = require('fs');
+var privateKey = fs.readFileSync('private.pem');
+const bcrypt = require('bcryptjs');
 
 
-exports.signup = (req, res, next) => {
-    console.log(req.body);
-    Auth.create(req.body).then(result => {
-        console.log(result);
+exports.signup = async(req, res, next) => {
+    // console.log(req.body.last_name);
+    const auth = new Auth({
+        uuid: uuidv4().replace(/-/gi, ""),
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        email: req.body.email,
+        mobile: req.body.mobile,
+        password: req.body.password,
+        role: 'user',
+    });
+    auth.save().then(result => {
+        // console.log(result);
         res.status(201).json({
             "status": "success",
-            "data": result
+            "data": {
+                "email": result.email,
+                "tokens": {
+                    "access_token": jwt.sign({ uuid: result.uuid }, privateKey, { algorithm: 'RS256' })
+                }
+            }
         });
-        // const auth = new Auth({ name: req.body.name, email: req.body.email, mobile: req.body.mobile, role: req.body.role });
-        // auth.save().then(result => {
-        //     console.log(result);
-        //     res.status(201).json({
-        //         "status": "success",
-        //         "data": req.body
-        //     });
-        // }).catch(err => {
-        //     console.log(err);
-        //     res.status(500).json({
-        //         "status": "error",
-        //         "data": err
-        //     });
-        // });
     }).catch(err => {
         console.log(err);
-        res.status(500).json({
+        res.status(400).json({
             "status": "error",
             "data": err
         });
-    });
+    });;
 };
 
-exports.login = (req, res, next) => {
+exports.login = async(req, res, next) => {
     // console.log(req.body);
-    var doc = Auth.findOne({
-        email: req.body.email
-    }, (err, doc) => {
-        if (err) {
-            console.log(err);
+    const { email, password } = req.body;
+    // console.log(email, password);
+    if (!email || !password) {
+        return res.status(400).json({
+            "status": "error",
+            "data": "Please provide email and password"
+        });
+    }
+
+    const user = await Auth.findOne({
+        email: email
+    }).select('+password');
+
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+
+        return res.status(401).json({
+            "status": "error",
+            "data": "Invalid email or password"
+        });
+    }
+
+    res.status(200).json({
+        "status": "success",
+        "data": {
+
+            "email": user.email,
+            "tokens": {
+                "access_token": jwt.sign({ uuid: user.uuid }, privateKey, { algorithm: 'RS256' })
+
+            },
         }
-        console.log(doc);
-        res.status(200).json({ "status": "success", "data": doc })
     });
+}
 
+exports.protect = async(req, res, next) => {
+    let token;
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+        token = req.headers.authorization.split(' ')[1];
+    }
+    if (!token) {
+        return res.status(401).json({
+            "status": "error",
+            "data": "You are not logged in! Please log in to get access."
+        });
+    }
 
-};
+    const decoded = jwt.verify(token, privateKey, { algorithms: ['RS256'] });
+    // console.log(decoded);
+    const freshUser = await Auth.findOne({
+        uuid: decoded.uuid
+    });
+    if (!freshUser) {
+        return res.status(401).json({
+            "status": "error",
+            "data": "The user belonging to this token does no longer exist."
+        });
+    }
+
+    //TODO: Implement password changed after token issued logic
+    // if (freshUser.changedPasswordAfter(decoded.iat)) {
+
+    req.user = freshUser;
+    next();
+}
+
+exports.restrictTo = (...roles) => {
+    return (req, res, next) => {
+        //TODO: Implement hierarchy logic for roles
+        if (req.user.role === 'admin') {
+            return next();
+        }
+        if (!roles.includes(req.user.role)) {
+            return res.status(403).json({
+                "status": "error",
+                "data": "You do not have permission to perform this action"
+            });
+        }
+        next();
+    }
+}

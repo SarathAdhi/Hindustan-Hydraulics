@@ -4,9 +4,17 @@ const bcrypt = require('bcryptjs');
 
 
 const AuthSchema = new mongoose.Schema({
-    name: {
+    uuid: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    first_name: {
         type: String,
         required: true
+    },
+    last_name: {
+        type: String,
     },
     email: {
         type: String,
@@ -25,6 +33,14 @@ const AuthSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please enter a password"],
         minlength: 8,
+        select: false
+    },
+    role: {
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user',
+        required: true,
+
     },
 });
 
@@ -34,4 +50,11 @@ AuthSchema.pre('save', async function(next) {
     next();
 });
 
+//TODO: Implement compare password method in mongoose Schema methods
+AuthSchema.methods.matchPassword = async function(user_password, db_password) {
+    return await bcrypt.compare(user_password, db_password);
+}
+
+
 module.exports = Auth = mongoose.model('Auth', AuthSchema);
+// module.exports = Auth = mongoose.model('Auth', AuthSchema);
