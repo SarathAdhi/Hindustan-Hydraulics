@@ -2,7 +2,7 @@ const Auth = require('../schema/auth');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
-var privateKey = fs.readFileSync('private.pem');
+const privateKey = fs.readFileSync('private.pem');
 const bcrypt = require('bcryptjs');
 
 
@@ -51,7 +51,7 @@ exports.login = async(req, res, next) => {
     const user = await Auth.findOne({
         email: email
     }).select('+password');
-
+    // await user.verifyPassword(password);
     if (!user || !(await bcrypt.compare(password, user.password))) {
 
         return res.status(401).json({

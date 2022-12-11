@@ -51,7 +51,7 @@ AuthSchema.pre('save', async function(next) {
 });
 
 //TODO: Implement compare password method in mongoose Schema methods
-AuthSchema.methods.matchPassword = async function(user_password, db_password) {
+AuthSchema.methods.verifyPassword = async function(user_password, db_password) {
     return await bcrypt.compare(user_password, db_password);
 }
 

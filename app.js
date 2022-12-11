@@ -1,40 +1,53 @@
-var express = require('express');
-var createError = require('http-errors');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var ConnectDB = require('./backend/db');
-var AuthRouter = require('./backend/routes/auth');
-var authController = require('./backend/controllers/auth');
-const { v4: uuidv4 } = require('uuid');
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', true);
 
-// const uuid = uuidv4();
-// console.log('String' + uuid.replace(/-/gi, ""));
+// console.log(test);
+
+//Controllers
+const authController = require('./backend/controllers/auth');
+
+
+//Routers
+const AuthRouter = require('./backend/routes/auth');
+const OrderRouter = require('./backend/routes/orders');
+const StoreRouter = require('./backend/routes/stores')
+
+
+//Utils
+const AppError = require('./backend/utils/error');
 
 
 const app = express();
-
+const ConnectDB = require('./backend/db');
 ConnectDB();
 
+//Configurations
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+//Routes
 app.use('/auth', AuthRouter);
+app.use('/order', OrderRouter);
+app.use('/supply', StoreRouter);
+
 
 app.get('/', authController.protect, authController.restrictTo('user'), (req, res) => {
     res.json({
         "status": "success",
         "API": "Hindustan Web API",
-        "version": "0.0.1",
+        "version": "0.1.0",
     });
 });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    next(createError(404));
+    next(new AppError('Endpoint Not Found', 404));
+
 });
 
 // error handler
@@ -48,7 +61,16 @@ app.use(function(req, res, next) {
 //     res.render('error');
 // });
 
+// console.log(typeof)
 
+
+app.use((err, req, res, next) => {
+    console.log(err);
+    res.status(err.statusCode || 500).json({
+        status: 'error',
+        message: err.message
+    });
+})
 app.listen(3000, () => {
     console.log('Server running on port 3000');
 });

@@ -1,13 +1,16 @@
-var express = require('express');
-var router = express.Router();
-var Auth = require('../schema/auth');
-
+const express = require('express');
+const router = express.Router();
 const authController = require('../controllers/auth');
 
-var mongoose = require('mongoose');
 
 router.post('/signup', authController.signup);
 
 router.post('/login', authController.login);
+
+//TODO: Implement logout endpoint
+// router.get('/logout', authController.logout);
+
+//TODO: Implement reset password endpoint
+// router.get('/resetPassword', authController.changePassword);
 
 module.exports = router;
