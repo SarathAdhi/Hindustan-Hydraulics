@@ -1,7 +1,21 @@
 const orderModel = require('../schema/orders');
 const AppError = require('../utils/error');
+const catchAsync = require('../utils/catchAsync');
 
-exports.createOrder = (req, res, next) => {
+exports.updateOrderDocument = (purchase_order_no, body) => {
+    return new Promise((resolve, reject) => {
+        orderModel.updateOne({
+                purchase_order_no: purchase_order_no
+            }, { $set: body })
+            .then((result) => {
+                resolve({ "msg": "Update Success", data: result })
+            })
+            .catch((err) => {
+                reject({ "msg": "Update Failed", data: err })
+            })
+    })
+}
+exports.createOrder = catchAsync(async(req, res, next) => {
 
     const store = [{
         store_name: "smc",
@@ -21,6 +35,8 @@ exports.createOrder = (req, res, next) => {
     }]
     req.body.store = store;
 
+    const lastOrder = await orderModel.findOne().sort({ s_no: -1 }).limit(1);
+    req.body.s_no = lastOrder ? lastOrder.s_no + 1 : 1;
     orderModel.create(req.body).then((order) => {
         res.status(201).json({
             "status": "success",
@@ -33,7 +49,7 @@ exports.createOrder = (req, res, next) => {
             "data": err
         });
     })
-}
+})
 
 exports.getOrders = (req, res, next) => {
     orderModel.find().then((orders) => {
@@ -56,6 +72,31 @@ exports.getOrder = (req, res, next) => {
                 "status": "success",
                 "data": order
             })
+        })
+        .catch((err) => {
+            res.status(400).json({
+                "status": "error",
+                "data": err
+            });
+        })
+}
+
+
+exports.updateOrder = (req, res, next) => {
+    orderModel.updateOne({ purchase_order_no: req.body.purchase_order_no }, {
+            date: req.body.date,
+            customer_name: req.body.customer_name,
+            routing: req.body.routing,
+            bill_ready: req.body.bill_ready,
+            ready: req.body.ready,
+            ready_to_bill: req.body.ready_to_bill,
+            bill_no: req.body.bill_no,
+        })
+        .then((result) => {
+            res.status(201).json({
+                "status": "success",
+                "data": result
+            });
         })
         .catch((err) => {
             res.status(400).json({

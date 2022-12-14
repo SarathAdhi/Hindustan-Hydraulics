@@ -38,18 +38,18 @@ const orderSchema = mongoose.Schema({
         unique: true
     },
     //TODO: Check if order Schema needs DOC NO
-    doc_type: {
-        type: String,
-        required: [true, 'Please enter a document type!'],
-        enum: ['so_no', 'proforma_no', 'dc_no', 'uhp_dc_no', 'sam_dc_no'],
-        trim: true
-    },
-    doc_no: {
-        type: Number,
-        required: [true, 'Please enter a document number!'],
-        trim: true,
-        // unique: true //TODO: Check if this should be unique
-    },
+    // doc_type: {
+    //     type: String,
+    //     required: [true, 'Please enter a document type!'],
+    //     enum: ['so_no', 'proforma_no', 'dc_no', 'uhp_dc_no', 'sam_dc_no'],
+    //     trim: true
+    // },
+    // doc_no: {
+    //     type: Number,
+    //     required: [true, 'Please enter a document number!'],
+    //     trim: true,
+    // unique: true //TODO: Check if this should be unique
+    // },
     date: {
         type: Date,
     },
@@ -86,7 +86,7 @@ const orderSchema = mongoose.Schema({
         default: false
     },
     bill_no: {
-        type: Number,
+        type: String,
         default: null
     },
     routing: {

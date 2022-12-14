@@ -10,4 +10,6 @@ router.get('/:po_no', authController.protect, authController.restrictTo('admin')
 
 router.post('/create', authController.protect, authController.restrictTo('admin'), orderController.createOrder);
 
+router.put('/update', authController.protect, authController.restrictTo('admin'), orderController.updateOrder);
+
 module.exports = router;

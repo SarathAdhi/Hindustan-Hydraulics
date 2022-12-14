@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const router = express.Router();
 mongoose.set('strictQuery', true);
 
-// console.log(test);
 
 //Controllers
 const authController = require('./backend/controllers/auth');
@@ -14,7 +13,8 @@ const authController = require('./backend/controllers/auth');
 //Routers
 const AuthRouter = require('./backend/routes/auth');
 const OrderRouter = require('./backend/routes/orders');
-const StoreRouter = require('./backend/routes/stores')
+const StoreRouter = require('./backend/routes/stores');
+const BillingRouter = require('./backend/routes/billing');
 
 
 //Utils
@@ -35,15 +35,14 @@ app.use(cookieParser());
 app.use('/auth', AuthRouter);
 app.use('/order', OrderRouter);
 app.use('/supply', StoreRouter);
-
-
+app.use('/bill', BillingRouter);
 
 
 app.get('/', authController.protect, authController.restrictTo('user'), (req, res) => {
     res.json({
         "status": "success",
         "API": "Hindustan Web API",
-        "version": "0.1.0",
+        "version": "0.1.2",
     });
 });
 

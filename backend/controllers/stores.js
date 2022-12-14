@@ -22,6 +22,7 @@ exports.entry = async(req, res, next) => {
         // if (req.body.ready_to_bill) {
         // }
 
+        //TODO: Implement Transaction
         storeModel.updateOne({
             purchase_order_no: order.purchase_order_no,
             store: store,

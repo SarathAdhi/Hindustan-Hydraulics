@@ -1,18 +1,37 @@
 const mongoose = require('mongoose');
 const storeSchema = require('./stores');
+
+//TODO: Create Schema to Display the Store entry Info in billing Entry Form
+// const billingFormStoreDisplaySchema = mongoose.Schema({
+//     purchase_order_no: {
+//         type: String,
+
+//     }
+// });
+
+
 const billingEntryScheme = mongoose.Schema({
-    store: {
-        type: [storeSchema],
-        required: true
+    //TODO: Decide whether to use this or not for displaying store entry data in billing entry form
+    // store: {
+    //     type: [storeSchema],
+    //     required: true
+    // },
+    purchase_order_no: {
+        type: String,
+        required: [true, 'Please enter a purchase order number!'],
+        trim: true,
+        unique: true
     },
     order_status: {
-        type: Boolean,
+        type: String,
         required: [true, 'Please enter a order status!'],
+        enum: ['part', 'full']
     },
     bill_no: {
         type: String,
         required: [true, 'Please enter a bill number!'],
         trim: true,
+        unique: true
     },
     routing: {
         type: String,
@@ -24,6 +43,13 @@ const billingEntryScheme = mongoose.Schema({
         type: Boolean,
         required: [true, 'Please enter a bill ready status!'],
     },
+    auto_gen_no: {
+        type: Number,
+        default: function() {
+            return Math.floor(Math.random() * 9000 + 1000);
+        },
+        // required: [true, 'Please enter a auto generated number!'],
+    }
 });
 
 module.exports = mongoose.model('Billing', billingEntryScheme);
