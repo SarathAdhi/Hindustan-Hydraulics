@@ -4,6 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const privateKey = fs.readFileSync('private.pem');
 const bcrypt = require('bcryptjs');
+const AppError = require('../utils/error');
 
 
 exports.signup = async(req, res, next) => {
@@ -24,7 +25,7 @@ exports.signup = async(req, res, next) => {
             "data": {
                 "email": result.email,
                 "tokens": {
-                    "access_token": jwt.sign({ uuid: result.uuid }, privateKey, { algorithm: 'RS256' })
+                    "access_token": jwt.sign({ uuid: result.uuid, role: role }, privateKey, { algorithm: 'RS256' })
                 }
             }
         });
@@ -66,7 +67,7 @@ exports.login = async(req, res, next) => {
 
             "email": user.email,
             "tokens": {
-                "access_token": jwt.sign({ uuid: user.uuid }, privateKey, { algorithm: 'RS256' })
+                "access_token": jwt.sign({ uuid: user.uuid, role: user.role }, privateKey, { algorithm: 'RS256' })
 
             },
         }
@@ -117,5 +118,29 @@ exports.restrictTo = (...roles) => {
             });
         }
         next();
+    }
+}
+
+exports.verifyToken = async(req, res, next) => {
+    try {
+        const bearerHeader = req.headers['authorization'];
+        if (typeof bearerHeader !== 'undefined') {
+            const bearer = bearerHeader.split(' ');
+            const bearerToken = bearer[1];
+            jwt.verify(bearerToken, privateKey, { algorithms: ['RS256'] }, (err, authData) => {
+                if (err) {
+                    return next(new AppError(err, 403));
+                } else {
+                    res.status(200).json({
+                        "status": "success",
+                        "data": { authData }
+                    });
+                }
+            });
+        } else {
+            res.sendStatus(403);
+        }
+    } catch (error) {
+        return next(new AppError(error, 403));
     }
 }

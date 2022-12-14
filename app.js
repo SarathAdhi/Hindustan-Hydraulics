@@ -2,6 +2,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
+const router = express.Router();
 mongoose.set('strictQuery', true);
 
 // console.log(test);
@@ -34,6 +35,8 @@ app.use(cookieParser());
 app.use('/auth', AuthRouter);
 app.use('/order', OrderRouter);
 app.use('/supply', StoreRouter);
+
+
 
 
 app.get('/', authController.protect, authController.restrictTo('user'), (req, res) => {
