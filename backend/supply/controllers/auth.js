@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const privateKey = fs.readFileSync('private.pem');
 const bcrypt = require('bcryptjs');
-const AppError = require('../utils/error');
+const AppError = require('../../utils/error');
 
 
 exports.signup = async(req, res, next) => {

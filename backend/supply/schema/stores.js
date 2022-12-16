@@ -42,6 +42,10 @@ const storeEntrySchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    date: {
+        type: Date,
+        default: Date.now
+    }
     // ready_to_bill: {
     //     type: Boolean,
     //     default: false
@@ -49,4 +53,4 @@ const storeEntrySchema = new mongoose.Schema({
 
 });
 module.exports = storeEntrySchema;
-module.exports = mongoose.model('Store', storeEntrySchema);
+module.exports = mongoose.model('Supply Store', storeEntrySchema);

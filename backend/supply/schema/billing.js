@@ -49,7 +49,11 @@ const billingEntryScheme = mongoose.Schema({
             return Math.floor(Math.random() * 9000 + 1000);
         },
         // required: [true, 'Please enter a auto generated number!'],
+    },
+    billed_at: {
+        type: Date,
+        default: Date.now
     }
 });
 
-module.exports = mongoose.model('Billing', billingEntryScheme);
+module.exports = mongoose.model('Supply Billing', billingEntryScheme);

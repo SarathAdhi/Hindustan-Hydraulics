@@ -1,6 +1,6 @@
 const AppError = require('../utils/error');
 const mongoose = require('mongoose');
-const orderModel = require('../schema/orders');
+const orderModel = require('../supply/schema/orders');
 
 const storeSchema = mongoose.Schema({
     store_name: {
@@ -35,3 +35,12 @@ exports.verify_store_scheme = (store, supply) => {
         return err;
     }
 }
+
+const storeInwardSchema = mongoose.Schema({
+    store_name: {
+        type: String,
+        enum: ['smc', 'general', 'instrumentation', 'hydraulics', 'hose', 'tc_counter', 'lc_counter'],
+        required: [true, 'Please enter a store name!'],
+        trim: true,
+    },
+});

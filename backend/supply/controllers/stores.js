@@ -1,7 +1,7 @@
 const storeModel = require('../schema/stores');
 const orderModel = require('../schema/orders');
-const AppError = require('../utils/error');
-const Utils = require('../utils/validator');
+const AppError = require('../../utils/error');
+const Utils = require('../../utils/validator');
 
 exports.entry = async(req, res, next) => {
     try {
@@ -9,10 +9,12 @@ exports.entry = async(req, res, next) => {
         if (check) {
             return next(new AppError(check, 400));
         }
+
         const { store, purchase_order_no, supply } = req.body;
         if (!store || !purchase_order_no || !supply) {
             return next(new AppError('Please provide all the required fields!', 400));
         }
+
         const order = await orderModel.findOne({ purchase_order_no: purchase_order_no });
         if (!order) {
             return next(new AppError('Invalid Purchase Order Id!', 400));

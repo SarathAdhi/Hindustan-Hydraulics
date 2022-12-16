@@ -40,8 +40,11 @@ const AuthSchema = new mongoose.Schema({
         enum: ['user', 'admin'],
         default: 'user',
         required: true,
-
     },
+    created_at: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 AuthSchema.pre('save', async function(next) {

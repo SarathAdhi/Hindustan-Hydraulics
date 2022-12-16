@@ -1,6 +1,6 @@
 const orderModel = require('../schema/orders');
-const AppError = require('../utils/error');
-const catchAsync = require('../utils/catchAsync');
+const AppError = require('../../utils/error');
+const catchAsync = require('../../utils/catchAsync');
 
 exports.updateOrderDocument = (purchase_order_no, body) => {
     return new Promise((resolve, reject) => {

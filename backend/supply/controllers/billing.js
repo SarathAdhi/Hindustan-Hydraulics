@@ -1,8 +1,9 @@
 const billingModel = require('../schema/billing');
 const orderModel = require('../schema/orders');
-const AppError = require('../utils/error');
+const AppError = require('../../utils/error');
 const mongoose = require('mongoose');
 const { updateOrderDocument } = require('./orders');
+const catchAsync = require('../../utils/catchAsync');
 
 exports.createBill = async(req, res, next) => {
     try {

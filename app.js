@@ -7,15 +7,19 @@ mongoose.set('strictQuery', true);
 
 
 //Controllers
-const authController = require('./backend/controllers/auth');
+const authController = require('./backend/supply/controllers/auth');
 
 
 //Routers
-const AuthRouter = require('./backend/routes/auth');
-const OrderRouter = require('./backend/routes/orders');
-const StoreRouter = require('./backend/routes/stores');
-const BillingRouter = require('./backend/routes/billing');
 
+//Supply
+const AuthRouter = require('./backend/supply/routes/auth');
+const OrderRouter = require('./backend/supply/routes/orders');
+const StoreRouter = require('./backend/supply/routes/stores');
+const BillingRouter = require('./backend/supply/routes/billing');
+
+//Inward
+const InwardRouter = require('./backend/inward/routes/inward');
 
 //Utils
 const AppError = require('./backend/utils/error');
@@ -32,10 +36,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 //Routes
+
+//Supply
 app.use('/auth', AuthRouter);
-app.use('/order', OrderRouter);
-app.use('/supply', StoreRouter);
-app.use('/bill', BillingRouter);
+app.use('/supply/order', OrderRouter);
+app.use('/supply/store', StoreRouter);
+app.use('/supply/bill', BillingRouter);
+
+//Inward
+app.use('/inward', InwardRouter);
 
 
 app.get('/', authController.protect, authController.restrictTo('user'), (req, res) => {
