@@ -5,14 +5,16 @@ const Utils = require('../../utils/validator');
 
 exports.entry = async(req, res, next) => {
     try {
-        const check = Utils.verify_store_scheme(req.body.store, req.body.supply);
-        if (check) {
-            return next(new AppError(check, 400));
-        }
 
         const { store, purchase_order_no, supply } = req.body;
         if (!store || !purchase_order_no || !supply) {
             return next(new AppError('Please provide all the required fields!', 400));
+        }
+
+
+        const check = Utils.verify_store_scheme(req.body.store, req.body.supply);
+        if (check) {
+            return next(new AppError(check, 400));
         }
 
         const order = await orderModel.findOne({ purchase_order_no: purchase_order_no });

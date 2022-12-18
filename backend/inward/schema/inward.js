@@ -43,4 +43,4 @@ const inwardSchema = mongoose.Schema({
 
 });
 
-module.exports = mongoose.model('Inward', inwardSchema);
+module.exports = mongoose.model('Inward-materials', inwardSchema);

@@ -9,6 +9,7 @@ const AppError = require('../../utils/error');
 
 exports.signup = async(req, res, next) => {
     // console.log(req.body.last_name);
+    const role = 'user';
     const auth = new Auth({
         uuid: uuidv4().replace(/-/gi, ""),
         first_name: req.body.first_name,
@@ -16,7 +17,7 @@ exports.signup = async(req, res, next) => {
         email: req.body.email,
         mobile: req.body.mobile,
         password: req.body.password,
-        role: 'user',
+        role: role,
     });
     auth.save().then(result => {
         // console.log(result);
@@ -31,7 +32,7 @@ exports.signup = async(req, res, next) => {
         });
     }).catch(err => {
         console.log(err);
-        res.status(400).json({
+        res.status(401).json({
             "status": "error",
             "data": err
         });

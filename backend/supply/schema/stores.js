@@ -53,4 +53,4 @@ const storeEntrySchema = new mongoose.Schema({
 
 });
 module.exports = storeEntrySchema;
-module.exports = mongoose.model('Supply Store', storeEntrySchema);
+module.exports = mongoose.model('Supply-Store', storeEntrySchema);

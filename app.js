@@ -20,6 +20,8 @@ const BillingRouter = require('./backend/supply/routes/billing');
 
 //Inward
 const InwardRouter = require('./backend/inward/routes/inward');
+const StoreInwardRouter = require('./backend/inward/routes/stores');
+const SecurityInwardRouter = require('./backend/inward/routes/security');
 
 //Utils
 const AppError = require('./backend/utils/error');
@@ -45,6 +47,8 @@ app.use('/supply/bill', BillingRouter);
 
 //Inward
 app.use('/inward', InwardRouter);
+app.use('/inward/store', StoreInwardRouter);
+app.use('/inward/security', SecurityInwardRouter);
 
 
 app.get('/', authController.protect, authController.restrictTo('user'), (req, res) => {

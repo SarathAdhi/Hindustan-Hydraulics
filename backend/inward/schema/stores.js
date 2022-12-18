@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const storeInwardSchema = mongoose.Schema({
+    inward_no: {
+        type: Number,
+        required: [true, 'Please enter a inward number!'],
+        trim: true,
+    },
     store: {
         type: String,
         required: [true, 'Please enter a store name!'],
@@ -17,6 +22,11 @@ const storeInwardSchema = mongoose.Schema({
         enum: ['bill_no', 'dc_no', 'note_no', 'uhp_dc_no', 'sam_dc_no', 'return_invoice_no', 'service_materials_no'],
         trim: true,
     },
+    doc_no: {
+        type: String,
+        required: [true, 'Please enter a document number!'],
+        trim: true,
+    },
     received: {
         type: Boolean,
         default: false,
@@ -28,4 +38,4 @@ const storeInwardSchema = mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Inward Store', storeInwardSchema);
+module.exports = mongoose.model('Inward-Store', storeInwardSchema);

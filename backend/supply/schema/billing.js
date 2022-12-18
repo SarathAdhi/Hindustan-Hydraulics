@@ -56,4 +56,4 @@ const billingEntryScheme = mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Supply Billing', billingEntryScheme);
+module.exports = mongoose.model('Supply-Billing', billingEntryScheme);
