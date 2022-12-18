@@ -16,7 +16,6 @@ const inwardSchema = mongoose.Schema({
     date: {
         type: Date,
         default: Date.now
-
     },
     supplier_name: {
         type: String,
@@ -36,7 +35,7 @@ const inwardSchema = mongoose.Schema({
         default: false,
     },
     inward_reg_no: {
-        type: String,
+        type: Number,
         trim: true,
         default: null
     },

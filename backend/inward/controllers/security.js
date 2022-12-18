@@ -20,7 +20,7 @@ exports.inwardSecurityEntry = catchAsync(async(req, res, next) => {
     }
 
     securityInwardEntryModel.create(req.body)
-        .then((security_entry) => {
+        .then((entry) => {
             inwardModel.updateOne({
                     s_no: inward_no
                 }, {
@@ -31,12 +31,12 @@ exports.inwardSecurityEntry = catchAsync(async(req, res, next) => {
                         "status": "success",
                         "data": {
                             result,
-                            security_entry
+                            entry
                         }
                     });
                 })
                 .catch((err) => {
-                    return next(new AppError(err.message, 400));
+                    // return next(new AppError(err.message, 400));
                     res.status(400).json({
                         "status": "error",
                         "data": err
