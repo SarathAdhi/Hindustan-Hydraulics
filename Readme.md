@@ -1,3 +1,8 @@
+#### Getting Started
+
+1. `npm install`
+
+
 #### RSA Key generation for Authentication
 
 1. `openssl genrsa -out key.pem 2048`
