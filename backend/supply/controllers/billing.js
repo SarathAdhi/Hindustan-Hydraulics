@@ -1,7 +1,6 @@
 const billingModel = require('../schema/billing');
 const orderModel = require('../schema/orders');
 const AppError = require('../../utils/error');
-const mongoose = require('mongoose');
 const { updateOrderDocument } = require('./orders');
 const catchAsync = require('../../utils/catchAsync');
 
@@ -21,11 +20,8 @@ exports.createBill = async(req, res, next) => {
         if (!order.ready_to_bill) {
             return next(new AppError('Order not ready to bill!', 400));
         }
-        // req.body.auto_gen_no = null;
-        console.log(req.body)
-        req.body.bill_no = encodeURI(req.body.bill_no);
-        console.log(req.body)
-            //TODO: Implement Transaction
+
+        //TODO: Implement Transaction
         billingModel.create(req.body)
             .then((billing) => {
                 orderModel.findOneAndUpdate({ purchase_order_no: purchase_order_no }, { bill_ready: true, bill_no: billing.bill_no, routing: billing.routing })

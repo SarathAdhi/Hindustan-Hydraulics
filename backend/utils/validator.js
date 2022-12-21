@@ -82,3 +82,11 @@ exports.verify_store_inward_scheme = (inward_no, store, doc_type, doc_no, receiv
         return err;
     }
 }
+
+const counterEntryScheme = mongoose.Schema({
+    counter_no_type: {
+        type: String,
+
+
+    }
+});

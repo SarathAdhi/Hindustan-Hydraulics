@@ -3,6 +3,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const router = express.Router();
+// const publish = require('./backend/lib/RabbitMq.class');
 mongoose.set('strictQuery', true);
 
 
@@ -17,6 +18,8 @@ const AuthRouter = require('./backend/supply/routes/auth');
 const OrderRouter = require('./backend/supply/routes/orders');
 const StoreRouter = require('./backend/supply/routes/stores');
 const BillingRouter = require('./backend/supply/routes/billing');
+const CounterRouter = require('./backend/supply/routes/counter')
+const SecurityRouter = require('./backend/supply/routes/security');
 
 //Inward
 const InwardRouter = require('./backend/inward/routes/inward');
@@ -44,6 +47,8 @@ app.use('/auth', AuthRouter);
 app.use('/supply/order', OrderRouter);
 app.use('/supply/store', StoreRouter);
 app.use('/supply/bill', BillingRouter);
+app.use('/supply/counter', CounterRouter);
+app.use('/supply/security', SecurityRouter);
 
 //Inward
 app.use('/inward', InwardRouter);
@@ -58,6 +63,7 @@ app.get('/', authController.protect, authController.restrictTo('user'), (req, re
         "version": "0.1.2",
     });
 });
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

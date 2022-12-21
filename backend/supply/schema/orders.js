@@ -94,6 +94,10 @@ const orderSchema = mongoose.Schema({
         enum: ['transport', 'travel', 'courier', 'hand_delivery', 'auto', 'from_uhp', 'from_sam', 'branch_office', 'none'],
         default: 'none'
     },
+    security_out: {
+        type: Boolean,
+        default: false
+    },
     reg_no: {
         type: Number,
         default: null
