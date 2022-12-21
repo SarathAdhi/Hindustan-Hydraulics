@@ -8,14 +8,65 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        margin-top: 25px;
+        margin-bottom: 30px;
     }
 
     .center{
-        padding: 45px;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
         ul{
             list-style: none;
             margin: 0;
             padding: 0;
+
+            .icons{
+                margin-right: 18px;
+                margin-left: 0px;
+                margin-top: 15px;
+            }
+
+            li{
+                cursor: pointer;
+                span{
+                    color: #969696;
+                }
+
+                .icon{
+                    margin-right: 6px;
+                    margin-left: 30px;
+                    margin-top: 16px;
+                }
+
+                &:hover{
+                    span{
+                        color: black;
+                    }
+                }
+                
+            }
+
+        }
+
+    }
+
+    .bottom{
+        display: flex;
+        margin-left: 30px;
+        margin-top: 30px;
+        cursor: pointer;
+
+        .logout{
+            margin-right: 18px;
+            margin-left: 0px;
+            color: #AB1E40;
+        }
+
+        &:hover{
+            color: #AB1E40;
         }
     }
 }
