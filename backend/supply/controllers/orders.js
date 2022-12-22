@@ -1,6 +1,7 @@
 const orderModel = require('../schema/orders');
 const AppError = require('../../utils/error');
 const catchAsync = require('../../utils/catchAsync');
+const EventEmitter = require('../../lib/EventEmitter.class');
 
 exports.updateOrderDocument = (purchase_order_no, body) => {
     return new Promise((resolve, reject) => {
@@ -38,6 +39,8 @@ exports.createOrder = catchAsync(async(req, res, next) => {
     const lastOrder = await orderModel.findOne().sort({ s_no: -1 }).limit(1);
     req.body.s_no = lastOrder ? lastOrder.s_no + 1 : 1;
     orderModel.create(req.body).then((order) => {
+        const eventEmitter = new EventEmitter();
+        eventEmitter.emit({ event: "order_created", data: order })
         res.status(201).json({
             "status": "success",
             "data": order
@@ -55,6 +58,7 @@ exports.getOrders = (req, res, next) => {
     orderModel.find().then((orders) => {
         res.status(200).json({
             "status": "success",
+            "total": orders.length,
             "data": orders
         });
     }).catch((err) => {
