@@ -4,7 +4,7 @@ async function main() {
     const rabbit = new RabbitMQ();
 
     await rabbit.connect();
-    rabbit.subscribeMessage('supply');
+    rabbit.subscribeMessage('HINDUSTAN');
 }
 
 main();

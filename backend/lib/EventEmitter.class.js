@@ -7,7 +7,7 @@ module.exports = class EventEmitter {
     async emit(msg) {
         try {
             await this.rabbit.connect();
-            this.rabbit.publishMessage('supply', msg);
+            this.rabbit.publishMessage('HINDUSTAN', msg);
         } catch (e) {
             console.log(e);
         }

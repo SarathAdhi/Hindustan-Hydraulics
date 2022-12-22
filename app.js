@@ -40,9 +40,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-const EventEmitter = require('./backend/lib/EventEmitter.class');
-const RabbitMQ = require('./backend/lib/RabbitMq.class');
-
 // async function main() {
 //     const rabbit = new RabbitMQ();
 //     await rabbit.connect();

@@ -45,18 +45,15 @@ module.exports = class RabbitMQ {
 
     }
 
-    async subscribeMessage(exchange, callback) {
+    async subscribeMessage(exchange) {
         try {
             await this.ch.assertExchange(exchange, 'direct', { durable: true })
             const q = await this.ch.assertQueue('', { exclusive: true });
             await this.ch.bindQueue(q.queue, exchange, '');
-            if (!callback) {
-                callback = (msg) => {
-                    console.log(" [x] Received %s", msg.content.toString());
-                }
-            }
-            console.log(callback)
-            this.ch.consume(q.queue, callback(), { noAck: true });
+
+            this.ch.consume(q.queue, (msg) => {
+                console.log(" [x] Received %s", msg.content.toString());
+            }, { noAck: true });
         } catch (e) {
             console.log("Error in subscribing message");
             console.log(e);
