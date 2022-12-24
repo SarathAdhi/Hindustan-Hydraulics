@@ -5,6 +5,7 @@ const AppError = require('../../utils/error');
 const catchAsync = require('../../utils/catchAsync');
 
 const { updateOrderDocument } = require('./orders');
+const EventEmitter = require('../../lib/EventEmitter.class');
 
 exports.securityEntry = catchAsync(async(req, res, next) => {
     const { purchase_order_no, } = req.body;
@@ -29,6 +30,8 @@ exports.securityEntry = catchAsync(async(req, res, next) => {
                     reg_no
                 })
                 .then((result) => {
+                    const eventEmitter = new EventEmitter();
+                    eventEmitter.emit({ event: "securityEntry" })
                     res.status(201).json({
                         message: 'success',
                         data: data,

@@ -3,6 +3,7 @@ const catchAsync = require('../../utils/catchAsync');
 const orderModel = require('../schema/orders');
 const AppError = require('../../utils/error');
 const { updateOrderDocument } = require('./orders');
+const EventEmitter = require('../../lib/EventEmitter.class');
 
 
 exports.counterEntry = catchAsync(async(req, res, next) => {
@@ -28,6 +29,8 @@ exports.counterEntry = catchAsync(async(req, res, next) => {
                     routing
                 })
                 .then((result) => {
+                    const eventEmitter = new EventEmitter();
+                    eventEmitter.emit({ event: "counterEntry" })
                     res.status(201).json({
                         message: 'success',
                         data: data,

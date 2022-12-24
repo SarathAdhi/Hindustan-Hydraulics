@@ -2,6 +2,7 @@ const storeModel = require('../schema/stores');
 const orderModel = require('../schema/orders');
 const AppError = require('../../utils/error');
 const Utils = require('../../utils/validator');
+const EventEmitter = require('../../lib/EventEmitter.class');
 
 exports.entry = async(req, res, next) => {
     try {
@@ -52,6 +53,8 @@ exports.entry = async(req, res, next) => {
                     "ready": req.body.ready_to_bill,
                 }
             }).then((result) => {
+                const eventEmitter = new EventEmitter();
+                eventEmitter.emit({ event: "storeEntry" })
                 res.status(201).json({
                     "status": "success",
                     "data": result
