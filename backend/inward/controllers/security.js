@@ -3,6 +3,7 @@ const inwardModel = require('../schema/inward')
 const AppError = require('../../utils/error');
 const catchAsync = require('../../utils/catchAsync');
 const Utils = require('../../utils/validator');
+const EventEmitter = require('../../lib/EventEmitter.class');
 
 exports.inwardSecurityEntry = catchAsync(async(req, res, next) => {
     const { inward_no, security_entry, reg_no } = req.body;
@@ -27,6 +28,8 @@ exports.inwardSecurityEntry = catchAsync(async(req, res, next) => {
                     $set: { security_inward: security_entry, inward_reg_no: reg_no }
                 })
                 .then((result) => {
+                    const eventEmitter = new EventEmitter();
+                    eventEmitter.emit({ event: "securityInwardEntry" })
                     res.status(201).json({
                         "status": "success",
                         "data": {
