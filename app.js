@@ -68,6 +68,12 @@ app.use(cookieParser());
 
 // main();
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 //Routes
 
 //Supply
@@ -120,6 +126,6 @@ app.use((err, req, res, next) => {
         message: err.message
     });
 })
-app.listen(3000, () => {
-    console.log('Server running on port 3000');
+app.listen(80, () => {
+    console.log('Server running on port 80');
 });

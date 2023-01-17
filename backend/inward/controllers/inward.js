@@ -61,3 +61,12 @@ exports.inwardEntry = catchAsync(async(req, res, next) => {
         });
     })
 });
+
+exports.getInward = catchAsync(async(req, res, next) => {
+    console.log(req.query)
+    const inward = await inwardModel.findOne(req.query);
+    res.status(200).json({
+        "status": "success",
+        "data": inward
+    });
+});
