@@ -1,8 +1,6 @@
 import './inward.scss'
 import React, { useState, useEffect } from 'react';
-
 import axios from 'axios';
-
 
 
 const Inward = () => {
@@ -11,6 +9,7 @@ const Inward = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      
       try {
         // const token = localStorage.getItem('token');
         const token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZmI5ZGY1Y2Q5YWUyNDlkMmI0N2JhZWMwMTljOTNkYzQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzM5NDUyOTB9.YxvO4knK1Uo1WzNelmpjZSdPwASaJtozo9u_Oguo8F-9oCe0FYdKFnpFCWAoVV9aJo5DoPYovB-40MGgtWcsukxPDouf49m5VKI60gWohq5aAl_IKm_c0edNpvbhebFaGX9M8O3lpIbgqlNZswtzdeOAsu8_QNQmO-sb1PWqOMUgk6tkdEWvcgukeaPXMcxMQprggezB97JCL3eIkJ9f9vLXukQUPIllgyTrtYowUjSipqc0xr1aoQm4BjbD_PcAHDuLKOlKDD-sU70z9IP6bxedR-5njvY6a3FenVi8KSxqp2wD82VoZF7jE0-23XCG_FrczlrC-qTub_Gw5vNfzQ"
@@ -20,7 +19,7 @@ const Inward = () => {
 
         const result = [];
         
-
+        // eslint-disable-next-line
         response.data.data.forEach((data,index)=>{{
           // console.log(data)
           const results = {};
@@ -36,25 +35,22 @@ const Inward = () => {
 
           result.push(
             <tr>
-      <th scope="row">{results.inward_doc_no}</th>
-      <td>{results.date}</td>
-      <td>{results.supplier_name}</td>
-      <th>{results.smc ? "RECEIVED" : "No"}</th>
-      <th>{results.general ? "RECEIVED" : "No"}</th>
-      <th>{results.instrumentation ? "RECEIVED" : "No"}</th>
-      <th>{results.hydraulics ? "RECEIVED" : "No"}</th>
-      <th>{results.hose ? "RECEIVED" : "No"}</th>
-      <th>{results.tc_counter ? "RECEIVED" : "No"}</th>
-      <th>{results.lc_counter ? "RECEIVED" : "No"}</th>
-      <th>{results.materials_received ? "Yes" : "No"}</th>
-      <th>{results.security_inward ? "Yes" : "No"}</th>
-      <td>{results.inward_reg_no ? results.inward_reg_no : "None"}</td>
-    </tr>
+              <th scope="row">{results.inward_doc_no}</th>
+              <td>{results.date}</td>
+              <td>{results.supplier_name}</td>
+              <th>{results.smc ? "RECEIVED" : "No"}</th>
+              <th>{results.general ? "RECEIVED" : "No"}</th>
+              <th>{results.instrumentation ? "RECEIVED" : "No"}</th>
+              <th>{results.hydraulics ? "RECEIVED" : "No"}</th>
+              <th>{results.hose ? "RECEIVED" : "No"}</th>
+              <th>{results.tc_counter ? "RECEIVED" : "No"}</th>
+              <th>{results.lc_counter ? "RECEIVED" : "No"}</th>
+              <th>{results.materials_received ? "Yes" : "No"}</th>
+              <th>{results.security_inward ? "Yes" : "No"}</th>
+              <td>{results.inward_reg_no ? results.inward_reg_no : "None"}</td>
+            </tr>
           )
         }})
-
-
-        
         console.log("Results",result)
 
         setData(result);
@@ -62,7 +58,11 @@ const Inward = () => {
         console.error(err);
       }
     };
-    fetchData();
+    const interval = setInterval(() => {
+      fetchData();
+    }, 1000);
+    return () => clearInterval(interval);
+    
   }, []);
 
   return (
