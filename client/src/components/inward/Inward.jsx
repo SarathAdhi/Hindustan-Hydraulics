@@ -16,7 +16,7 @@ const Inward = () => {
         })
     }
 
-    
+
   return (
     <table class="table">
   <thead>
