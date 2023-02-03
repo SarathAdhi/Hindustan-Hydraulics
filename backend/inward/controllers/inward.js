@@ -1,6 +1,8 @@
 const inwardModel = require('../schema/inward');
 const AppError = require('../../utils/error');
 const catchAsync = require('../../utils/catchAsync');
+const EventEmitter = require('../../lib/EventEmitter.class');
+
 
 exports.updateInwardDocument = (inward_doc_no, body) => {
     return new Promise((resolve, reject) => {
@@ -45,6 +47,8 @@ exports.inwardEntry = catchAsync(async(req, res, next) => {
     const lastInward = await inwardModel.findOne().sort({ s_no: -1 }).limit(1);
     req.body.s_no = lastInward ? lastInward.s_no + 1 : 1;
     inwardModel.create(req.body).then((inward) => {
+        const eventEmitter = new EventEmitter();
+        eventEmitter.emit({ event: "inwardEntry" })
         res.status(201).json({
             "status": "success",
             "data": inward
@@ -56,4 +60,14 @@ exports.inwardEntry = catchAsync(async(req, res, next) => {
             "data": err
         });
     })
+});
+
+exports.getInward = catchAsync(async(req, res, next) => {
+    console.log(req.query)
+    const inward = await inwardModel.find();
+
+    res.status(200).json({
+        "status": "success",
+        "data": inward
+    });
 });

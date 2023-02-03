@@ -4,6 +4,9 @@ const AppError = require('../../utils/error');
 const catchAsync = require('../../utils/catchAsync');
 const Utils = require('../../utils/validator');
 
+const EventEmitter = require('../../lib/EventEmitter.class');
+
+
 
 exports.inwardStoresEntry = catchAsync(async(req, res, next) => {
     const { inward_no, store, received, doc_type, doc_no } = req.body;
@@ -41,6 +44,8 @@ exports.inwardStoresEntry = catchAsync(async(req, res, next) => {
                     }
                 })
                 .then((result) => {
+                    const eventEmitter = new EventEmitter();
+                    eventEmitter.emit({ event: "storeInwardEntry" })
                     res.status(201).json({
                         "status": "success",
                         "data": result
