@@ -14,11 +14,11 @@ const Sidebar = () => {
                 <span className="dashboard">Dashboard</span>
                 <li>
                     <img src={require('./../logos/Enter.png')} alt="enter" className="icon"/>
-                    <span> Inward</span>
+                    <a href="./"> Inward</a>
                 </li>
                 <li>
                     <img src={require('./../logos/Shopping Cart.png')} alt="enter" className="icon"/>
-                    <span> Supply</span>
+                    <a href="./new"> Supply</a>
                 </li>
 
                 <img src={require('./../logos/Google Forms.png')} alt="enter" className="icons"/>

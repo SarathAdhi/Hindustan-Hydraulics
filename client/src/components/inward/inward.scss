@@ -1,9 +1,10 @@
 .table{
-    .cellWrapper{
-        display:flex;
-        align-items: center;
+    th{
+        text-align: center;
+        vertical-align: middle;
     }
-    thead{
-        background-color: aqua;
+    td{
+        text-align: center;
+        vertical-align: middle;
     }
 }
