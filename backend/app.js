@@ -3,35 +3,35 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const router = express.Router();
-// const publish = require('./backend/lib/RabbitMq.class');
+// const publish = require('./lib/RabbitMq.class');
 mongoose.set('strictQuery', true);
 
 
 //Controllers
-const authController = require('./backend/supply/controllers/auth');
+const authController = require('./supply/controllers/auth');
 
 
 //Routers
 
 //Supply
-const AuthRouter = require('./backend/supply/routes/auth');
-const OrderRouter = require('./backend/supply/routes/orders');
-const StoreRouter = require('./backend/supply/routes/stores');
-const BillingRouter = require('./backend/supply/routes/billing');
-const CounterRouter = require('./backend/supply/routes/counter')
-const SecurityRouter = require('./backend/supply/routes/security');
+const AuthRouter = require('./supply/routes/auth');
+const OrderRouter = require('./supply/routes/orders');
+const StoreRouter = require('./supply/routes/stores');
+const BillingRouter = require('./supply/routes/billing');
+const CounterRouter = require('./supply/routes/counter')
+const SecurityRouter = require('./supply/routes/security');
 
 //Inward
-const InwardRouter = require('./backend/inward/routes/inward');
-const StoreInwardRouter = require('./backend/inward/routes/stores');
-const SecurityInwardRouter = require('./backend/inward/routes/security');
+const InwardRouter = require('./inward/routes/inward');
+const StoreInwardRouter = require('./inward/routes/stores');
+const SecurityInwardRouter = require('./inward/routes/security');
 
 //Utils
-const AppError = require('./backend/utils/error');
+const AppError = require('./utils/error');
 
 
 const app = express();
-const ConnectDB = require('./backend/db');
+const ConnectDB = require('./db');
 ConnectDB();
 
 //Configurations
@@ -126,6 +126,6 @@ app.use((err, req, res, next) => {
         message: err.message
     });
 })
-app.listen(80, () => {
-    console.log('Server running on port 80');
+app.listen(3000, () => {
+    console.log('Server running on port 3000');
 });
