@@ -26,60 +26,34 @@ const Security = () => {
           
           <div className="main-box">
             
-            <div className="STORE">
-              <h4 className="form-titles">Store</h4>
+          <div className="main-box">
+            
+            <div className="SECURITY">
+              <h4 className="form-titles">Book Register No.</h4>
                 <form>
-                  <label className="store-cb">
-                    <input className="store-cb-input" type="checkbox"/> 
-                    SMC
-                  </label>
-                  <label className="store-cb">
-                    <input type="checkbox"/> 
-                    General
-                  </label>
-                  <label className="store-cb">
-                    <input type="checkbox"/> 
-                    Instrumentation
-                  </label>
-                  <label className="store-cb">
-                    <input type="checkbox"/> 
-                    Hydraulics
-                  </label>
-                  <label className="store-cb">
-                    <input type="checkbox"/> 
-                    Hose
-                  </label>
-                </form>  
-
-                <form>
-                  <select name="store" id="dropdown">
-                    <option value="default" selected>Select an Option</option>
-                    <option value="part-supply">Part Supply</option>
-                    <option value="full-supply">Full Supply</option>
-                  </select>
+                      <label> 
+                        <input className="nml-input" type="number" placeholder="Enter the Book Register No."/> 
+                      </label>               
                 </form>
             </div>
-            <br />  
-            <div className="DOCNO">
-              <h4 className="form-titles">DOC No.</h4>
-                <form>
-                    <select name="docno" id="dropdown">
-                      <option value="default" selected>Select an Option</option>
-                      <option value="part-supply">SO No.</option>
-                      <option value="full-supply">Proforma No.</option>
-                      <option value="full-supply">DC No.</option>
-                      <option value="full-supply">UHP DC No.</option>
-                      <option value="full-supply">SAM DC No.</option>
-                    </select>
-                  </form>
-
-                  <form>
-
-                  </form>
+            <div className="READY">
+              <form>
+                  <label className="store-secbutton">
+                    <input className="store-secbutton-input" type="checkbox"/> 
+                      Ready to Go Out
+                  </label>
+              </form>
             </div>
-          </div>
+
+            <div className="SUBMIT">
+                  <button className="sbutton">
+                    Submit
+                  </button>
+            </div>
         </div>
+      </div>
     </div>
+  </div>
   )
 }
 

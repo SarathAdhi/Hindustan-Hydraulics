@@ -28,9 +28,10 @@
         -webkit-box-shadow: 4px 4px 5px 0px rgba(140,140,140,1);
         -moz-box-shadow: 4px 4px 5px 0px rgba(140,140,140,1);
         box-shadow: 4px 4px 5px 0px rgba(140,140,140,1);
-        width: 800px;
+        width: 700px;
         margin: auto;
         margin-top: 50px;
+        margin-bottom: 50px;
         background-color: white;
         border-radius: 10px;
 
@@ -43,17 +44,41 @@
         }
         .store-cb{
             display: inline-block;
-            margin-right: 20px;
-            margin-left: 20px;
-            margin-bottom: 20px;
+            margin: 10px;
             input{
                 margin-right: 10px;
             }
         }
+        .store-billbutton{
+            display: flex;
+            margin: 10px;
+            input{
+                margin-right: 10px;
+            }
+        }
+        .date-input{
+            width: 600px;
+            display: flex;
+            margin-top: 10px; 
+            padding-left: 5px;
+            border-radius: 5px;
+            color: #585858;
+            border:1px solid #585858;
+        }
         #dropdown{
             width: 600px;
+            margin: 10px;
             border-radius: 5px;
-            color: #959494;
+            color: #585858;
+            height: 25px;
+        }
+
+        .nml-input{
+            width: 600px;
+            margin-bottom: 10px;
+            padding-left: 5px;
+            border-radius: 5px;
+            border:1px solid #585858;
         }
 
         .READY{

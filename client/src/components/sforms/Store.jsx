@@ -59,24 +59,29 @@ const Store = () => {
                   </select>
                 </form>
             </div>
-            <br />  
+            <br /> 
+
             <div className="DOCNO">
               <h4 className="form-titles">DOC No.</h4>
                 <form>
+                  <label> 
+                    <input type="date" className="date-input" placeholder="Enter the Date"/> 
+                  </label>                       
+                </form>
+                <form>
                     <select name="docno" id="dropdown">
                       <option value="default" selected>Select an Option</option>
-                      <option value="part-supply">SO No.</option>
-                      <option value="full-supply">Proforma No.</option>
-                      <option value="full-supply">DC No.</option>
-                      <option value="full-supply">UHP DC No.</option>
-                      <option value="full-supply">SAM DC No.</option>
+                      <option value="sono">SO No.</option>
+                      <option value="proforma">Proforma No.</option>
+                      <option value="dcno">DC No.</option>
+                      <option value="uhpdc">UHP DC No.</option>
+                      <option value="samdc">SAM DC No.</option>
                     </select>
                   </form>
 
                   <form>
                     <label> 
-                      Enter the DOC No.
-                      <input type="number"/> 
+                      <input className="nml-input" type="number" placeholder="Enter the DOC No."/> 
                     </label> 
                       
                   </form>
@@ -84,13 +89,17 @@ const Store = () => {
 
             <div className="PONO">
             <h4 className="form-titles">PO No.</h4>
-
-            <form>
-              <label> 
-                Enter the PO No.
-                <input type="number"/> 
-              </label>                       
-            </form>
+                <form>
+                    <label> 
+                      <input className="nml-input" type="number" placeholder="Enter the DOC No."/> 
+                    </label>    
+                </form>
+                
+                <form>
+                  <label> 
+                    <input type="number" className="nml-input" placeholder="Enter the PO No."/> 
+                  </label>                       
+                </form>
             </div>
 
             <div className="CUSTOMER">
@@ -98,21 +107,19 @@ const Store = () => {
 
             <form>
               <label> 
-                Enter the customer name. 
-                <input type="string"/> 
+                <input type="string" className="nml-input" placeholder="Enter the Customer Name"/> 
               </label>                       
             </form>
             </div>
 
             <div className="READY">
             <form>
-                <label className="store-cb">
-                  <input className="store-cb-input" type="checkbox"/> 
+                <label className="store-billbutton">
+                  <input className="store-billbutton-input" type="checkbox"/> 
                     Ready
                 </label>
-                <br />
-                <label className="store-cb">
-                  <input type="checkbox"/> 
+                <label className="store-billbutton">
+                  <input className="store-billbutton-input" type="checkbox"/> 
                     Ready to bill
                 </label>
             </form>
@@ -120,7 +127,7 @@ const Store = () => {
 
             <div className="SUBMIT">
               <button className="sbutton">
-                Billing
+                Submit
               </button>
             </div>
           </div>
