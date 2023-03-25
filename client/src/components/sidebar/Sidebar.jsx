@@ -10,33 +10,32 @@ const Sidebar = () => {
 
         <div className="center">
             <ul>
-                <img src={require('./../logos/Bar Chart.png')} alt="enter" className="icons"/>
                 <span className="dashboard">Dashboard</span>
                 <li>
                     <img src={require('./../logos/Enter.png')} alt="enter" className="icon"/>
-                    <a href="./"> Inward</a>
+                    <a href="/"> Inward</a>
                 </li>
                 <li>
                     <img src={require('./../logos/Shopping Cart.png')} alt="enter" className="icon"/>
-                    <a href="./new"> Supply</a>
+                    <a href="/new"> Supply</a>
                 </li>
+                <br />
 
-                <img src={require('./../logos/Google Forms.png')} alt="enter" className="icons"/>
                 <span className="forms">Forms</span>
                 <li>
                     <img src={require('./../logos/Enter.png')} alt="enter" className="icon"/>
-                    <span> Inward</span>
+                    <a href="/in_main"> Inward</a>
                 </li>
                 <li>
                     <img src={require('./../logos/Shopping Cart.png')} alt="enter" className="icon"/>
-                    <span> Supply</span>
+                    <a href="/sup_main"> Supply</a>
                 </li>
             </ul>
 
         </div>
         <div className="bottom">
-            <img src={require('./../logos/Logout.png')} alt="enter" className="logout"/>
-            <span>Logout</span>
+            <span className="logout">Logout</span>
+            
         </div>
     </div>
   )

@@ -1,0 +1,27 @@
+.billing{
+    display: flex;
+ 
+    .homeContainer{
+     background-color: #F4F4F5;
+     flex: 6.5;
+
+     .courses-nav{
+
+        .sbutton{
+            background-color: rgb(157, 45, 66);
+            border: 1px solid black;
+            text-align: center;
+            padding: 10px;
+            padding-left: 20px;
+            padding-right: 20px;
+            margin: 20px;
+            border-radius: 25%;
+         }
+        
+         a{
+            text-decoration: none;
+            color: #F4F4F5;
+         }
+     }
+    }
+ }
