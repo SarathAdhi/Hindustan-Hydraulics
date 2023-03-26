@@ -77,7 +77,7 @@ const Store = () => {
                       <option value="uhpdc">UHP DC No.</option>
                       <option value="samdc">SAM DC No.</option>
                     </select>
-                  </form>
+                </form>
 
                   <form>
                     <label> 

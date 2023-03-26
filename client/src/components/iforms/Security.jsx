@@ -17,8 +17,36 @@ const Security = () => {
               <Link to="/in_main/inward_store">Store</Link>
             </button>
           </div>
-          Security
+          
+          <div className="main-box">
+
+            <div className="SECURITY">
+              <h4 className="form-titles">Security Inward</h4>
+              <form> 
+                <select name="materials" id="dropdown">
+                  <option value="default" selected>Select an Option</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
+              </form>
+            </div>
+
+            <div className="INV_REGNO">
+              <h4 className="form-titles">Inward Register No.</h4>
+              <form>
+                <label> 
+                  <input className="nml-input" type="number" placeholder="Enter the Inward Register No."/> 
+                </label>               
+              </form>
+            </div>
+
+            <div className="SUBMIT">
+              <button className="sbutton">
+                Submit
+              </button>
+            </div>
           </div>
+        </div>
     </div>
   )
 }

@@ -23,8 +23,6 @@ const Security = () => {
               <Link to="/sup_main/supply_security">Security</Link> 
             </button>
 	        </div>
-          
-          <div className="main-box">
             
           <div className="main-box">
             
@@ -51,7 +49,6 @@ const Security = () => {
                   </button>
             </div>
         </div>
-      </div>
     </div>
   </div>
   )
