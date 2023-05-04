@@ -22,9 +22,9 @@ const Stores = () => {
           </div>
           
           <div className="main-box">
+            <form>
             <div className="STORE">
               <h4 className="form-titles">Store</h4>
-                <form>
                   <label className="store-cb">
                     <input className="store-cb-input" type="checkbox"/> 
                     SMC
@@ -53,38 +53,28 @@ const Stores = () => {
                     <input type="checkbox"/> 
                     LC Counter
                   </label>
-                </form>  
 
-                <form> 
                   <select name="store" id="dropdown">
                     <option value="default" selected>Select an Option</option>
                     <option value="recieved">Recieved</option>
                     <option value="not-recieved">Not Recieved</option>
                   </select>
-                </form>
             </div>
 
             <div className="CUSTOMER">
               <h4 className="form-titles">Customer</h4>
-
-              <form>
                 <label> 
                 <input type="string" className="nml-input" placeholder="Enter the Customer Name"/> 
                </label>                       
-              </form>
             </div>
 
             <div className="DOCNO-IN">
 
             <h4 className="form-titles">DOC No. Inward</h4>
-
-            <form>
                 <label> 
                   <input type="date" className="date-input" placeholder="Enter the Date"/> 
                 </label>                       
-            </form>
 
-             <form>
                 <select name="docno" id="dropdown">
                   <option value="default" selected>Select an Option</option>
                   <option value="billno">Bill No.</option>
@@ -95,25 +85,19 @@ const Stores = () => {
                   <option value="ret-inv-no">Return Invoice No.</option>
                   <option value="ser-mat-no">Service Materials No.</option>
                 </select>
-              </form>
 
-              <form>
                 <label> 
                   <input className="nml-input" type="number" placeholder="Enter the DOC No."/> 
                 </label>                 
-              </form>
             </div>
 
             <div className="MATERIALS">
-              <h4 className="form-titles">Materials Recieved</h4>
-
-              <form> 
+              <h4 className="form-titles">Materials Recieved</h4> 
                 <select name="materials" id="dropdown">
                   <option value="default" selected>Select an Option</option>
                   <option value="yes">Yes</option>
                   <option value="no">No</option>
                 </select>
-              </form>
             </div>
 
             <div className="SUBMIT">
@@ -121,6 +105,7 @@ const Stores = () => {
                 Submit
               </button>
             </div>
+            </form>
           </div>
           </div>
     </div>

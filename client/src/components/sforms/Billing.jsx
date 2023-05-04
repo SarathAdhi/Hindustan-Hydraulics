@@ -30,30 +30,27 @@ const Billing = () => {
           <div className="main-box">
             
             <div className="BILLING">
-              <h4 className="form-titles">Order Status</h4>
-                <form>
+                <div className="ORDERSTATUS">
+                  <h4 className="form-titles">Order Status</h4>
                     <select name="store" id="dropdown">
                       <option value="default" selected>Select an Option</option>
                       <option value="part-supply">Part Supply</option>
                       <option value="full-supply">Full Supply</option>
                     </select>
-                  </form>
+                </div>
 
-              <h4 className="form-titles">Bill No.</h4>
-                  <form>
+                <div className="BILLNO">
+                  <h4 className="form-titles">Bill No.</h4>
                       <label> 
                         <input type="date" className="date-input" placeholder="Enter the Date"/> 
                       </label>                       
-                  </form>
-                  <form>
                       <label> 
                         <input className="nml-input" type="number" placeholder="Enter the Bill No."/> 
                       </label> 
+                </div>
 
-                  </form>
-
-              <h4 className="form-titles">Routing</h4>
-                  <form>
+                <div className="ROUTING">
+                    <h4 className="form-titles">Routing</h4>
                         <select name="store" id="dropdown">
                           <option value="default" selected>Select an Option</option>
                           <option value="transport">Transport</option>
@@ -65,15 +62,13 @@ const Billing = () => {
                           <option value="sam">From SAM</option>
                           <option value="branch-office">Branch Office</option>
                         </select>
-                  </form>
+                </div>
 
                 <div className="BILLREADY">
-                  <form>
                     <label className="store-billbutton">
                       <input className="store-billbutton-input" type="checkbox"/> 
                         Bill Ready
                     </label>
-                  </form>
                 </div>
 
                 <div className="SUBMIT">

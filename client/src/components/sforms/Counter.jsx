@@ -28,15 +28,13 @@ const Counter = () => {
 	        </div>
           
           <div className="main-box">
-            
+            <form>
+
             <div className="COUNTER">
               <h4 className="form-titles">Counter No.</h4>
-                <form>
                     <label> 
                       <input type="date" className="date-input" placeholder="Enter the Date"/> 
                     </label>                       
-                </form>
-                <form>
                   <select name="counter" id="dropdown">
                     <option value="default" selected>Select an Option</option>
                     <option value="tcbill">TC Bill No.</option>
@@ -46,25 +44,20 @@ const Counter = () => {
                     <option value="lcbill">LC Bill No.</option>
                     <option value="lcnote">LC Note No.</option>
                   </select>
-                </form>
-                <form>
                     <label> 
                       <input className="nml-input" type="number" placeholder="Enter the Counter No."/> 
-                    </label>    
-                </form>
+                    </label>   
             </div>
+
             <div className="CUSTOMER">
               <h4 className="form-titles">Customer</h4>
-               <form>
                  <label> 
                    <input type="string" className="nml-input" placeholder="Enter the Customer Name"/> 
                  </label>                       
-               </form>
             </div>
 
             <div className="ROUTING">
               <h4 className="form-titles">Routing</h4>
-                  <form>
                         <select name="store" id="dropdown">
                           <option value="default" selected>Select an Option</option>
                           <option value="transport">Transport</option>
@@ -75,7 +68,6 @@ const Counter = () => {
                           <option value="uhp">From UHP</option>
                           <option value="sam">From SAM</option>
                         </select>
-                  </form>
             </div>
 
             <div className="SUBMIT">
@@ -83,6 +75,7 @@ const Counter = () => {
                     Submit
                   </button>
             </div>
+            </form>
         </div>
     </div>
   </div>

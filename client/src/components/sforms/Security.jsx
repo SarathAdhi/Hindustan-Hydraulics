@@ -28,22 +28,20 @@ const Security = () => {
 	        </div>
             
           <div className="main-box">
-            
+            <form>
+              
             <div className="SECURITY">
               <h4 className="form-titles">Book Register No.</h4>
-                <form>
                       <label> 
                         <input className="nml-input" type="number" placeholder="Enter the Book Register No."/> 
                       </label>               
-                </form>
             </div>
+            
             <div className="READY">
-              <form>
                   <label className="store-secbutton">
                     <input className="store-secbutton-input" type="checkbox"/> 
                       Ready to Go Out
                   </label>
-              </form>
             </div>
 
             <div className="SUBMIT">
@@ -51,6 +49,8 @@ const Security = () => {
                     Submit
                   </button>
             </div>
+
+            </form>
         </div>
     </div>
   </div>
