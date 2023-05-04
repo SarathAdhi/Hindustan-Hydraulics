@@ -1,4 +1,4 @@
-.store{
+.order{
     display: flex;
  
     .homeContainer{
@@ -42,20 +42,7 @@
             padding-top: 20px;
             color: #585858;
         }
-        .store-cb{
-            display: inline-block;
-            margin: 10px;
-            input{
-                margin-right: 10px;
-            }
-        }
-        .store-billbutton{
-            display: flex;
-            margin: 10px;
-            input{
-                margin-right: 10px;
-            }
-        }
+        
         .date-input{
             width: 600px;
             //display: flex;

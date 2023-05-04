@@ -10,11 +10,14 @@ const Counter = () => {
         <div className="homeContainer">
           <Navbar/>
           <div className="courses-nav">
-            <button className="sbutton">
-              <Link to="/sup_main/supply_billing">Billing</Link>
+          <button className="sbutton">
+              <Link to="/sup_main/supply_order">Order</Link>
             </button>
             <button className="sbutton">
               <Link to="/sup_main/supply_store">Store</Link>
+            </button>
+            <button className="sbutton">
+              <Link to="/sup_main/supply_billing">Billing</Link>
             </button>
             <button className="sbutton">
               <Link to="/sup_main/supply_counter">Counter</Link>

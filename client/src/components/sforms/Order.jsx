@@ -1,11 +1,11 @@
 import Sidebar from "../../components/sidebar/Sidebar"
 import Navbar from "../../components/navbar/Navbar"
 import {Link} from "react-router-dom"
-import "./security.scss"
+import "./order.scss"
 
-const Security = () => {
+const Order = () => {
   return (
-    <div className="security">
+    <div className="order">
         <Sidebar/>
         <div className="homeContainer">
           <Navbar/>
@@ -25,36 +25,44 @@ const Security = () => {
             <button className="sbutton">
               <Link to="/sup_main/supply_security">Security</Link> 
             </button>
+
 	        </div>
             
           <div className="main-box">
+
+            <form>
+            <div className="ORDER">
             
-            <div className="SECURITY">
-              <h4 className="form-titles">Book Register No.</h4>
-                <form>
-                      <label> 
-                        <input className="nml-input" type="number" placeholder="Enter the Book Register No."/> 
-                      </label>               
-                </form>
+            <div className="PONO">
+            <h4 className="form-titles">PO No.</h4>  
+                
+                  <label> 
+                    <input type="number" className="nml-input" placeholder="Enter the PO No."/> 
+                  </label>       
+                  <label> 
+                    <input type="date" className="date-input" placeholder="Enter the Date"/> 
+                  </label>                 
             </div>
-            <div className="READY">
-              <form>
-                  <label className="store-secbutton">
-                    <input className="store-secbutton-input" type="checkbox"/> 
-                      Ready to Go Out
-                  </label>
-              </form>
+
+            <div className="CUSTOMER">
+              <h4 className="form-titles">Customer</h4>
+              <label> 
+                <input type="string" className="nml-input" placeholder="Enter the Customer Name"/> 
+              </label>                       
             </div>
 
             <div className="SUBMIT">
-                  <button className="sbutton">
-                    Submit
-                  </button>
+              <button className="sbutton" type="submit">
+                Submit
+              </button>
             </div>
+                
+            </div>
+            </form>
         </div>
     </div>
   </div>
   )
 }
 
-export default Security
+export default Order

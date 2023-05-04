@@ -11,6 +11,9 @@ const Stores = () => {
           <Navbar/>
           <div className="courses-nav">
             <button className="ibutton">
+              <Link to="/in_main/inward_material">Material</Link>
+            </button>
+            <button className="ibutton">
               <Link to="/in_main/inward_security">Security</Link>
             </button>
             <button className="ibutton">
