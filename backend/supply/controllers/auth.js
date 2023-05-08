@@ -2,7 +2,8 @@ const Auth = require('../schema/auth');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
-const privateKey = fs.readFileSync('private.pem');
+// const privateKey = fs.readFileSync('private.key','utf8');
+const secretKey = fs.readFileSync('secret.key','utf8'); //HS256 algorithm is used temporarily. TODO: Change to RS256
 const bcrypt = require('bcryptjs');
 const AppError = require('../../utils/error');
 
@@ -26,13 +27,20 @@ exports.signup = async(req, res, next) => {
             "data": {
                 "email": result.email,
                 "tokens": {
-                    "access_token": jwt.sign({ uuid: result.uuid, role: role }, privateKey, { algorithm: 'RS256' })
+                    "access_token": jwt.sign({ uuid: result.uuid, role: role }, secretKey, { algorithm: 'HS256' })
                 }
             }
         });
     }).catch(err => {
         console.log(err);
-        res.status(401).json({
+        if(err.code==11000){
+            //Bad request = 400
+            return res.status(400).json({
+                "status": "error",
+                "data": "Email already exists"
+            });
+        }
+        res.status().json({
             "status": "error",
             "data": err
         });
@@ -68,7 +76,7 @@ exports.login = async(req, res, next) => {
 
             "email": user.email,
             "tokens": {
-                "access_token": jwt.sign({ uuid: user.uuid, role: user.role }, privateKey, { algorithm: 'RS256' })
+                "access_token": jwt.sign({ uuid: user.uuid, role: user.role }, secretKey, { algorithm: 'HS256' })
 
             },
         }
@@ -87,7 +95,7 @@ exports.protect = async(req, res, next) => {
         });
     }
 
-    const decoded = jwt.verify(token, privateKey, { algorithms: ['RS256'] });
+    const decoded = jwt.verify(token, secretKey, { algorithms: ['HS256'] });
     // console.log(decoded);
     const freshUser = await Auth.findOne({
         uuid: decoded.uuid
@@ -128,7 +136,7 @@ exports.verifyToken = async(req, res, next) => {
         if (typeof bearerHeader !== 'undefined') {
             const bearer = bearerHeader.split(' ');
             const bearerToken = bearer[1];
-            jwt.verify(bearerToken, privateKey, { algorithms: ['RS256'] }, (err, authData) => {
+            jwt.verify(bearerToken, secretKey, { algorithms: ['HS256'] }, (err, authData) => {
                 if (err) {
                     return next(new AppError(err, 403));
                 } else {

@@ -5,3 +5,5 @@ complete-node-bootcamp
 
 private.pem
 public.pem
+.env
+*.key

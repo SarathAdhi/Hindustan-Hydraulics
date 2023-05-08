@@ -16,6 +16,7 @@ exports.updateOrderDocument = (purchase_order_no, body) => {
             })
     })
 }
+
 exports.createOrder = catchAsync(async(req, res, next) => {
 
     const store = [{
@@ -46,7 +47,7 @@ exports.createOrder = catchAsync(async(req, res, next) => {
             "data": order
         });
     }).catch((err) => {
-        return next(new AppError(err.message, 400));
+        return next(new AppError(err, 400));
         res.status(400).json({
             "status": "error",
             "data": err
