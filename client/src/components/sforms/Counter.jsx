@@ -1,8 +1,31 @@
 import Sidebar from "../../components/sidebar/Sidebar"
 import Navbar from "../../components/navbar/Navbar"
 import {Link} from "react-router-dom"
+//import Axios from "axios"
+//import { useEffect,useState } from "react"
+//import testingdata from "./testing.json"
 import "./counter.scss"
 
+/*const ponos = [
+  "Random stuff 1",
+  "Random stuff 2",
+  "Random stuff 3",
+  "Random stuff 4"
+];
+//const usepurcorder = () => { 
+  const [PurcOrder,setPurcOrder] = useState("")
+  const fetchPONO = () => {
+    Axios.get("./testing.json").then((res)=>{
+      setPurcOrder(res.data.pono)
+    })
+  }
+  useEffect(()=>{
+    PurcOrder = fetchPONO()
+  }, [])
+  //const poNo = PurcOrder.map(item => (<option key={item} value={item}>{item}</option>));
+  //return poNo;
+//}
+*/
 const Counter = () => {
   return (
     <div className="counter">
@@ -29,6 +52,14 @@ const Counter = () => {
           
           <div className="main-box">
             <form>
+            
+            <div className="PONO">
+                  <h4 className="form-titles">Select PO No.</h4>
+                    <select name="store" id="dropdown">
+                      <option value="default" selected>Select an Option</option>
+                      {PurcOrder}
+                    </select>
+            </div>
 
             <div className="COUNTER">
               <h4 className="form-titles">Counter No.</h4>

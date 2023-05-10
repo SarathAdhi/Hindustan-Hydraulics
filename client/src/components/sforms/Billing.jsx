@@ -3,6 +3,17 @@ import Navbar from "../../components/navbar/Navbar"
 import {Link} from "react-router-dom"
 import "./billing.scss"
 
+const purcorder = () => {
+  const ponos = [
+    "Random stuff 1",
+    "Random stuff 2",
+    "Random stuff 3",
+    "Random stuff 4"
+  ];
+  const pono = ponos.map(item => (<option key={item} value={item}>{item}</option>));
+  return pono;
+}
+
 const Billing = () => {
   return (
     <div className="billing">
@@ -28,8 +39,15 @@ const Billing = () => {
 	        </div>
           
           <div className="main-box">
-            
-            <div className="BILLING">
+
+            <form>
+              <div className="PONO">
+                  <h4 className="form-titles">Select PO No.</h4>
+                    <select name="store" id="dropdown">
+                      <option value="default" selected>Select an Option</option>
+                      {purcorder()}
+                    </select>
+              </div>
                 <div className="ORDERSTATUS">
                   <h4 className="form-titles">Order Status</h4>
                     <select name="store" id="dropdown">
@@ -76,7 +94,7 @@ const Billing = () => {
                     Submit
                   </button>
                 </div>
-          </div>
+          </form>
      </div>
     </div>
   </div>
