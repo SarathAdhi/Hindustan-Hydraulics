@@ -1,0 +1,116 @@
+{
+    "status": "success",
+    "total": 3,
+    "data": [{
+            "_id": "63ad6c47bce7b98091da6037",
+            "s_no": 1,
+            "date": "2022-12-14T00:00:00.000Z",
+            "purchase_order_no": "HH01",
+            "customer_name": "Zuva Corp",
+            "store": [{
+                    "store_name": "smc",
+                    "supply": "none"
+                },
+                {
+                    "store_name": "general",
+                    "supply": "none"
+                },
+                {
+                    "store_name": "instrumentation",
+                    "supply": "none"
+                },
+                {
+                    "store_name": "hydraulics",
+                    "supply": "none"
+                },
+                {
+                    "store_name": "hose",
+                    "supply": "none"
+                }
+            ],
+            "counter_no": null,
+            "ready": false,
+            "ready_to_bill": false,
+            "bill_ready": false,
+            "bill_no": null,
+            "routing": "none",
+            "security_out": false,
+            "reg_no": null,
+            "__v": 0
+        },
+        {
+            "_id": "63ad6c51bce7b98091da603b",
+            "s_no": 2,
+            "date": "2022-12-14T00:00:00.000Z",
+            "purchase_order_no": "HH02",
+            "customer_name": "Meta",
+            "store": [{
+                    "store_name": "smc",
+                    "supply": "none"
+                },
+                {
+                    "store_name": "general",
+                    "supply": "none"
+                },
+                {
+                    "store_name": "instrumentation",
+                    "supply": "none"
+                },
+                {
+                    "store_name": "hydraulics",
+                    "supply": "none"
+                },
+                {
+                    "store_name": "hose",
+                    "supply": "none"
+                }
+            ],
+            "counter_no": null,
+            "ready": false,
+            "ready_to_bill": false,
+            "bill_ready": false,
+            "bill_no": null,
+            "routing": "none",
+            "security_out": false,
+            "reg_no": null,
+            "__v": 0
+        },
+        {
+            "_id": "63ad6c67bce7b98091da603f",
+            "s_no": 3,
+            "date": "2022-12-14T00:00:00.000Z",
+            "purchase_order_no": "HH03",
+            "customer_name": "Texas Instruments",
+            "store": [{
+                    "store_name": "smc",
+                    "supply": "none"
+                },
+                {
+                    "store_name": "general",
+                    "supply": "none"
+                },
+                {
+                    "store_name": "instrumentation",
+                    "supply": "none"
+                },
+                {
+                    "store_name": "hydraulics",
+                    "supply": "none"
+                },
+                {
+                    "store_name": "hose",
+                    "supply": "none"
+                }
+            ],
+            "counter_no": null,
+            "ready": false,
+            "ready_to_bill": false,
+            "bill_ready": false,
+            "bill_no": null,
+            "routing": "none",
+            "security_out": false,
+            "reg_no": null,
+            "__v": 0
+        }
+    ]
+}

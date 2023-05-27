@@ -1,0 +1,43 @@
+{
+    "status": "success",
+    "data": {
+        "s_no": 1,
+        "inward_doc_no": "CEW/252",
+        "supplier_name": "Zuva Inc",
+        "store": [{
+                "store_name": "smc",
+                "received": false
+            },
+            {
+                "store_name": "general",
+                "received": false
+            },
+            {
+                "store_name": "instrumentation",
+                "received": false
+            },
+            {
+                "store_name": "hydraulics",
+                "received": false
+            },
+            {
+                "store_name": "hose",
+                "received": false
+            },
+            {
+                "store_name": "tc_counter",
+                "received": false
+            },
+            {
+                "store_name": "lc_counter",
+                "received": false
+            }
+        ],
+        "materials_received": false,
+        "security_inward": false,
+        "inward_reg_no": null,
+        "_id": "63ad6d800ad80bb341d487de",
+        "date": "2022-12-29T10:35:44.837Z",
+        "__v": 0
+    }
+}
