@@ -7,7 +7,6 @@ const router = express.Router();
 mongoose.set('strictQuery', true);
 
 require('dotenv').config()
-// console.log(process.env);
 
 //Controllers
 const authController = require('./supply/controllers/auth');
