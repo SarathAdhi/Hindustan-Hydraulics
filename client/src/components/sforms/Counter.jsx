@@ -57,7 +57,7 @@ const Counter = () => {
                   <h4 className="form-titles">Select PO No.</h4>
                     <select name="store" id="dropdown">
                       <option value="default" selected>Select an Option</option>
-                      {PurcOrder}
+                      {/* {PurcOrder} */}
                     </select>
             </div>
 
