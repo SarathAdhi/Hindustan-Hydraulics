@@ -30,7 +30,7 @@ exports.signup = async(req, res, next) => {
             "data": {
                 "email": result.email,
                 "tokens": {
-                    "access_token": jwt.sign({ uuid: result.uuid, role: role }, secretKey, { algorithm: JWT_ALGORITHM }),
+                    "access_token": jwt.sign({ uuid: result.uuid, role: role }, secretKey, { algorithm: JWT_ALGORITHM, expiresIn: config.jwt.expiresIn }),
                 }
             }
         });
@@ -79,7 +79,7 @@ exports.login = async(req, res, next) => {
 
             "email": user.email,
             "tokens": {
-                "access_token": jwt.sign({ uuid: user.uuid, role: user.role }, secretKey , { algorithm: JWT_ALGORITHM }),
+                "access_token": jwt.sign({ uuid: user.uuid, role: user.role }, secretKey , { algorithm: JWT_ALGORITHM,expiresIn: config.jwt.expiresIn }),
 
             },
         }

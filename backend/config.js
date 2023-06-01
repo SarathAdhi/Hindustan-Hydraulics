@@ -4,6 +4,7 @@ module.exports = {
       privateKey: 'private.pem', // Path to the private key file
       secretKey : 'secret.key', // Path to the
       algorithm: 'HS256', // Algorithm used to sign the token
+        expiresIn: '1d', // Token lifetime
       issuer: 'Backend Auth System', // Issuer of the token
       audience: 'Frontend-web' // Audience the token is intended for
     }
