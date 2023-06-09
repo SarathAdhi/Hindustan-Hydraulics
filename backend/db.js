@@ -20,6 +20,7 @@ function mongoURL(options) {
 
 const connectDB = async() => {
     try {
+        console.log(url)
         await mongoose.connect(
             url, {
                 useNewUrlParser: true,
