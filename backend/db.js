@@ -13,7 +13,7 @@ function mongoURL(options) {
         if (options.password && options.username) URL += options.username + ':' + options.password + '@';
         URL += (options.host || 'localhost') + ':';
         URL += (options.port || '27017') + '/';
-        URL += (options.database || 'admin');
+        URL += (options.database || 'hindustan');
         URL += '?authSource=admin';
         return URL;
 }

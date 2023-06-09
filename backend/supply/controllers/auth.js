@@ -2,8 +2,11 @@ const Auth = require('../schema/auth');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
-// const privateKey = fs.readFileSync('private.key','utf8');
-const secretKey = fs.readFileSync('secret.key','utf8'); //HS256 algorithm is used temporarily. TODO: Change to RS256
+const config = require("../../config")
+// const privatekey = fs.readFileSync(config.jwt.privateKey);
+// const publickey = fs.readFileSync(config.jwt.publicKey);
+const secretKey = fs.readFileSync(config.jwt.secretKey);
+const JWT_ALGORITHM = config.jwt.algorithm;
 const bcrypt = require('bcryptjs');
 const AppError = require('../../utils/error');
 
@@ -27,7 +30,7 @@ exports.signup = async(req, res, next) => {
             "data": {
                 "email": result.email,
                 "tokens": {
-                    "access_token": jwt.sign({ uuid: result.uuid, role: role }, secretKey, { algorithm: 'HS256' })
+                    "access_token": jwt.sign({ uuid: result.uuid, role: role }, secretKey, { algorithm: JWT_ALGORITHM, expiresIn: config.jwt.expiresIn }),
                 }
             }
         });
@@ -40,7 +43,7 @@ exports.signup = async(req, res, next) => {
                 "data": "Email already exists"
             });
         }
-        res.status().json({
+        res.status(500).json({
             "status": "error",
             "data": err
         });
@@ -76,7 +79,7 @@ exports.login = async(req, res, next) => {
 
             "email": user.email,
             "tokens": {
-                "access_token": jwt.sign({ uuid: user.uuid, role: user.role }, secretKey, { algorithm: 'HS256' })
+                "access_token": jwt.sign({ uuid: user.uuid, role: user.role }, secretKey , { algorithm: JWT_ALGORITHM,expiresIn: config.jwt.expiresIn }),
 
             },
         }
@@ -95,7 +98,7 @@ exports.protect = async(req, res, next) => {
         });
     }
 
-    const decoded = jwt.verify(token, secretKey, { algorithms: ['HS256'] });
+    jwt.verify(token, key, { algorithms: JWT_ALGORITHM });
     // console.log(decoded);
     const freshUser = await Auth.findOne({
         uuid: decoded.uuid
@@ -136,7 +139,7 @@ exports.verifyToken = async(req, res, next) => {
         if (typeof bearerHeader !== 'undefined') {
             const bearer = bearerHeader.split(' ');
             const bearerToken = bearer[1];
-            jwt.verify(bearerToken, secretKey, { algorithms: ['HS256'] }, (err, authData) => {
+            jwt.verify(bearerToken, secretKey, { algorithms: JWT_ALGORITHM}, (err, authData) => {
                 if (err) {
                     return next(new AppError(err, 403));
                 } else {
