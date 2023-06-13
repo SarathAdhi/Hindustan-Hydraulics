@@ -39,7 +39,7 @@ exports.createBill = async(req, res, next) => {
                             data: billing
                         })
                     }).catch((err) => {
-                        // next(new AppError(err, 500));
+                        next(new AppError(err, 500));
                         res.status(500).json({
                             status: 'error',
                             message: err
@@ -47,11 +47,11 @@ exports.createBill = async(req, res, next) => {
                     })
             })
             .catch((err) => {
-                // next(new AppError(err, 500));
-                res.status(500).json({
-                    status: 'error',
-                    message: err
-                })
+                next(new AppError(err, 500));
+                // res.status(500).json({
+                //     status: 'error',
+                //     message: err
+                // })
             })
     } catch (err) {
         next(new AppError(err, 500));

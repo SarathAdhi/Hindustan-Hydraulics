@@ -25,7 +25,7 @@ const billingEntryScheme = mongoose.Schema({
     order_status: {
         type: String,
         required: [true, 'Please enter a order status!'],
-        enum: ['part', 'full']
+        enum: ['part_supply', 'full_supply']
     },
     bill_no: {
         type: String,

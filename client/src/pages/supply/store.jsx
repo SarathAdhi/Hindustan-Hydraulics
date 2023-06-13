@@ -43,7 +43,7 @@ const SupplyStorePage = () => {
 
   async function handleStoreForm(values) {
     try {
-      const data = await axios.post(ApiRoutes.supply.store, values);
+      const data = await axios.put(ApiRoutes.supply.store, values);
 
       console.log({ data });
     } catch (error) {

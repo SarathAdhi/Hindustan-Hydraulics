@@ -3,12 +3,18 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const { WebClient } = require('@slack/web-api');
+
+
 
 const router = express.Router();
 // const publish = require('./lib/RabbitMq.class');
 mongoose.set('strictQuery', true);
 
 require('dotenv').config()
+
+const slackClient = new WebClient(process.env.SLACK_BOT_TOKEN);
+
 
 //Controllers
 const authController = require('./supply/controllers/auth');
@@ -98,6 +104,16 @@ app.use(function(req, res, next) {
 
 app.use((err, req, res, next) => {
     console.log(err);
+    slackClient.chat.postMessage({
+        channel: 'C05C794T08M',
+        text: {"messge":err.message,err},
+      })
+        .then((result) => {
+          console.log('Message sent successfully:', result.ts);
+        })
+        .catch((error) => {
+          console.error('Error sending message to Slack:', error);
+        });
     res.status(err.statusCode || 500).json({
         status: 'error',
         message: err.message
@@ -106,5 +122,15 @@ app.use((err, req, res, next) => {
 
 
 app.listen(3000, () => {
+    slackClient.chat.postMessage({
+        channel: 'C05C794T08M',
+        text: "Server Started",
+      })
+        .then((result) => {
+          console.log('Message sent successfully:', result.ts);
+        })
+        .catch((error) => {
+          console.error('Error sending message to Slack:', error);
+        });
     console.log('Server running on port 3000');
 });
