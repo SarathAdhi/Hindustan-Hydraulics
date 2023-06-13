@@ -2,6 +2,8 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
+const cors = require('cors');
+
 const router = express.Router();
 // const publish = require('./lib/RabbitMq.class');
 mongoose.set('strictQuery', true);
@@ -38,6 +40,7 @@ ConnectDB();
 //Configurations
 app.use(logger('dev'));
 app.use(express.json());
+app.use(cors())
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 

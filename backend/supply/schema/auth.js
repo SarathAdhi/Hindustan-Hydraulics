@@ -26,7 +26,7 @@ const AuthSchema = new mongoose.Schema({
     mobile: {
         type: Number,
         required: true,
-        unique: true,
+        // unique: true,
         // validate: [validator.isMobilePhone, 'Please enter a valid mobile phone number']
     },
     password: {
