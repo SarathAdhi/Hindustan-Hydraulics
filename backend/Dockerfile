@@ -8,3 +8,6 @@ RUN npm i nodemon -g
 # RUN openssl genrsa -out private.pem 2048
 # RUN openssl rsa -in private.pem -outform PEM -pubout -out public.pem
 COPY . .
+
+EXPOSE 3000
+CMD ["node","app.js"]

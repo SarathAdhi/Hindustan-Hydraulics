@@ -42,33 +42,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// async function main() {
-//     const rabbit = new RabbitMQ();
-//     await rabbit.connect();
-//     rabbit.subscribeMessage('supply', function() {
-//         var axios = require('axios');
-
-//         var config = {
-//             method: 'get',
-//             url: 'http://localhost:3000/supply/order/HH01',
-//             headers: {
-//                 'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYjE3YjU5YjdjNjM2NDJhYjgwY2JkYjViMDVlMGM1MDEiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzE3NDMxNzR9.db1pbENnTX8_X9j3Ihjlk5OZVSo3PRXe0b_nURGaUGeDrR4vWWpL0yfmM8jl1QlrX_EuThEsbcNmHsxWVSRc7GsbbhxyaxC2WvE2iMnyu-cLSpejGtG3ax6VVdFiAJK8BR0XvR4IjkGux7xajW7kTctAL2lrhRwLAMOBYh2ltX6XjJeTIOAOIJibvRqXJmWfQGdJkxeq25ai1QDbxkAPJi3Xai5gwxjYvi7U3C9kmhRRc5Zm00Cd3DUNk-bTY_98vLsV7fZzP87W5kkPt0OEYDFLu1j91rM796LmFDCvbGQ8zPqsPqrIw4LgCbubJHTn50PiCf7ejXVItNytn_ZPjw'
-//             }
-//         };
-
-//         axios(config)
-//             .then(function(response) {
-//                 console.log(JSON.stringify(response.data));
-//             })
-//             .catch(function(error) {
-//                 console.log(error);
-//             });
-
-//     });
-//     // console.log('Received message');
-// }
-
-// main();
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -128,6 +101,8 @@ app.use((err, req, res, next) => {
         message: err.message
     });
 })
+
+
 app.listen(3000, () => {
     console.log('Server running on port 3000');
 });

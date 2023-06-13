@@ -13,12 +13,14 @@ services:
     build: ./backend
     command: npm start
     ports:
-      - "3000:3000"
+      - "4000:3000"
   
   mongodb:
     image: mongo
     volumes:
-      - data:/data/db
-
+      - hindustan_data:/data/db
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: root
+    #   MONGO_INITDB_ROOT_PASSWORD: zuvaLabs
 volumes:
-  data:
+  hindustan_data:
