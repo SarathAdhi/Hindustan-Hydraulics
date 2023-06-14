@@ -47,7 +47,9 @@ const Sidebar = ({
 }) => {
   const { pathname } = useRouter();
 
-  const { isSidebarOpen } = useStore();
+  const { isSidebarOpen, isAdmin } = useStore();
+
+  console.log({ isAdmin });
 
   if (!isSidebarOpen) return <></>;
 
