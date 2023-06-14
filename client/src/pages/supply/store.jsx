@@ -25,6 +25,14 @@ const storeOptions = [
   "Hose",
 ].map((label) => ({ label, value: label.toLowerCase() }));
 
+const docTypeOptions = [
+  "SO No",
+  "Proforma No",
+  "DC No",
+  "UHP DC No",
+  "SAM DC No",
+].map((label) => ({ label, value: label.toLowerCase().replace(" ", "_") }));
+
 const storeStatusOptions = ["Full", "Part"].map((label) => ({
   label,
   value: label.toLowerCase().replace(" ", "_"),
@@ -38,6 +46,8 @@ const SupplyStorePage = () => {
       supply: storeStatusOptions[0].value,
       ready: false,
       ready_to_bill: false,
+      doc_no: "",
+      doc_type: docTypeOptions[0].value,
     },
   });
 
@@ -108,6 +118,34 @@ const SupplyStorePage = () => {
             placeholder="Enter the Purchase order number"
             required
           />
+
+          <Input
+            {...register("doc_no", { required: true })}
+            label="Doc number"
+            placeholder="Enter the Doc number"
+            required
+          />
+
+          <div className="w-full flex flex-col gap-2">
+            <Label className="capitalize" htmlFor="store">
+              Doc Type <span className="text-red-500">*</span>
+            </Label>
+
+            <Select
+              defaultValue={getValues("doc_type")}
+              onValueChange={(e) => setValue("doc_type", e)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select the Doc type" />
+              </SelectTrigger>
+
+              <SelectContent>
+                {docTypeOptions.map(({ label, value }) => (
+                  <SelectItem value={value}>{label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
           <Checkbox
             name="ready"
