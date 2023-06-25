@@ -3,10 +3,10 @@ const AppError = require('../../utils/error');
 const catchAsync = require('../../utils/catchAsync');
 const EventEmitter = require('../../lib/EventEmitter.class');
 
-exports.updateOrderDocument = (purchase_order_no, body) => {
+exports.updateOrderDocument = (doc_no, body) => {
     return new Promise((resolve, reject) => {
         orderModel.updateOne({
-                purchase_order_no: purchase_order_no
+                doc_no: doc_no
             }, { $set: body })
             .then((result) => {
                 resolve({ "msg": "Update Success", data: result })
@@ -71,7 +71,7 @@ exports.getOrders = (req, res, next) => {
 }
 
 exports.getOrder = (req, res, next) => {
-    orderModel.findOne({ purchase_order_no: req.params.po_no })
+    orderModel.findOne({ doc_no: req.params.doc_no })
         .then((order) => {
             res.status(200).json({
                 "status": "success",

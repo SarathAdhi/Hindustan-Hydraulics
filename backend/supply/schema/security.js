@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
 
 const securityEntrySchema = mongoose.Schema({
-    purchase_order_no: {
+    doc_no: {
         type: String,
-        required: true,
+        // required: true,
         // unique: true
+    },
+    counter_no:{
+        type: Number,
     },
     security_out: {
         type: Boolean,

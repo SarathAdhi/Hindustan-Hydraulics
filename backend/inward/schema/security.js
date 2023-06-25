@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const securityInwardEntrySchema = new mongoose.Schema({
-    inward_no: {
-        type: Number,
-        required: [true, 'Please enter an inward number!'],
+    doc_no:{
+        type: String,
+        required: [true, 'Please enter a document number!'],
         trim: true,
-        unique: true
+
     },
     security_entry: {
         type: Boolean,
@@ -16,7 +16,7 @@ const securityInwardEntrySchema = new mongoose.Schema({
         type: Number,
         required: [true, 'Please enter a registration number!'],
         trim: true,
-        // unique: true
+        unique: true
     },
     date: {
         type: Date,

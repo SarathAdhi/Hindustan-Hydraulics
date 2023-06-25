@@ -6,24 +6,42 @@ const Utils = require('../../utils/validator');
 const EventEmitter = require('../../lib/EventEmitter.class');
 
 exports.inwardSecurityEntry = catchAsync(async(req, res, next) => {
-    const { inward_no, security_entry, reg_no } = req.body;
+    const { doc_no, security_entry, reg_no } = req.body;
 
-    if (!inward_no || !security_entry || !reg_no) {
+    if (!doc_no || !security_entry || !reg_no) {
         return next(new AppError('Please provide all the required fields!', 400));
     }
 
     const inward_details = inwardModel.findOne({
-        s_no: inward_no
+        doc_no: doc_no
     });
 
     if (!inward_details) {
         return next(new AppError('Invalid Inward Number!', 400));
     }
 
+    const security_details = await securityInwardEntryModel.findOne({
+        doc_no: req.body.doc_no
+    });
+
+    console.log(security_details)
+
+    if (security_details) {
+        return next(new AppError('Security Entry already generated for this order!', 400));
+    }
+
+    const test = await securityInwardEntryModel.findOne({
+        reg_no: req.body.reg_no
+    })
+
+    if (test) {
+        return next(new AppError('Security Entry already generated for this book register number!', 400));
+    }
+
     securityInwardEntryModel.create(req.body)
         .then((entry) => {
             inwardModel.updateOne({
-                    s_no: inward_no
+                    doc_no: doc_no
                 }, {
                     $set: { security_inward: security_entry, inward_reg_no: reg_no }
                 })

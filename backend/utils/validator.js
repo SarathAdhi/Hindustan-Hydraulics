@@ -19,28 +19,36 @@ const storeSchema = mongoose.Schema({
 const storeModel = mongoose.model('check', storeSchema);
 
 const storeInwardSchema = mongoose.Schema({
-    inward_no: {
-        type: Number,
-        required: true,
-    },
-    store_name: {
+    store: {
         type: String,
-        required: true,
-        enum: ['smc', 'general', 'instrumentation', 'hydraulics', 'hose', 'tc_counter', 'lc_counter'],
+        required: [true, 'Please enter a store name!'],
+        trim: true,
+        enu: ['smc', 'general', 'instrumentation', 'hydraulics', 'hose']
+    },
+    supplier_name: {
+        type: String,
+        required: [true, 'Please enter a customer name!'],
     },
     doc_type: {
         type: String,
-        required: true,
+        required: [true, 'Please enter a document type!'],
         enum: ['bill_no', 'dc_no', 'note_no', 'uhp_dc_no', 'sam_dc_no', 'return_invoice_no', 'service_materials_no'],
+        trim: true,
     },
     doc_no: {
         type: String,
-        required: true,
+        required: [true, 'Please enter a document number!'],
+        trim: true,
+    },
+    doc_date:{
+        type: Date,
+        required: [true, 'Please enter a document date!'],
     },
     received: {
         type: Boolean,
-        required: true,
-    }
+        default: false,
+        required: [true, 'Please enter a received status!'],
+    },
 });
 
 const storeInwardModel = mongoose.model('check1', storeInwardSchema);
@@ -63,13 +71,14 @@ exports.verify_store_scheme = (store, supply) => {
     }
 }
 
-exports.verify_store_inward_scheme = (inward_no, store, doc_type, doc_no, received) => {
+exports.verify_store_inward_scheme = ( store, supplier_name, doc_type, doc_no, doc_date, received) => {
     try {
         const check = new storeInwardModel({
-            inward_no: inward_no,
-            store_name: store,
+            store: store,
+            supplier_name: supplier_name,
             doc_type: doc_type,
             doc_no: doc_no,
+            doc_date: doc_date,
             received: received
         });
         let error = check.validateSync();

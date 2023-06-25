@@ -8,13 +8,6 @@ const storeEntrySchema = new mongoose.Schema({
         trim: true,
         enu: ['smc', 'general', 'instrumentation', 'hydraulics', 'hose']
     },
-    purchase_order_no: {
-        type: String,
-        required: [true, 'Please enter a purchase order number!'],
-        trim: true,
-        // unique: true,
-        date: Date
-    },
     doc_type: {
         type: String,
         required: [true, 'Please enter a document type!'],
@@ -23,14 +16,28 @@ const storeEntrySchema = new mongoose.Schema({
         // unique: true
     },
     doc_no: {
-        type: Number,
+        type: String,
         required: [true, 'Please enter a document number!'],
         trim: true,
         // unique: true //TODO: Check if this should be unique
     },
+    doc_date:{
+        type: Date,
+        required: [true, 'Please enter a document date!'],
+
+    },
     customer_name: {
         type: String,
         required: [true, 'Please enter a customer name!'],
+    },
+    po_no: {
+        type: String,
+        required: [true, 'Please enter a P.O. number!'],
+        trim: true,
+    },
+    po_date:{
+        type: Date,
+        required: [true, 'Please enter a P.O. date!'],
     },
     supply: {
         type: String,

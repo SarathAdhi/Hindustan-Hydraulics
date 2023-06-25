@@ -7,13 +7,13 @@ const EventEmitter = require('../../lib/EventEmitter.class');
 
 exports.createBill = async(req, res, next) => {
     try {
-        const { purchase_order_no, bill_no } = req.body;
+        const { doc_no, bill_no } = req.body;
 
-        const order = await orderModel.findOne({ purchase_order_no: purchase_order_no });
+        const order = await orderModel.findOne({ doc_no });
         if (!order) {
-            return next(new AppError('Invalid Purchase Order Id!', 400));
+            return next(new AppError('Invalid doc number!', 400));
         }
-        const bill = await billingModel.findOne({ purchase_order_no: purchase_order_no });
+        const bill = await billingModel.findOne({ doc_no });
 
         if (order.bill_ready || bill) {
             return next(new AppError('Bill already generated for this order!', 400));
@@ -30,7 +30,7 @@ exports.createBill = async(req, res, next) => {
         //TODO: Implement Transaction
         billingModel.create(req.body)
             .then((billing) => {
-                orderModel.findOneAndUpdate({ purchase_order_no: purchase_order_no }, { bill_ready: true, bill_no: billing.bill_no, routing: billing.routing })
+                orderModel.findOneAndUpdate({ doc_no }, { bill_ready: true, bill_no: billing.bill_no, routing: billing.routing })
                     .then((order) => {
                         const eventEmitter = new EventEmitter();
                         eventEmitter.emit({ event: "billing" })
@@ -61,10 +61,10 @@ exports.createBill = async(req, res, next) => {
 //FIXME: Route works even if bill no is passed as purchase_order_no and vice versa
 exports.updateBill = async(req, res, next) => {
 
-    const { purchase_order_no, bill_no } = req.body;
-    const query = purchase_order_no || bill_no;
-    if (purchase_order_no) {
-        const bill = await billingModel.findOne({ purchase_order_no: purchase_order_no })
+    const { doc_no, bill_no } = req.body;
+    // const query = doc_no || bill_no;
+    if (doc_no) {
+        const bill = await billingModel.findOne({ doc_no: doc_no })
         if (!bill) {
             return next(new AppError("Bill Not Found", 400));
         }
@@ -74,17 +74,19 @@ exports.updateBill = async(req, res, next) => {
         if (!bill) {
             return next(new AppError("Invalid Bill Number", 400));
         }
+        doc_no = bill.doc_no;
     }
 
+
     billingModel.updateOne({
-            $or: [{ purchase_order_no: purchase_order_no }, { bill_no: bill_no }]
+            $or: [{ doc_no : doc_no }, { bill_no: bill_no }]
         }, {
             order_status: req.body.order_status,
             routing: req.body.routing,
             bill_ready: req.body.bill_ready,
         })
         .then((result) => {
-            updateOrderDocument(purchase_order_no, { bill_ready: req.body.bill_ready, routing: req.body.routing, order_status: req.body.order_status })
+            updateOrderDocument(doc_no, { bill_ready: req.body.bill_ready, routing: req.body.routing, order_status: req.body.order_status })
             res.status(200).json({
                 status: 'success',
                 data: result
@@ -102,14 +104,16 @@ exports.updateBill = async(req, res, next) => {
 }
 
 exports.updateBillNumber = catchAsync(async(req, res, next) => {
-    const bill = await billingModel.findOne({ purchase_order_no: purchase_order_no })
+    const { doc_no, bill_no } = req.body;
+
+    const bill = await billingModel.findOne({ doc_no })
     if (!bill) {
         return next(new AppError("Bill Not Found", 400));
     }
-    const { purchase_order_no, bill_no } = req.body;
-    billingModel.updateOne({ purchase_order_no: purchase_order_no }, { bill_no: bill_no })
+
+    billingModel.updateOne({ doc_no }, { bill_no })
         .then((result) => {
-            updateOrderDocument(purchase_order_no, { bill_no: bill_no })
+            updateOrderDocument(doc_no, {bill_no })
                 .then((result) => {
                     res.status(200).json({
                         status: 'success',
@@ -124,3 +128,36 @@ exports.updateBillNumber = catchAsync(async(req, res, next) => {
             next(new AppError(err, 500));
         })
 })
+
+exports.getBills = (req, res, next) => {
+    billingModel.find().then((bills) => {
+        res.status(200).json({
+            "status": "success",
+            "total": bills.length,
+            "data": bills
+        });
+    }).catch((err) => {
+        res.status(400).json({
+            "status": "error",
+            "data": err
+        });
+    })
+}
+
+
+exports.getBill = (req, res, next) => {
+    console.log(req.query, req.params)
+    billingModel.findOne({ $or : [{ doc_no: req.query.doc_no }, { bill_no: req.query.bill_no }]})
+        .then((bill) => {
+            res.status(200).json({
+                "status": "success",
+                "data": bill
+            })
+        })
+        .catch((err) => {
+            res.status(400).json({
+                "status": "error",
+                "data": err
+            });
+        })
+}

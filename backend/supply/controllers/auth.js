@@ -96,7 +96,6 @@ exports.protect = async(req, res, next) => {
     }
 
     const decoded = jwt.verify(token, secretKey, { algorithms: ['HS256'] });
-    // console.log(decoded);
     const freshUser = await Auth.findOne({
         uuid: decoded.uuid
     });

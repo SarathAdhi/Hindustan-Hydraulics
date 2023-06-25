@@ -1,11 +1,7 @@
 const mongoose = require('mongoose');
 
 const counterEntrySchema = mongoose.Schema({
-    purchase_order_no: {
-        type: String,
-        required: true,
-        // unique: true
-    },
+
     counter_no_type: {
         type: String,
         required: true,
@@ -17,6 +13,11 @@ const counterEntrySchema = mongoose.Schema({
         required: true,
         unique: true
     },
+    counter_no_date:{
+        type: Date,
+        required: true,
+
+    },
     customer_name: {
         type: String,
         required: true,
@@ -27,6 +28,16 @@ const counterEntrySchema = mongoose.Schema({
         required: true,
         enum: ['transport', 'travel', 'courier', 'hand_delivery', 'auto', 'from_uhp', 'from_sam']
     },
+    security_out: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    book_register_no: {
+        type: Number,
+        // required: true,
+        default: null
+    }
 
 });
 

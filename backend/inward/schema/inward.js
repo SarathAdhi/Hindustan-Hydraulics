@@ -1,17 +1,26 @@
 const mongoose = require('mongoose');
+const autoIncrement = require('mongoose-auto-increment');
+
+// Initialize auto-increment plugin
+autoIncrement.initialize(mongoose.connection);
 
 const inwardSchema = mongoose.Schema({
-    s_no: {
+    s_no:{
         type: Number,
         required: [true, 'Please enter a serial number!'],
         trim: true,
         unique: true
     },
-    inward_doc_no: {
+    doc_type: {
         type: String,
-        required: [true, 'Please enter a inward document number!'],
+        required: [true, 'Please enter a document type!'],
+        enum: ['bill_no', 'dc_no', 'note_no', 'uhp_dc_no', 'sam_dc_no', 'return_invoice_no', 'service_materials_no'],
         trim: true,
-        unique: true
+    },
+    doc_no: {
+        type: String,
+        required: [true, 'Please enter a document number!'],
+        trim: true,
     },
     date: {
         type: Date,
@@ -40,6 +49,13 @@ const inwardSchema = mongoose.Schema({
         default: null
     },
 
+});
+
+inwardSchema.plugin(autoIncrement.plugin, {
+    model: 'Inward-materials',
+    field: 's_no',
+    startAt: 1,
+    incrementBy: 1
 });
 
 module.exports = mongoose.model('Inward-materials', inwardSchema);

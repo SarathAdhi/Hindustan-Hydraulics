@@ -1,18 +1,13 @@
 const mongoose = require('mongoose');
 
 const storeInwardSchema = mongoose.Schema({
-    inward_no: {
-        type: Number,
-        required: [true, 'Please enter a inward number!'],
-        trim: true,
-    },
     store: {
         type: String,
         required: [true, 'Please enter a store name!'],
         trim: true,
         enu: ['smc', 'general', 'instrumentation', 'hydraulics', 'hose']
     },
-    customer_name: {
+    supplier_name: {
         type: String,
         required: [true, 'Please enter a customer name!'],
     },
@@ -27,15 +22,15 @@ const storeInwardSchema = mongoose.Schema({
         required: [true, 'Please enter a document number!'],
         trim: true,
     },
+    doc_date:{
+        type: Date,
+        required: [true, 'Please enter a document date!'],
+    },
     received: {
         type: Boolean,
         default: false,
         required: [true, 'Please enter a received status!'],
     },
-    date: {
-        type: Date,
-        default: Date.now
-    }
 });
 
 module.exports = mongoose.model('Inward-Store', storeInwardSchema);

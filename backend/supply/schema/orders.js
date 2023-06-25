@@ -1,4 +1,8 @@
 const mongoose = require('mongoose');
+const autoIncrement = require('mongoose-auto-increment');
+
+// Initialize auto-increment plugin
+autoIncrement.initialize(mongoose.connection);
 
 
 
@@ -38,26 +42,20 @@ const orderSchema = mongoose.Schema({
         unique: true
     },
     //TODO: Check if order Schema needs DOC NO
-    // doc_type: {
-    //     type: String,
-    //     required: [true, 'Please enter a document type!'],
-    //     enum: ['so_no', 'proforma_no', 'dc_no', 'uhp_dc_no', 'sam_dc_no'],
-    //     trim: true
-    // },
-    // doc_no: {
-    //     type: Number,
-    //     required: [true, 'Please enter a document number!'],
-    //     trim: true,
-    // unique: true //TODO: Check if this should be unique
-    // },
+    doc_type: {
+        type: String,
+        required: [true, 'Please enter a document type!'],
+        enum: ['so_no', 'proforma_no', 'dc_no', 'uhp_dc_no', 'sam_dc_no'],
+        trim: true
+    },
+    doc_no: {
+        type: String,
+        required: [true, 'Please enter a document number!'],
+        trim: true,
+    unique: true //TODO: Check if this should be unique
+    },
     date: {
         type: Date,
-    },
-    purchase_order_no: {
-        type: String,
-        required: [true, 'Please enter a purchase order number!'],
-        trim: true,
-        unique: true
     },
     customer_name: {
         type: String,
@@ -69,10 +67,6 @@ const orderSchema = mongoose.Schema({
         default: () => ({}),
         required: true
     },
-    counter_no: {
-        type: Number,
-        default: null
-    },
     ready: {
         type: Boolean,
         default: false
@@ -80,6 +74,10 @@ const orderSchema = mongoose.Schema({
     ready_to_bill: {
         type: Boolean,
         default: false
+    },
+    order_status :{
+        type: String,
+        enum: ['part', 'full', null],
     },
     bill_ready: {
         type: Boolean,
@@ -102,6 +100,13 @@ const orderSchema = mongoose.Schema({
         type: Number,
         default: null
     }
+
 });
 
+orderSchema.plugin(autoIncrement.plugin, {
+    model: 'supply-Order',
+    field: 's_no',
+    startAt: 1,
+    incrementBy: 1
+});
 module.exports = OrderModel = mongoose.model('supply-Order', orderSchema);

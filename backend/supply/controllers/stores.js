@@ -7,51 +7,75 @@ const EventEmitter = require('../../lib/EventEmitter.class');
 exports.entry = async(req, res, next) => {
     try {
 
-        const { store, purchase_order_no, supply } = req.body;
-        if (!store || !purchase_order_no || !supply) {
-            return next(new AppError('Please provide all the required fields!', 400));
-        }
-
-
-        const check = Utils.verify_store_scheme(req.body.store, req.body.supply);
-        if (check) {
-            return next(new AppError(check, 400));
-        }
-
-        const order = await orderModel.findOne({ purchase_order_no: purchase_order_no });
+        const order = await orderModel.findOne({ doc_no: req.body.doc_no });
+        console.log(order)
         if (!order) {
-            return next(new AppError('Invalid Purchase Order Id!', 400));
+
+            const store = [{
+                store_name: "smc",
+                supply: "none"
+            }, {
+                store_name: "general",
+                supply: "none"
+            }, {
+                store_name: "instrumentation",
+                supply: "none"
+            }, {
+                store_name: "hydraulics",
+                supply: "none"
+            }, {
+                store_name: "hose",
+                supply: "none"
+            }]
+
+            console.log("Creating new order")
+            await orderModel.create({
+                doc_type: req.body.doc_type,
+                doc_no: req.body.doc_no,
+                customer_name: req.body.customer_name,
+                store: store,
+            })
         }
 
         //TODO: Check if the materials from all stores are ready before billing
         // if (req.body.ready_to_bill) {
         // }
+        const { store } = req.body;
 
         //TODO: Implement Transaction
         storeModel.updateOne({
-            purchase_order_no: order.purchase_order_no,
             store: store,
+            doc_no : req.body.doc_no,
         }, {
             store: req.body.store,
-            purchase_order_no: order.purchase_order_no,
-            doc_type: order.doc_type,
-            doc_no: order.doc_no,
-            customer_name: order.customer_name,
+            doc_type: req.body.doc_type,
+            doc_no: req.body.doc_no,
+            doc_date: req.body.doc_date,
+            po_no: req.body.po_no,
+            po_date: req.body.po_date,
+            customer_name: req.body.customer_name,
             supply: req.body.supply,
             ready: req.body.ready,
             ready_to_bill: req.body.ready_to_bill,
         }, {
             upsert: true,
         }).then((s) => {
+            console.log(s)
             orderModel.updateOne({
-                purchase_order_no: order.purchase_order_no,
+                doc_no: req.body.doc_no,
                 store: { $elemMatch: { store_name: store } }
             }, {
                 $set: {
+                    "doc_type": req.body.doc_type,
+                    "doc_no": req.body.doc_no,
+                    "date": req.body.po_date,
+                    "customer_name": req.body.customer_name,
                     "store.$.supply": req.body.supply,
                     "ready_to_bill": req.body.ready_to_bill,
                     "ready": req.body.ready_to_bill,
                 }
+            },{
+                upsert: true
             }).then((result) => {
                 const eventEmitter = new EventEmitter();
                 eventEmitter.emit({ event: "storeEntry" })
@@ -77,10 +101,10 @@ exports.entry = async(req, res, next) => {
 exports.getSupplies = async(req, res, next) => {
     try {
         console.log(req.params)
-        if (!req.params.po_no) {
-            return next(new AppError('Please provide purchase order number', 400));
+        if (!req.params.doc_no) {
+            return next(new AppError('Please provide Doc number', 400));
         }
-        storeModel.find({ purchase_order_no: req.params.po_no })
+        storeModel.find({ doc_no : req.params.doc_no })
             .then((supply) => {
                 res.status(200).json({
                     "status": "success",

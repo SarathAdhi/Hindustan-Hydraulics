@@ -4,6 +4,8 @@ const billing = require('../controllers/billing');
 const authController = require('../controllers/auth');
 
 
+router.get('/all', authController.protect, authController.restrictTo('admin'), billing.getBills);
+router.get('/', authController.protect, authController.restrictTo('admin'), billing.getBill);
 
 router.post('/generate', authController.protect, authController.restrictTo('admin'), billing.createBill);
 

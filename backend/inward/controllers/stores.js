@@ -4,43 +4,46 @@ const AppError = require('../../utils/error');
 const catchAsync = require('../../utils/catchAsync');
 const Utils = require('../../utils/validator');
 
+const {inwardEntry} = require('./inward');
+
 const EventEmitter = require('../../lib/EventEmitter.class');
 
 
 
 exports.inwardStoresEntry = catchAsync(async(req, res, next) => {
-    const { inward_no, store, received, doc_type, doc_no } = req.body;
+    const { store, received, doc_type, doc_no, doc_date, supplier_name } = req.body;
 
-    if (!inward_no || !store || !received || !doc_type || !doc_no) {
-        return next(new AppError('Please provide all the required fields!', 400));
+    if (!store || !received || !doc_type || !doc_no || !doc_date || !supplier_name) {
+        return next(new AppError('Please provide all the details!', 400));
     }
 
-    const inward_details = inwardModel.findOne({ s_no: inward_no });
+
+    const inward_details = await inwardModel.findOne({ doc_no });
     if (!inward_details) {
-        return next(new AppError('Invalid Inward Number!', 400));
+        inwardEntry(req.body);
     }
 
-    const check = Utils.verify_store_inward_scheme(inward_no, store, doc_type, doc_no, received);
+    const check = Utils.verify_store_inward_scheme(store, supplier_name, doc_type, doc_no, doc_date, received);
     if (check) {
         return next(new AppError(check, 400));
     }
 
-    storeInwardModel.updateOne({ inward_no: inward_no, store: store }, {
+    storeInwardModel.updateOne({ doc_no, store: store }, {
             store: store,
-            customer_name: req.body.customer_name,
+            supplier_name: req.body.supplier_name,
             doc_type: req.body.doc_type,
             doc_no: req.body.doc_no,
+            doc_date: req.body.doc_date,
             received: req.body.received,
-            inward_no: inward_no,
         }, { upsert: true })
         .then((s) => {
             inwardModel.updateOne({
-                    s_no: inward_no,
+                    doc_no: req.body.doc_no,
                     store: { $elemMatch: { store_name: store } }
                 }, {
                     $set: {
                         "store.$.received": req.body.received,
-                        "materials_received": req.body.materials_received,
+                        "materials_received": req.body.received,
                     }
                 })
                 .then((result) => {

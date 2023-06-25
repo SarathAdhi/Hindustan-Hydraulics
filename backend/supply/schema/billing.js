@@ -16,11 +16,17 @@ const billingEntryScheme = mongoose.Schema({
     //     type: [storeSchema],
     //     required: true
     // },
-    purchase_order_no: {
+    doc_type: {
         type: String,
-        required: [true, 'Please enter a purchase order number!'],
+        required: [true, 'Please enter a document type!'],
+        enum: ['so_no', 'proforma_no', 'dc_no', 'uhp_dc_no', 'sam_dc_no'],
+        trim: true
+    },
+    doc_no: {
+        type: String,
+        required: [true, 'Please enter a document number!'],
         trim: true,
-        unique: true
+        unique: true //TODO: Check if this should be unique
     },
     order_status: {
         type: String,
@@ -32,6 +38,10 @@ const billingEntryScheme = mongoose.Schema({
         required: [true, 'Please enter a bill number!'],
         trim: true,
         unique: true
+    },
+    bill_date:{
+        type: Date,
+        required: [true, 'Please enter a bill date!'],
     },
     routing: {
         type: String,
@@ -50,10 +60,10 @@ const billingEntryScheme = mongoose.Schema({
         },
         // required: [true, 'Please enter a auto generated number!'],
     },
-    billed_at: {
-        type: Date,
-        default: Date.now
-    }
+    // billed_at: {
+    //     type: Date,
+    //     default: Date.now
+    // }
 });
 
 module.exports = mongoose.model('Supply-Billing', billingEntryScheme);
