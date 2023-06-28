@@ -13,7 +13,7 @@ exports.inwardSecurityEntry = catchAsync(async(req, res, next) => {
     }
 
     const inward_details = inwardModel.findOne({
-        doc_no: doc_no
+        doc_no: req.body.doc_no
     });
 
     if (!inward_details) {
