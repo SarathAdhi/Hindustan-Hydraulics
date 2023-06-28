@@ -12,19 +12,18 @@ exports.inwardSecurityEntry = catchAsync(async(req, res, next) => {
         return next(new AppError('Please provide all the required fields!', 400));
     }
 
-    const inward_details = inwardModel.findOne({
+    const inward_details = await inwardModel.findOne({
         doc_no: req.body.doc_no
     });
 
+    
     if (!inward_details) {
-        return next(new AppError('Invalid Inward Number!', 400));
+        return next(new AppError('Invalid Inward Doc Number!', 400));
     }
 
     const security_details = await securityInwardEntryModel.findOne({
         doc_no: req.body.doc_no
     });
-
-    console.log(security_details)
 
     if (security_details) {
         return next(new AppError('Security Entry already generated for this order!', 400));

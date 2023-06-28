@@ -36,6 +36,7 @@ exports.createBill = async(req, res, next) => {
                         eventEmitter.emit({ event: "billing" })
                         res.status(200).json({
                             status: 'success',
+                            message: 'Bill generated successfully',
                             data: billing
                         })
                     }).catch((err) => {
@@ -160,4 +161,15 @@ exports.getBill = (req, res, next) => {
                 "data": err
             });
         })
+}
+
+exports.getReadyToBillDocs = async(req,res,next) => {
+
+    const docs = await orderModel.find({ ready_to_bill: true })
+    res.status(200).json({
+        status: 'success',
+        message: 'Ready to bill docs',
+        count : docs.length,
+        data: docs
+    })
 }

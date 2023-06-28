@@ -81,6 +81,7 @@ exports.entry = async(req, res, next) => {
                 eventEmitter.emit({ event: "storeEntry" })
                 res.status(201).json({
                     "status": "success",
+                    "message": "Store Entry created successfully!",
                     "data": result
                 });
             }).catch((err) => {
@@ -90,7 +91,7 @@ exports.entry = async(req, res, next) => {
         }).catch((err) => {
             res.status(400).json({
                 "status": "error",
-                "data": err
+                "message": err
             });
         })
     } catch (err) {
@@ -108,6 +109,7 @@ exports.getSupplies = async(req, res, next) => {
             .then((supply) => {
                 res.status(200).json({
                     "status": "success",
+                    // "message": 
                     "data": supply
                 })
 
