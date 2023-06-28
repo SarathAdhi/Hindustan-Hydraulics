@@ -1,154 +1,169 @@
-const Auth = require('../schema/auth');
-const jwt = require('jsonwebtoken');
-const { v4: uuidv4 } = require('uuid');
-const fs = require('fs');
+const Auth = require("../schema/auth");
+const jwt = require("jsonwebtoken");
+const { v4: uuidv4 } = require("uuid");
+const fs = require("fs");
 // const privateKey = fs.readFileSync('private.key','utf8');
-const secretKey = fs.readFileSync('secret.key','utf8'); //HS256 algorithm is used temporarily. TODO: Change to RS256
-const bcrypt = require('bcryptjs');
-const AppError = require('../../utils/error');
+const secretKey = fs.readFileSync("secret.key", "utf8"); //HS256 algorithm is used temporarily. TODO: Change to RS256
+const bcrypt = require("bcryptjs");
+const AppError = require("../../utils/error");
 
-
-exports.signup = async(req, res, next) => {
-    // console.log(req.body.last_name);
-    const role = 'user';
-    const auth = new Auth({
-        uuid: uuidv4().replace(/-/gi, ""),
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-        email: req.body.email,
-        mobile: req.body.mobile,
-        password: req.body.password,
-        role: role,
+exports.signup = async (req, res, next) => {
+  // console.log(req.body.last_name);
+  const role = "user";
+  const auth = new Auth({
+    uuid: uuidv4().replace(/-/gi, ""),
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    email: req.body.email,
+    mobile: req.body.mobile,
+    password: req.body.password,
+    role: role,
+  });
+  auth
+    .save()
+    .then((result) => {
+      // console.log(result);
+      res.status(201).json({
+        status: "success",
+        data: {
+          email: result.email,
+          tokens: {
+            access_token: jwt.sign(
+              { uuid: result.uuid, role: role },
+              secretKey,
+              { algorithm: "HS256" }
+            ),
+          },
+        },
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      if (err.code == 11000) {
+        //Bad request = 400
+        return res.status(400).json({
+          status: "error",
+          data: "Email already exists",
+        });
+      }
+      res.status().json({
+        status: "error",
+        data: err,
+      });
     });
-    auth.save().then(result => {
-        // console.log(result);
-        res.status(201).json({
-            "status": "success",
-            "data": {
-                "email": result.email,
-                "tokens": {
-                    "access_token": jwt.sign({ uuid: result.uuid, role: role }, secretKey, { algorithm: 'HS256' })
-                }
-            }
-        });
-    }).catch(err => {
-        console.log(err);
-        if(err.code==11000){
-            //Bad request = 400
-            return res.status(400).json({
-                "status": "error",
-                "data": "Email already exists"
-            });
-        }
-        res.status().json({
-            "status": "error",
-            "data": err
-        });
-    });;
 };
 
-exports.login = async(req, res, next) => {
-    // console.log(req.body);
-    const { email, password } = req.body;
-    // console.log(email, password);
-    if (!email || !password) {
-        return res.status(400).json({
-            "status": "error",
-            "data": "Please provide email and password"
-        });
-    }
-
-    const user = await Auth.findOne({
-        email: email
-    }).select('+password');
-    // await user.verifyPassword(password);
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-
-        return res.status(401).json({
-            "status": "error",
-            "data": "Invalid email or password"
-        });
-    }
-
-    res.status(200).json({
-        "status": "success",
-        "data": {
-
-            "email": user.email,
-            "tokens": {
-                "access_token": jwt.sign({ uuid: user.uuid, role: user.role }, secretKey, { algorithm: 'HS256' })
-
-            },
-        }
+exports.login = async (req, res, next) => {
+  // console.log(req.body);
+  const { email, password } = req.body;
+  // console.log(email, password);
+  if (!email || !password) {
+    return res.status(400).json({
+      status: "error",
+      data: "Please provide email and password",
     });
-}
+  }
 
-exports.protect = async(req, res, next) => {
-    let token;
-    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-        token = req.headers.authorization.split(' ')[1];
-    }
-    if (!token) {
-        return res.status(401).json({
-            "status": "error",
-            "data": "You are not logged in! Please log in to get access."
-        });
-    }
-
-    const decoded = jwt.verify(token, secretKey, { algorithms: ['HS256'] });
-    const freshUser = await Auth.findOne({
-        uuid: decoded.uuid
+  const user = await Auth.findOne({
+    email: email,
+  }).select("+password");
+  // await user.verifyPassword(password);
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    return res.status(401).json({
+      status: "error",
+      data: "Invalid email or password",
     });
-    if (!freshUser) {
-        return res.status(401).json({
-            "status": "error",
-            "data": "The user belonging to this token does no longer exist."
-        });
-    }
+  }
 
-    //TODO: Implement password changed after token issued logic
-    // if (freshUser.changedPasswordAfter(decoded.iat)) {
+  res.status(200).json({
+    status: "success",
+    data: {
+      email: user.email,
+      tokens: {
+        access_token: jwt.sign(
+          { uuid: user.uuid, role: user.role },
+          secretKey,
+          { algorithm: "HS256" }
+        ),
+      },
+    },
+  });
+};
 
-    req.user = freshUser;
-    next();
-}
+exports.protect = async (req, res, next) => {
+  let token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  }
+  if (!token) {
+    return res.status(401).json({
+      status: "error",
+      data: "You are not logged in! Please log in to get access.",
+    });
+  }
+
+  const decoded = jwt.verify(token, secretKey, { algorithms: ["HS256"] });
+  const freshUser = await Auth.findOne({
+    uuid: decoded.uuid,
+  });
+  if (!freshUser) {
+    return res.status(401).json({
+      status: "error",
+      data: "The user belonging to this token does no longer exist.",
+    });
+  }
+
+  //TODO: Implement password changed after token issued logic
+  // if (freshUser.changedPasswordAfter(decoded.iat)) {
+
+  req.user = freshUser;
+  next();
+};
 
 exports.restrictTo = (...roles) => {
-    return (req, res, next) => {
-        //TODO: Implement hierarchy logic for roles
-        if (req.user.role === 'admin') {
-            return next();
-        }
-        if (!roles.includes(req.user.role)) {
-            return res.status(403).json({
-                "status": "error",
-                "data": "You do not have permission to perform this action"
-            });
-        }
-        next();
+  return (req, res, next) => {
+    //TODO: Implement hierarchy logic for roles
+    if (req.user.role === "admin") {
+      return next();
     }
-}
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({
+        status: "error",
+        data: "You do not have permission to perform this action",
+      });
+    }
+    next();
+  };
+};
 
-exports.verifyToken = async(req, res, next) => {
-    try {
-        const bearerHeader = req.headers['authorization'];
-        if (typeof bearerHeader !== 'undefined') {
-            const bearer = bearerHeader.split(' ');
-            const bearerToken = bearer[1];
-            jwt.verify(bearerToken, secretKey, { algorithms: ['HS256'] }, (err, authData) => {
-                if (err) {
-                    return next(new AppError(err, 403));
-                } else {
-                    res.status(200).json({
-                        "status": "success",
-                        "data": { authData }
-                    });
-                }
+exports.verifyToken = async (req, res, next) => {
+  try {
+    const bearerHeader = req.headers["authorization"];
+    if (typeof bearerHeader !== "undefined") {
+      const bearer = bearerHeader.split(" ");
+      const bearerToken = bearer[1];
+      jwt.verify(
+        bearerToken,
+        secretKey,
+        { algorithms: ["HS256"] },
+        (err, authData) => {
+          if (err) {
+            return next(new AppError(err, 403));
+          } else {
+            res.status(200).json({
+              status: "success",
+              data: { authData },
             });
-        } else {
-            res.sendStatus(403);
+          }
         }
-    } catch (error) {
-        return next(new AppError(error, 403));
+      );
+    } else {
+      res.sendStatus(403);
     }
-}
+  } catch (error) {
+    return next(new AppError(error, 403));
+  }
+};
