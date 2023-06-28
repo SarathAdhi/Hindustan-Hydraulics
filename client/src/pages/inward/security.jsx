@@ -54,7 +54,7 @@ const InwardSecurityPage = () => {
             name="security_entry"
             defaultChecked={getValues("security_entry")}
             onCheckedChange={(e) => setValue("security_entry", e)}
-            label="Security Inward"
+            label="Security Entry"
           />
 
           <Button type="submit">Submit</Button>

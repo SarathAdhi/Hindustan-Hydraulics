@@ -10,15 +10,16 @@ export const useStore = create((set) => ({
     })),
 
   isAuth: false,
+  isAdmin: false,
   getProfile: async () => {
     try {
       const res = await axios.post("/auth/verify");
       console.log({ res });
 
-      set({ isAuth: true });
+      set({ isAuth: true, isAdmin: res.authData.role === "admin" });
     } catch (error) {
       deleteCookie("token");
-      set({ isAuth: false });
+      set({ isAuth: false, isAdmin: false });
     }
   },
   logout: () => {
