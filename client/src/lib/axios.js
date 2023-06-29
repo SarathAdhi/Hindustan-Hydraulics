@@ -14,6 +14,8 @@ axios.interceptors.response.use(
   (error) => {
     if (error.response?.data?.data) {
       toast.error(error.response.data.data);
+    } else if (error.response?.data?.message) {
+      toast.error(error.response.data.message);
     }
 
     return Promise.reject(error.response?.data);
