@@ -20,13 +20,15 @@ const PageLayout = ({
       {noLayout ? (
         children
       ) : (
-        <main className="flex">
+        <main className="flex items-start">
           {!showBasicLayout && <Sidebar />}
 
           <div className="w-full min-h-screen flex flex-col">
             <Topbar showBasicLayout={showBasicLayout} />
 
-            <section className={cn("pd flex-1", className)}>{children}</section>
+            <section className={cn("pd h-full flex-1", className)}>
+              {children}
+            </section>
           </div>
         </main>
       )}

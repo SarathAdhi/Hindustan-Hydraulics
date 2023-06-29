@@ -15,7 +15,7 @@ const Topbar = ({ showBasicLayout }) => {
   const { isAuth, logout, isSidebarOpen, toggleSidebar } = useStore();
 
   return (
-    <header className="w-full pd flex items-center justify-between border-b bg-white">
+    <header className="sticky top-0 w-full p-2 flex items-center justify-between border-b bg-white">
       {showBasicLayout ? (
         <Image
           width={300}
@@ -44,8 +44,14 @@ const Topbar = ({ showBasicLayout }) => {
       <div className="flex gap-2">
         {isAuth && (
           <>
-            <Button variant="destructive" onClick={logout}>
+            <Button
+              variant="destructive"
+              onClick={logout}
+              className="space-x-1"
+            >
               <LogOut size={18} />
+
+              <span>Logout</span>
             </Button>
           </>
         )}
