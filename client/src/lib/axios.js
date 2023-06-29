@@ -10,10 +10,18 @@ const axios = Axios.create({
 });
 
 axios.interceptors.response.use(
-  (response) => response.data.data,
+  (response) => {
+    if (response.data.message) {
+      toast.success(response.data.message);
+    }
+
+    return response.data.data;
+  },
   (error) => {
     if (error.response?.data?.data) {
       toast.error(error.response.data.data);
+    } else if (error.response?.data?.message) {
+      toast.error(error.response.data.message);
     }
 
     return Promise.reject(error.response?.data);
