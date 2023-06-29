@@ -92,10 +92,14 @@ const SupplyBillingPage = () => {
           <Checkbox
             checked={docInfo?.doc_no === doc_no}
             onCheckedChange={(value) => {
-              setDocInfo({
-                doc_no,
-                doc_type,
-              });
+              setDocInfo(
+                value
+                  ? {
+                      doc_no,
+                      doc_type,
+                    }
+                  : null
+              );
 
               table.resetRowSelection();
 
