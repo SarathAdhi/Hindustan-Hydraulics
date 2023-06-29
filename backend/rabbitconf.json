@@ -1,11 +1,11 @@
 {
-    "protocol": "amqp",
-    "hostname": "lab.zuvatech.com",
-    "port": 5672,
-    "username": "root",
-    "password": "zuvaLabs",
-    "locale": "en_US",
-    "frameMax": 0,
-    "heartbeat": 0,
-    "vhost": "/"
+  "protocol": "amqp",
+  "hostname": "lab.zuvatech.com",
+  "port": 5672,
+  "username": "root",
+  "password": "zuvaLabs",
+  "locale": "en_US",
+  "frameMax": 0,
+  "heartbeat": 0,
+  "vhost": "/"
 }

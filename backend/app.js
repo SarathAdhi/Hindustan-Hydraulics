@@ -9,7 +9,7 @@ const { WebClient } = require('@slack/web-api');
 
 const router = express.Router();
 // const publish = require('./lib/RabbitMq.class');
-mongoose.set('strictQuery', true);
+mongoose.set("strictQuery", true);
 
 require('dotenv').config()
 
@@ -17,75 +17,77 @@ const slackClient = new WebClient(process.env.SLACK_BOT_TOKEN);
 
 
 //Controllers
-const authController = require('./supply/controllers/auth');
-
+const authController = require("./supply/controllers/auth");
 
 //Routers
 
 //Supply
-const AuthRouter = require('./supply/routes/auth');
-const OrderRouter = require('./supply/routes/orders');
-const StoreRouter = require('./supply/routes/stores');
-const BillingRouter = require('./supply/routes/billing');
-const CounterRouter = require('./supply/routes/counter')
-const SecurityRouter = require('./supply/routes/security');
+const AuthRouter = require("./supply/routes/auth");
+const OrderRouter = require("./supply/routes/orders");
+const StoreRouter = require("./supply/routes/stores");
+const BillingRouter = require("./supply/routes/billing");
+const CounterRouter = require("./supply/routes/counter");
+const SecurityRouter = require("./supply/routes/security");
 
 //Inward
-const InwardRouter = require('./inward/routes/inward');
-const StoreInwardRouter = require('./inward/routes/stores');
-const SecurityInwardRouter = require('./inward/routes/security');
+const InwardRouter = require("./inward/routes/inward");
+const StoreInwardRouter = require("./inward/routes/stores");
+const SecurityInwardRouter = require("./inward/routes/security");
 
 //Utils
-const AppError = require('./utils/error');
-
+const AppError = require("./utils/error");
 
 const app = express();
-const ConnectDB = require('./db');
+const ConnectDB = require("./db");
 ConnectDB();
 
 //Configurations
-app.use(logger('dev'));
+app.use(logger("dev"));
 app.use(express.json());
 app.use(cors())
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
 });
 
 //Routes
 
 //Supply
-app.use('/auth', AuthRouter);
-app.use('/supply/order', OrderRouter);
-app.use('/supply/store', StoreRouter);
-app.use('/supply/bill', BillingRouter);
-app.use('/supply/counter', CounterRouter);
-app.use('/supply/security', SecurityRouter);
+app.use("/auth", AuthRouter);
+app.use("/supply/order", OrderRouter);
+app.use("/supply/store", StoreRouter);
+app.use("/supply/bill", BillingRouter);
+app.use("/supply/counter", CounterRouter);
+app.use("/supply/security", SecurityRouter);
 
 //Inward
-app.use('/inward', InwardRouter);
-app.use('/inward/store', StoreInwardRouter);
-app.use('/inward/security', SecurityInwardRouter);
+app.use("/inward", InwardRouter);
+app.use("/inward/store", StoreInwardRouter);
+app.use("/inward/security", SecurityInwardRouter);
 
-
-app.get('/', authController.protect, authController.restrictTo('user'), (req, res) => {
+app.get(
+  "/",
+  authController.protect,
+  authController.restrictTo("user"),
+  (req, res) => {
     res.json({
-        "status": "success",
-        "API": "Hindustan Web API",
-        "version": "0.1.2",
+      status: "success",
+      API: "Hindustan Web API",
+      version: "0.1.2",
     });
-});
-
+  }
+);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-    next(new AppError('Endpoint Not Found', 404));
-
+app.use(function (req, res, next) {
+  next(new AppError("Endpoint Not Found", 404));
 });
 
 // error handler
@@ -100,7 +102,6 @@ app.use(function(req, res, next) {
 // });
 
 // console.log(typeof)
-
 
 app.use((err, req, res, next) => {
     console.log(err);

@@ -1,0 +1,83 @@
+{
+    "status": "success",
+    "message": "Ready to bill docs",
+    "count": 2,
+    "data": [
+        {
+            "_id": "649c57fdf177b8a710336724",
+            "doc_type": "so_no",
+            "doc_no": "SO1",
+            "customer_name": "Zuva Labs",
+            "store": [
+                {
+                    "store_name": "smc",
+                    "supply": "full"
+                },
+                {
+                    "store_name": "general",
+                    "supply": "full"
+                },
+                {
+                    "store_name": "instrumentation",
+                    "supply": "none"
+                },
+                {
+                    "store_name": "hydraulics",
+                    "supply": "none"
+                },
+                {
+                    "store_name": "hose",
+                    "supply": "none"
+                }
+            ],
+            "ready": true,
+            "ready_to_bill": true,
+            "bill_ready": true,
+            "bill_no": "HHP/001",
+            "routing": "transport",
+            "security_out": true,
+            "reg_no": 85,
+            "s_no": 1,
+            "__v": 0,
+            "date": "2023-06-25T00:00:00.000Z"
+        },
+        {
+            "_id": "649c5acc998780e59f339803",
+            "doc_type": "so_no",
+            "doc_no": "SO2",
+            "customer_name": "Zuva Labs",
+            "store": [
+                {
+                    "store_name": "smc",
+                    "supply": "none"
+                },
+                {
+                    "store_name": "general",
+                    "supply": "full"
+                },
+                {
+                    "store_name": "instrumentation",
+                    "supply": "none"
+                },
+                {
+                    "store_name": "hydraulics",
+                    "supply": "none"
+                },
+                {
+                    "store_name": "hose",
+                    "supply": "none"
+                }
+            ],
+            "ready": true,
+            "ready_to_bill": true,
+            "bill_ready": true,
+            "bill_no": "HHP/101",
+            "routing": "transport",
+            "security_out": true,
+            "reg_no": 885,
+            "s_no": 2,
+            "__v": 0,
+            "date": "2023-06-25T00:00:00.000Z"
+        }
+    ]
+}

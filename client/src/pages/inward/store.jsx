@@ -97,7 +97,7 @@ const InwardStorePage = () => {
 
           <Input
             {...register("customer_name", { required: true })}
-            label="Customer name"
+            label="Supplier Name"
             placeholder="Enter the Customer name"
             required
           />

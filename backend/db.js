@@ -1,11 +1,10 @@
-const mongoose = require('mongoose');
-const host = process.env.DB_HOST || 'localhost';
+const mongoose = require("mongoose");
+const host = process.env.DB_HOST || "localhost";
 const port = process.env.DB_PORT || 27017;
 const username = process.env.DB_USER;
 const password = process.env.DB_PASSWORD;
 const database = process.env.DB_NAME;
-const url = mongoURL({ host, port, username, password,database });
-
+const url = mongoURL({ host, port, username, password, database });
 
 function mongoURL(options) {
         options = options || {};
@@ -18,20 +17,18 @@ function mongoURL(options) {
         return URL;
 }
 
-const connectDB = async() => {
-    try {
-        console.log(url)
-        await mongoose.connect(
-            url, {
-                useNewUrlParser: true,
-            }
-        );
+const connectDB = async () => {
+  try {
+    console.log(url);
+    await mongoose.connect(url, {
+      useNewUrlParser: true,
+    });
 
-        console.log('MongoDB is Connected...');
-    } catch (err) {
-        console.error(err.message);
-        process.exit(1);
-    }
+    console.log("MongoDB is Connected...");
+  } catch (err) {
+    console.error(err.message);
+    process.exit(1);
+  }
 };
 
 module.exports = connectDB;
