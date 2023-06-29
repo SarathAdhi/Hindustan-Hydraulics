@@ -16,20 +16,11 @@ import { withAuth } from "../../hoc/withAuth";
 import axios from "../../lib/axios";
 import { ApiRoutes } from "../../utils/api-routes";
 import SupplyNavlinks from "../../modules/supply/SupplyBillingNavlinks";
-import { docTypeOptions } from "../../utils/constants";
-import { toast } from "react-hot-toast";
-
-const storeOptions = [
-  "SMC",
-  "General",
-  "Instrumentation",
-  "Hydraulics",
-  "Hose",
-].map((label) => ({ label, value: label.toLowerCase() }));
+import { docTypeOptions, storeOptions } from "../../utils/constants";
 
 const storeStatusOptions = ["Part Supply", "Full Supply"].map((label) => ({
   label,
-  value: label.toLowerCase().replace(" ", "_"),
+  value: label.toLowerCase().split(" ")[0],
 }));
 
 const SupplyStorePage = () => {
@@ -125,7 +116,7 @@ const SupplyStorePage = () => {
           />
 
           <Input
-            {...register("purchase_order_no", { required: true })}
+            {...register("po_no", { required: true })}
             label="Purchase order number"
             placeholder="Enter the Purchase order number"
             required

@@ -15,26 +15,13 @@ import { Checkbox } from "../../components/ui/checkbox";
 import { withAuth } from "../../hoc/withAuth";
 import axios from "../../lib/axios";
 import { ApiRoutes } from "../../utils/api-routes";
-import { toast } from "react-hot-toast";
 import SupplyNavlinks from "../../modules/supply/SupplyBillingNavlinks";
-import { cn } from "../../lib/utils";
-import { docTypeOptions } from "../../utils/constants";
+import { docTypeOptions, routingOptions } from "../../utils/constants";
 import { DataTable } from "../../components/DataTable";
-
-const routingOptions = [
-  "Transport",
-  "Travel",
-  "Courier",
-  "Hand Delivery",
-  "Auto",
-  "From UHP",
-  "From SAM",
-  "Branch Office",
-].map((label) => ({ label, value: label.toLowerCase() }));
 
 const orderStatusOptions = ["Part Supplied", "Fully Supplied"].map((label) => ({
   label,
-  value: label.toLowerCase().replace(" ", "_"),
+  value: label.toLowerCase().split(" ")[0],
 }));
 
 const SupplyBillingPage = () => {
@@ -55,6 +42,13 @@ const SupplyBillingPage = () => {
     },
   });
 
+  function fetchBill() {
+    axios.get("/supply/bill/ready_to_bill").then((res) => {
+      // console.log({ res });
+      setReadyToBill(res);
+    });
+  }
+
   async function handleBillingForm(values) {
     try {
       const data = await axios.post(ApiRoutes.supply.billing, {
@@ -63,16 +57,15 @@ const SupplyBillingPage = () => {
       });
 
       console.log({ data });
+
+      fetchBill();
     } catch (error) {
       console.log({ error });
     }
   }
 
   useEffect(() => {
-    axios.get("/supply/bill/ready_to_bill").then((res) => {
-      // console.log({ res });
-      setReadyToBill(res);
-    });
+    fetchBill();
   }, []);
 
   const filteredReadyToBill = readyToBill.filter(
