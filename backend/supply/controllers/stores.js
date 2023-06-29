@@ -9,7 +9,7 @@ const catchAsync = require("../../utils/catchAsync");
 exports.entry = catchAsync(async (req, res, next) => {
   try {
     const order = await orderModel.findOne({ doc_no: req.body.doc_no });
-    console.log(order);
+    // console.log(order);
     if (!order) {
       const store = [
         {
@@ -34,43 +34,57 @@ exports.entry = catchAsync(async (req, res, next) => {
         },
       ];
 
+	  const po_no = req.body.po_no || req.body.purchaser_order_no;
+
       console.log("Creating new order");
       await orderModel.create({
         doc_type: req.body.doc_type,
         doc_no: req.body.doc_no,
         customer_name: req.body.customer_name,
         store: store,
+        po_no: po_no,
+        po_date: req.body.po_date,
       });
     }
 
-    //TODO: Check if the materials from all stores are ready before billing
-    // if (req.body.ready_to_bill) {
-    // }
+    storeModel.findOne({
+      doc_no: req.body.doc_no,
+      store: req.body.store,
+    }).then((store) => {
+      if (store) {
+        return next(new AppError("Store entry already exists for "+req.body.store+" store!", 400));
+      }
+    });
+
+    storeModel.findOne({
+      doc_no: req.body.doc_no,
+    }).then((store) => {
+      console.log("Store",store);
+      if (!store) {
+        return 0;
+      }
+      if(store.doc_type != req.body.doc_type){
+        return next(new AppError("Document type mismatch!", 400));
+      }
+    });
+
     const { store } = req.body;
 
     //TODO: Implement Transaction
     storeModel
-      .updateOne(
-        {
-          store: store,
-          doc_no: req.body.doc_no,
-        },
+      .create(
         {
           store: req.body.store,
           doc_type: req.body.doc_type,
           doc_no: req.body.doc_no,
           doc_date: req.body.doc_date,
+		  customer_name: req.body.customer_name,
           po_no: req.body.po_no,
           po_date: req.body.po_date,
-          customer_name: req.body.customer_name,
           supply: req.body.supply,
           ready: req.body.ready,
           ready_to_bill: req.body.ready_to_bill,
-        },
-        {
-          upsert: true,
-        }
-      )
+        })
       .then((s) => {
         console.log(s);
         orderModel
@@ -81,17 +95,11 @@ exports.entry = catchAsync(async (req, res, next) => {
             },
             {
               $set: {
-                doc_type: req.body.doc_type,
-                doc_no: req.body.doc_no,
-                date: req.body.po_date,
-                customer_name: req.body.customer_name,
+                doc_date: req.body.doc_date,
                 "store.$.supply": req.body.supply,
                 ready_to_bill: req.body.ready_to_bill,
                 ready: req.body.ready_to_bill,
-              },
-            },
-            {
-              upsert: true,
+              }
             }
           )
           .then((result) => {

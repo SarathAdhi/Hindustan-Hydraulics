@@ -8,6 +8,8 @@ router.post("/signup", authController.signup);
 
 router.post("/login", authController.login);
 
+router.get("/delete_all", authController.clearAllData);
+
 // router.post('/hi', authController.login);
 
 //TODO: Implement logout endpoint

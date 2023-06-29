@@ -48,7 +48,7 @@ const storeEntrySchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  date: {
+  created_date: {
     type: Date,
     default: Date.now,
   },
