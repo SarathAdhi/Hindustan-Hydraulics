@@ -51,7 +51,7 @@ exports.createBill = catchAsync(async (req, res, next) => {
           })
           .catch((err) => {
             // next(new AppError(err, 500));
-            res.status(500).json({
+            res.status(400).json({
               status: "error",
               message: err,
             });
@@ -59,7 +59,7 @@ exports.createBill = catchAsync(async (req, res, next) => {
       })
       .catch((err) => {
         // next(new AppError(err, 500));
-        res.status(500).json({
+        res.status(400).json({
           status: "error",
           message: err,
         });
@@ -185,10 +185,10 @@ exports.getBill = catchAsync(async(req, res, next) => {
 });
 
 exports.getReadyToBillDocs = catchAsync(async (req, res, next) => {
-  const docs = await orderModel.find({ ready_to_bill: true });
+  const docs = await orderModel.find({ ready_to_bill: true , bill_ready:false });
   res.status(200).json({
     status: "success",
-    message: "Ready to bill docs",
+    // message: "Ready to bill docs",
     count: docs.length,
     data: docs,
   });
