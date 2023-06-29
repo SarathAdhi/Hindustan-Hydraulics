@@ -104,6 +104,7 @@ app.use(function (req, res, next) {
 // console.log(typeof)
 
 app.use((err, req, res, next) => {
+    if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'production') {
     console.log(err);
     slackClient.chat.postMessage({
         channel: 'C05C794T08M',
@@ -115,6 +116,7 @@ app.use((err, req, res, next) => {
         .catch((error) => {
           console.error('Error sending message to Slack:', error);
         });
+      }
     res.status(err.statusCode || 500).json({
         status: 'error',
         message: err.message
@@ -123,6 +125,8 @@ app.use((err, req, res, next) => {
 
 
 app.listen(3000, () => {
+  if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'production') {
+
     slackClient.chat.postMessage({
         channel: 'C05C794T08M',
         text: "Server Started",
@@ -133,5 +137,6 @@ app.listen(3000, () => {
         .catch((error) => {
           console.error('Error sending message to Slack:', error);
         });
+      }
     console.log('Server running on port 3000');
 });

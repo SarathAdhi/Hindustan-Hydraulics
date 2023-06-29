@@ -52,7 +52,16 @@ const orderSchema = mongoose.Schema({
     trim: true,
     unique: true, //TODO: Check if this should be unique
   },
-  date: {
+  doc_date:{
+    type: Date,
+    // required: [true, "Please enter a document date!"],
+  },
+  po_no: {
+    type: String,
+    trim: true,
+    unique: true,
+  },
+  po_date: {
     type: Date,
   },
   customer_name: {

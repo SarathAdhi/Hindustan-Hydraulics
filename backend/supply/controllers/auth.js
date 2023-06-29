@@ -12,6 +12,13 @@ const JWT_ALGORITHM = config.jwt.algorithm;
 const bcrypt = require('bcryptjs');
 const AppError = require('../../utils/error');
 
+const orderModel = require("../schema/orders");
+const storeModel = require("../schema/stores");
+const billingModel = require("../schema/billing");
+const counterModel = require("../schema/counter");
+const securityModel = require("../schema/security");
+
+
 
 exports.signup = async(req, res, next) => {
     // console.log(req.body.last_name);
@@ -154,6 +161,22 @@ exports.verifyToken = catchAsync(async(req, res, next) => {
         } else {
             res.sendStatus(403);
         }
+    } catch (error) {
+        return next(new AppError(error, 403));
+    }
+})
+
+exports.clearAllData = catchAsync(async(req, res, next) => {
+    try {
+        await orderModel.deleteMany({});
+        await storeModel.deleteMany({});
+        await billingModel.deleteMany({});
+        await counterModel.deleteMany({});
+        await securityModel.deleteMany({});
+        res.status(200).json({
+            "status": "success",
+            "data": "All data deleted successfully"
+        });
     } catch (error) {
         return next(new AppError(error, 403));
     }
