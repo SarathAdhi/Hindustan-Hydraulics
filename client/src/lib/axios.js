@@ -10,7 +10,13 @@ const axios = Axios.create({
 });
 
 axios.interceptors.response.use(
-  (response) => response.data.data,
+  (response) => {
+    if (response.data.message) {
+      toast.success(response.data.message);
+    }
+
+    return response.data.data;
+  },
   (error) => {
     if (error.response?.data?.data) {
       toast.error(error.response.data.data);

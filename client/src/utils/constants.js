@@ -4,4 +4,4 @@ export const docTypeOptions = [
   "DC No",
   "UHP DC No",
   "SAM DC No",
-].map((label) => ({ label, value: label.toLowerCase().replace(" ", "_") }));
+].map((label) => ({ label, value: label.toLowerCase().replaceAll(" ", "_") }));

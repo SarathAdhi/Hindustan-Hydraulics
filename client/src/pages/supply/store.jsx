@@ -17,6 +17,7 @@ import axios from "../../lib/axios";
 import { ApiRoutes } from "../../utils/api-routes";
 import SupplyNavlinks from "../../modules/supply/SupplyBillingNavlinks";
 import { docTypeOptions } from "../../utils/constants";
+import { toast } from "react-hot-toast";
 
 const storeOptions = [
   "SMC",
@@ -49,7 +50,7 @@ const SupplyStorePage = () => {
 
   async function handleStoreForm(values) {
     try {
-      const data = await axios.post(ApiRoutes.supply.store, values);
+      const data = await axios.put(ApiRoutes.supply.store, values);
 
       console.log({ data });
     } catch (error) {
@@ -134,6 +135,13 @@ const SupplyStorePage = () => {
             type="date"
             {...register("po_date", { required: true })}
             label="Purchase order Date"
+            required
+          />
+
+          <Input
+            {...register("customer_name", { required: true })}
+            label="Customer Name"
+            placeholder="Enter the Customer Name"
             required
           />
 

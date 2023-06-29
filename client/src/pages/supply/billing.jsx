@@ -19,6 +19,7 @@ import { toast } from "react-hot-toast";
 import SupplyNavlinks from "../../modules/supply/SupplyBillingNavlinks";
 import { cn } from "../../lib/utils";
 import { docTypeOptions } from "../../utils/constants";
+import { DataTable } from "../../components/DataTable";
 
 const routingOptions = [
   "Transport",
@@ -61,8 +62,6 @@ const SupplyBillingPage = () => {
         ...docInfo,
       });
 
-      // toast.success()
-
       console.log({ data });
     } catch (error) {
       console.log({ error });
@@ -82,10 +81,56 @@ const SupplyBillingPage = () => {
       e.doc_type.toLowerCase().includes(searchFilter.toLowerCase())
   );
 
+  const columns = [
+    {
+      id: "select",
+      cell: ({ row, table }) => {
+        const doc_no = row.getValue("doc_no");
+        const doc_type = row.getValue("doc_type");
+
+        return (
+          <Checkbox
+            checked={docInfo?.doc_no === doc_no}
+            onCheckedChange={(value) => {
+              setDocInfo({
+                doc_no,
+                doc_type,
+              });
+
+              table.resetRowSelection();
+
+              row.toggleSelected(!!value);
+            }}
+            aria-label="Select row"
+          />
+        );
+      },
+    },
+    {
+      accessorKey: "s_no",
+      header: "S.NO",
+    },
+    {
+      accessorKey: "doc_no",
+      header: "DOC NO",
+    },
+    {
+      accessorKey: "doc_type",
+      header: "DOC Type",
+      cell: ({ row }) => {
+        const value = row.getValue("doc_type");
+
+        const type = docTypeOptions.find((e) => e.value === value);
+
+        return type.label;
+      },
+    },
+  ];
+
   return (
     <PageLayout className="flex flex-col items-start">
-      <div className="-mt-2 pt-2 pb-4 bg-slate-100 w-full sticky top-[57px] grid grid-cols-3 gap-4">
-        <SupplyNavlinks className="col-span-2" />
+      <div className="-mt-2 pt-2 pb-4 bg-slate-100 w-full sticky top-[57px] grid grid-cols-2 gap-4">
+        <SupplyNavlinks />
 
         <Input
           placeholder="Search..."
@@ -94,8 +139,8 @@ const SupplyBillingPage = () => {
         />
       </div>
 
-      <div className="w-full grid grid-cols-3 items-start gap-4">
-        <div className="col-span-2 sticky top-32 space-y-4">
+      <div className="w-full grid grid-cols-2 items-start gap-4">
+        <div className="sticky top-32 space-y-4">
           <form onSubmit={handleSubmit(handleBillingForm)}>
             <fieldset
               disabled={!docInfo}
@@ -117,7 +162,9 @@ const SupplyBillingPage = () => {
 
                   <SelectContent>
                     {orderStatusOptions.map(({ label, value }) => (
-                      <SelectItem value={value}>{label}</SelectItem>
+                      <SelectItem key={value} value={value}>
+                        {label}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -153,7 +200,9 @@ const SupplyBillingPage = () => {
 
                   <SelectContent>
                     {routingOptions.map(({ label, value }) => (
-                      <SelectItem value={value}>{label}</SelectItem>
+                      <SelectItem key={value} value={value}>
+                        {label}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -171,34 +220,7 @@ const SupplyBillingPage = () => {
           </form>
         </div>
 
-        <div className="flex flex-col gap-2">
-          {filteredReadyToBill?.map((e, i) => {
-            const docType = docTypeOptions.find((x) => x.value === e.doc_type);
-
-            return (
-              <button
-                key={e._id}
-                className={cn(
-                  "card w-full grid",
-                  docInfo?.doc_no === e.doc_no && "bg-green-500"
-                )}
-                onClick={() =>
-                  setDocInfo({ doc_no: e.doc_no, doc_type: e.doc_type })
-                }
-              >
-                <p className="w-full flex justify-between gap-4 text-left">
-                  <strong>Doc Number:</strong>
-                  <span>{e.doc_no}</span>
-                </p>
-
-                <p className="w-full flex justify-between gap-4 text-left">
-                  <strong>Doc Type:</strong>
-                  <span>{docType?.label}</span>
-                </p>
-              </button>
-            );
-          })}
-        </div>
+        <DataTable columns={columns} data={filteredReadyToBill} />
       </div>
     </PageLayout>
   );
