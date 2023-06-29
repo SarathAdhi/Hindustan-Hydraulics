@@ -28,11 +28,13 @@ const StoreRouter = require("./supply/routes/stores");
 const BillingRouter = require("./supply/routes/billing");
 const CounterRouter = require("./supply/routes/counter");
 const SecurityRouter = require("./supply/routes/security");
+const DashboardRouter = require("./supply/routes/dashboard");
 
 //Inward
 const InwardRouter = require("./inward/routes/inward");
 const StoreInwardRouter = require("./inward/routes/stores");
 const SecurityInwardRouter = require("./inward/routes/security");
+const InwardDashboardRouter = require("./inward/routes/dashboard");
 
 //Utils
 const AppError = require("./utils/error");
@@ -66,11 +68,13 @@ app.use("/supply/store", StoreRouter);
 app.use("/supply/bill", BillingRouter);
 app.use("/supply/counter", CounterRouter);
 app.use("/supply/security", SecurityRouter);
+app.use("/supply/dashboard", DashboardRouter);
 
 //Inward
 app.use("/inward", InwardRouter);
 app.use("/inward/store", StoreInwardRouter);
 app.use("/inward/security", SecurityInwardRouter);
+app.use("/inward/dashboard", InwardDashboardRouter);
 
 app.get(
   "/",
@@ -123,8 +127,9 @@ app.use((err, req, res, next) => {
     });
 })
 
+const port = process.env.SERVER_PORT || 3000;
 
-app.listen(3000, () => {
+app.listen(port, () => {
   if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'production') {
 
     slackClient.chat.postMessage({
@@ -138,5 +143,5 @@ app.listen(3000, () => {
           console.error('Error sending message to Slack:', error);
         });
       }
-    console.log('Server running on port 3000');
+    console.log('Server running on port ' + port);
 });
