@@ -67,7 +67,7 @@ exports.createOrder = catchAsync(async (req, res, next) => {
     });
 });
 
-exports.getOrders = (req, res, next) => {
+exports.getOrders = catchAsync(async(req, res, next) => {
   orderModel
     .find()
     .then((orders) => {
@@ -83,9 +83,9 @@ exports.getOrders = (req, res, next) => {
         data: err,
       });
     });
-};
+});
 
-exports.getOrder = (req, res, next) => {
+exports.getOrder = catchAsync(async(req, res, next) => {
   orderModel
     .findOne({ doc_no: req.params.doc_no })
     .then((order) => {
@@ -100,9 +100,9 @@ exports.getOrder = (req, res, next) => {
         data: err,
       });
     });
-};
+});
 
-exports.updateOrder = (req, res, next) => {
+exports.updateOrder = catchAsync(async(req, res, next) => {
   orderModel
     .updateOne(
       { purchase_order_no: req.body.purchase_order_no },
@@ -128,4 +128,4 @@ exports.updateOrder = (req, res, next) => {
         data: err,
       });
     });
-};
+});

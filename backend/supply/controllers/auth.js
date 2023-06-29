@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const config = require("../../config")
+const catchAsync = require("../../utils/catchAsync");
+
 // const privatekey = fs.readFileSync(config.jwt.privateKey);
 // const publickey = fs.readFileSync(config.jwt.publicKey);
 const secretKey = fs.readFileSync(config.jwt.secretKey);
@@ -86,7 +88,7 @@ exports.login = async(req, res, next) => {
     });
 }
 
-exports.protect = async(req, res, next) => {
+exports.protect = catchAsync(async(req, res, next) => {
     let token;
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         token = req.headers.authorization.split(' ')[1];
@@ -115,7 +117,7 @@ exports.protect = async(req, res, next) => {
 
     req.user = freshUser;
     next();
-}
+})
 
 exports.restrictTo = (...roles) => {
     return (req, res, next) => {
@@ -133,7 +135,7 @@ exports.restrictTo = (...roles) => {
     }
 }
 
-exports.verifyToken = async(req, res, next) => {
+exports.verifyToken = catchAsync(async(req, res, next) => {
     try {
         const bearerHeader = req.headers['authorization'];
         if (typeof bearerHeader !== 'undefined') {
@@ -155,4 +157,4 @@ exports.verifyToken = async(req, res, next) => {
     } catch (error) {
         return next(new AppError(error, 403));
     }
-}
+})

@@ -5,7 +5,7 @@ const { updateOrderDocument } = require("./orders");
 const catchAsync = require("../../utils/catchAsync");
 const EventEmitter = require("../../lib/EventEmitter.class");
 
-exports.createBill = async (req, res, next) => {
+exports.createBill = catchAsync(async (req, res, next) => {
   try {
     const { doc_no, bill_no } = req.body;
 
@@ -67,10 +67,10 @@ exports.createBill = async (req, res, next) => {
   } catch (err) {
     next(new AppError(err, 500));
   }
-};
+});
 
 //FIXME: Route works even if bill no is passed as purchase_order_no and vice versa
-exports.updateBill = async (req, res, next) => {
+exports.updateBill = catchAsync(async (req, res, next) => {
   const { doc_no, bill_no } = req.body;
   // const query = doc_no || bill_no;
   if (doc_no) {
@@ -117,7 +117,7 @@ exports.updateBill = async (req, res, next) => {
         message: err,
       });
     });
-};
+});
 
 exports.updateBillNumber = catchAsync(async (req, res, next) => {
   const { doc_no, bill_no } = req.body;
@@ -146,7 +146,7 @@ exports.updateBillNumber = catchAsync(async (req, res, next) => {
     });
 });
 
-exports.getBills = (req, res, next) => {
+exports.getBills = catchAsync(async(req, res, next) => {
   billingModel
     .find()
     .then((bills) => {
@@ -162,9 +162,9 @@ exports.getBills = (req, res, next) => {
         data: err,
       });
     });
-};
+});
 
-exports.getBill = (req, res, next) => {
+exports.getBill = catchAsync(async(req, res, next) => {
   console.log(req.query, req.params);
   billingModel
     .findOne({
@@ -182,9 +182,9 @@ exports.getBill = (req, res, next) => {
         data: err,
       });
     });
-};
+});
 
-exports.getReadyToBillDocs = async (req, res, next) => {
+exports.getReadyToBillDocs = catchAsync(async (req, res, next) => {
   const docs = await orderModel.find({ ready_to_bill: true });
   res.status(200).json({
     status: "success",
@@ -192,4 +192,4 @@ exports.getReadyToBillDocs = async (req, res, next) => {
     count: docs.length,
     data: docs,
   });
-};
+});

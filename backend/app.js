@@ -107,7 +107,7 @@ app.use((err, req, res, next) => {
     console.log(err);
     slackClient.chat.postMessage({
         channel: 'C05C794T08M',
-        text: {"messge":err.message,err},
+        text: {"messge":err.message,err,req},
       })
         .then((result) => {
           console.log('Message sent successfully:', result.ts);

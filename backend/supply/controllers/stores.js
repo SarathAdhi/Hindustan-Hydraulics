@@ -3,8 +3,9 @@ const orderModel = require("../schema/orders");
 const AppError = require("../../utils/error");
 const Utils = require("../../utils/validator");
 const EventEmitter = require("../../lib/EventEmitter.class");
+const catchAsync = require("../../utils/catchAsync");
 
-exports.entry = async (req, res, next) => {
+exports.entry = catchAsync(async (req, res, next) => {
   try {
     const order = await orderModel.findOne({ doc_no: req.body.doc_no });
     console.log(order);
@@ -114,9 +115,9 @@ exports.entry = async (req, res, next) => {
   } catch (err) {
     next(new AppError(err, 500));
   }
-};
+});
 
-exports.getSupplies = async (req, res, next) => {
+exports.getSupplies = catchAsync(async (req, res, next) => {
   try {
     console.log(req.params);
     if (!req.params.doc_no) {
@@ -140,4 +141,4 @@ exports.getSupplies = async (req, res, next) => {
   } catch (err) {
     next(new AppError(err, 500));
   }
-};
+});
