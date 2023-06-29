@@ -11,6 +11,11 @@ exports.entry = catchAsync(async (req, res, next) => {
     const order = await orderModel.findOne({ doc_no: req.body.doc_no });
     // console.log(order);
     if (!order) {
+      orderModel.findOne({po_no: req.body.po_no}).then((order) => {
+        if(order){
+          return next(new AppError("PO Number already exists!", 400));
+        }
+      })
       const store = [
         {
           store_name: "smc",
@@ -108,7 +113,7 @@ exports.entry = catchAsync(async (req, res, next) => {
             res.status(201).json({
               status: "success",
               message: "Store Entry created successfully!",
-              data: result,
+              data: s,
             });
           })
           .catch((err) => {
