@@ -33,8 +33,8 @@ export function DataTable({ columns, data }) {
 
   return (
     <div>
-      <div className="rounded-md border">
-        <Table>
+      <div className="grid !overflow-auto rounded-md border">
+        <Table className="w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -53,6 +53,7 @@ export function DataTable({ columns, data }) {
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (

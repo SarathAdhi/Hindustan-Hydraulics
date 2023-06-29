@@ -1,6 +1,5 @@
 import React from "react";
 import PageLayout from "../../layouts/PageLayout";
-import SupplyPageLayout from "../../layouts/SupplyPageLayout";
 import { useForm } from "react-hook-form";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
@@ -8,11 +7,11 @@ import { Checkbox } from "../../components/ui/checkbox";
 import { withAuth } from "../../hoc/withAuth";
 import axios from "../../lib/axios";
 import { ApiRoutes } from "../../utils/api-routes";
+import SupplyNavlinks from "../../modules/supply/SupplyBillingNavlinks";
 
 const SupplySecurityPage = () => {
   const { register, handleSubmit, setValue, getValues } = useForm({
     defaultValues: {
-      purchase_order_no: "",
       book_register_no: 0,
       security_out: false,
     },
@@ -30,13 +29,15 @@ const SupplySecurityPage = () => {
 
   return (
     <PageLayout>
-      <SupplyPageLayout className="flex flex-col">
+      <div className="mx-auto w-full max-w-[500px] flex flex-col gap-4">
+        <SupplyNavlinks />
+
         <form
           onSubmit={handleSubmit(handleSecurityForm)}
-          className="mx-auto w-full max-w-[500px] card flex flex-col items-center gap-4"
+          className="card flex flex-col items-center gap-4"
         >
           <Input
-            {...register("purchase_order_no", { required: true })}
+            {...register("po_no", { required: true })}
             label="Purchase order number"
             placeholder="Enter the Purchase order number"
             required
@@ -59,7 +60,7 @@ const SupplySecurityPage = () => {
 
           <Button type="submit">Submit</Button>
         </form>
-      </SupplyPageLayout>
+      </div>
     </PageLayout>
   );
 };

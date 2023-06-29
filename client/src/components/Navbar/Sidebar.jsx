@@ -36,7 +36,7 @@ const pages = [
         name: "Supply",
         Icon: ShoppingCart,
         parentRoute: "/supply/",
-        href: "/supply/order",
+        href: "/supply/store",
       },
     ],
   },
@@ -47,12 +47,14 @@ const Sidebar = ({
 }) => {
   const { pathname } = useRouter();
 
-  const { isSidebarOpen } = useStore();
+  const { isSidebarOpen, isAdmin } = useStore();
+
+  console.log({ isAdmin });
 
   if (!isSidebarOpen) return <></>;
 
   return (
-    <aside className={className}>
+    <aside className={cn("sticky top-0", className)}>
       <div className="pd">
         <Image
           width={300}

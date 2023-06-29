@@ -11,39 +11,19 @@ import {
   SelectValue,
 } from "../../components/ui/select";
 import { Label } from "../../components/ui/label";
-import { Checkbox } from "../../components/ui/checkbox";
-import SupplyPageLayout from "../../layouts/SupplyPageLayout";
 import { withAuth } from "../../hoc/withAuth";
 import axios from "../../lib/axios";
 import { ApiRoutes } from "../../utils/api-routes";
-
-const routingOptions = [
-  "Transport",
-  "Travel",
-  "Courier",
-  "Hand Delivery",
-  "Auto",
-  "From UHP",
-  "From SAM",
-  "Branch Office",
-].map((label) => ({ label, value: label.toLowerCase() }));
-
-const counterTypeOptions = [
-  "TC Bill No",
-  "Proforma No",
-  "DC No",
-  "TC Note No",
-  "LC Bill No",
-  "LC Note No",
-].map((label) => ({ label, value: label.toLowerCase().replace(" ", "_") }));
+import SupplyNavlinks from "../../modules/supply/SupplyBillingNavlinks";
+import { counterTypeOptions, routingOptions } from "../../utils/constants";
 
 const SupplyCounterPage = () => {
   const { register, handleSubmit, setValue, getValues } = useForm({
     defaultValues: {
-      purchase_order_no: "",
       counter_no_type: counterTypeOptions[0].value,
+      counter_no: "",
+      counter_date: 0,
       customer_name: "",
-      counter_no: 0,
       routing: routingOptions[0].value,
     },
   });
@@ -60,26 +40,13 @@ const SupplyCounterPage = () => {
 
   return (
     <PageLayout>
-      <SupplyPageLayout className="flex flex-col">
+      <div className="mx-auto w-full max-w-[500px] flex flex-col gap-4">
+        <SupplyNavlinks />
+
         <form
           onSubmit={handleSubmit(handleCounterForm)}
-          className="mx-auto w-full max-w-[500px] card flex flex-col items-center gap-4"
+          className="card flex flex-col items-center gap-4"
         >
-          <Input
-            {...register("purchase_order_no", { required: true })}
-            label="Purchase order number"
-            placeholder="Enter the Purchase order number"
-            required
-          />
-
-          <Input
-            {...register("counter_no", { required: true })}
-            type="number"
-            label="Counter number"
-            placeholder="Enter the Counter number"
-            required
-          />
-
           <div className="w-full flex flex-col gap-2">
             <Label className="capitalize" htmlFor="counter_no_type">
               Counter Type <span className="text-red-500">*</span>
@@ -100,6 +67,20 @@ const SupplyCounterPage = () => {
               </SelectContent>
             </Select>
           </div>
+
+          <Input
+            {...register("counter_no", { required: true })}
+            label="Counter number"
+            placeholder="Enter the Counter number"
+            required
+          />
+
+          <Input
+            {...register("counter_date", { required: true })}
+            type="date"
+            label="Counter Date"
+            required
+          />
 
           <Input
             {...register("customer_name", { required: true })}
@@ -131,7 +112,7 @@ const SupplyCounterPage = () => {
 
           <Button type="submit">Submit</Button>
         </form>
-      </SupplyPageLayout>
+      </div>
     </PageLayout>
   );
 };

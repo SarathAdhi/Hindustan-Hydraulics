@@ -109,3 +109,7 @@
     @apply pd w-full bg-white rounded-md border shadow-lg;
   }
 }
+
+tr[data-state="selected"] {
+  @apply !bg-green-400;
+}

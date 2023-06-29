@@ -98,30 +98,58 @@ const SupplyPage = () => {
     },
   ];
 
+  // const columns = [
+  //   {
+  //     accessorKey: "status",
+  //     header: "Status",
+  //   },
+  //   {
+  //     accessorKey: "email",
+  //     header: ({ column }) => {
+  //       return (
+  //         <Button
+  //           variant="ghost"
+  //           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //         >
+  //           Email
+  //           <ArrowUpDown className="ml-2 h-4 w-4" />
+  //         </Button>
+  //       );
+  //     },
+  //   },
+  //   {
+  //     accessorKey: "amount",
+  //     header: "Amount",
+  //   },
+  // ];
+
   const columns = [
-    {
-      accessorKey: "status",
-      header: "Status",
-    },
-    {
-      accessorKey: "email",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Email
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-    },
-    {
-      accessorKey: "amount",
-      header: "Amount",
-    },
-  ];
+    "SL.NO",
+    "DOC NO",
+    "DATE",
+    "P O NO",
+    "DATE",
+    "CUSTOMER NAME",
+    "SMC",
+    "GENERAL",
+    "INSTRUMENTATION",
+    "HYDRAULICS",
+    "HOSE",
+    "COUNTER NO",
+    "READY",
+    "READY TO BILL",
+    "BILL READY",
+    "ORDER STATUS",
+    "BILL NO",
+    "ROUTING",
+    "SECURITY OUT",
+    "REG NO",
+  ].map((header) => ({
+    accessorKey: header.toLowerCase().replace(" ", "_"),
+    header: () => (
+      <span className="text-center flex flex-col items-center">{header}</span>
+    ),
+  }));
 
   return (
     <PageLayout>
