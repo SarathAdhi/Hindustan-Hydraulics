@@ -37,7 +37,7 @@ const SupplySecurityPage = () => {
           className="card flex flex-col items-center gap-4"
         >
           <Input
-            {...register("purchase_order_no", { required: true })}
+            {...register("po_no", { required: true })}
             label="Purchase order number"
             placeholder="Enter the Purchase order number"
             required

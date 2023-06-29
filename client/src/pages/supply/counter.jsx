@@ -15,32 +15,13 @@ import { withAuth } from "../../hoc/withAuth";
 import axios from "../../lib/axios";
 import { ApiRoutes } from "../../utils/api-routes";
 import SupplyNavlinks from "../../modules/supply/SupplyBillingNavlinks";
-
-const routingOptions = [
-  "Transport",
-  "Travel",
-  "Courier",
-  "Hand Delivery",
-  "Auto",
-  "From UHP",
-  "From SAM",
-  "Branch Office",
-].map((label) => ({ label, value: label.toLowerCase() }));
-
-const counterTypeOptions = [
-  "TC Bill No",
-  "Proforma No",
-  "DC No",
-  "TC Note No",
-  "LC Bill No",
-  "LC Note No",
-].map((label) => ({ label, value: label.toLowerCase().replace(" ", "_") }));
+import { counterTypeOptions, routingOptions } from "../../utils/constants";
 
 const SupplyCounterPage = () => {
   const { register, handleSubmit, setValue, getValues } = useForm({
     defaultValues: {
       counter_no_type: counterTypeOptions[0].value,
-      counter_no: 0,
+      counter_no: "",
       counter_date: 0,
       customer_name: "",
       routing: routingOptions[0].value,
@@ -89,7 +70,6 @@ const SupplyCounterPage = () => {
 
           <Input
             {...register("counter_no", { required: true })}
-            type="number"
             label="Counter number"
             placeholder="Enter the Counter number"
             required
