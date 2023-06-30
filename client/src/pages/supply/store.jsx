@@ -16,12 +16,11 @@ import { withAuth } from "../../hoc/withAuth";
 import axios from "../../lib/axios";
 import { ApiRoutes } from "../../utils/api-routes";
 import SupplyNavlinks from "../../modules/supply/SupplyBillingNavlinks";
-import { docTypeOptions, storeOptions } from "../../utils/constants";
-
-const storeStatusOptions = ["Part Supply", "Full Supply"].map((label) => ({
-  label,
-  value: label.toLowerCase().split(" ")[0],
-}));
+import {
+  docTypeOptions,
+  storeOptions,
+  storeStatusOptions,
+} from "../../utils/constants";
 
 const SupplyStorePage = () => {
   const { register, handleSubmit, setValue, getValues } = useForm({

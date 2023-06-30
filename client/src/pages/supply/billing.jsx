@@ -16,13 +16,12 @@ import { withAuth } from "../../hoc/withAuth";
 import axios from "../../lib/axios";
 import { ApiRoutes } from "../../utils/api-routes";
 import SupplyNavlinks from "../../modules/supply/SupplyBillingNavlinks";
-import { docTypeOptions, routingOptions } from "../../utils/constants";
+import {
+  docTypeOptions,
+  orderStatusOptions,
+  routingOptions,
+} from "../../utils/constants";
 import { DataTable } from "../../components/DataTable";
-
-const orderStatusOptions = ["Part Supplied", "Fully Supplied"].map((label) => ({
-  label,
-  value: label.toLowerCase().split(" ")[0],
-}));
 
 const SupplyBillingPage = () => {
   const [readyToBill, setReadyToBill] = useState([]);
