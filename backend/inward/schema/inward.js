@@ -30,7 +30,7 @@ const inwardSchema = mongoose.Schema({
     required: [true, "Please enter a document number!"],
     trim: true,
   },
-  date: {
+  doc_date: {
     type: Date,
     default: Date.now,
   },
