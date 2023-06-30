@@ -1,159 +1,199 @@
-import { ArrowUpDown } from "lucide-react";
 import { DataTable } from "../../components/DataTable";
-import { Button } from "../../components/ui/button";
 import PageLayout from "../../layouts/PageLayout";
 import { withAuth } from "../../hoc/withAuth";
+import axios from "../../lib/axios";
+import { useEffect, useState } from "react";
+import { routingOptions, storeStatusOptions } from "../../utils/constants";
+import dayjs from "dayjs";
 
 const SupplyPage = () => {
-  const data = [
+  const [supplyData, setSupplyData] = useState([]);
+
+  const columns = [
     {
-      id: "m5gr84i9",
-      amount: 316,
-      status: "success",
-      email: "ken99@yahoo.com",
+      accessorKey: "s_no",
+      header: () => <span>S NO</span>,
     },
     {
-      id: "3u1reuv4",
-      amount: 242,
-      status: "success",
-      email: "Abe45@gmail.com",
+      accessorKey: "doc_no",
+      header: () => <span>DOC NO</span>,
     },
     {
-      id: "derv1ws0",
-      amount: 837,
-      status: "processing",
-      email: "Monserrat44@gmail.com",
+      accessorKey: "doc_date",
+      header: () => <span>DOC DATE</span>,
+      cell: ({ row }) => {
+        const value = row.getValue("doc_date");
+
+        return dayjs(value).format("DD/MM/YYYY");
+      },
     },
     {
-      id: "5kma53ae",
-      amount: 874,
-      status: "success",
-      email: "Silas22@gmail.com",
+      accessorKey: "po_no",
+      header: () => <span>P O NO</span>,
     },
     {
-      id: "bhqecj4p",
-      amount: 721,
-      status: "failed",
-      email: "carmella@hotmail.com",
+      accessorKey: "po_date",
+      header: () => <span>P O DATE</span>,
+      cell: ({ row }) => {
+        const value = row.getValue("po_date");
+
+        return dayjs(value).format("DD/MM/YYYY");
+      },
     },
     {
-      id: "m5gr84i9",
-      amount: 316,
-      status: "success",
-      email: "ken99@yahoo.com",
+      accessorKey: "customer_name",
+      header: () => <span>CUSTOMER NAME</span>,
     },
     {
-      id: "3u1reuv4",
-      amount: 242,
-      status: "success",
-      email: "Abe45@gmail.com",
+      accessorKey: "smc",
+      header: () => <span>SMC</span>,
+      cell: ({ row }) => {
+        const storesValue = row.original?.store || [];
+        const smc = storesValue.find((e) => e.store_name === "smc");
+
+        const value = storeStatusOptions.find((e) => e.value === smc.supply);
+
+        return <span>{value?.label}</span>;
+      },
     },
     {
-      id: "derv1ws0",
-      amount: 837,
-      status: "processing",
-      email: "Monserrat44@gmail.com",
+      accessorKey: "general",
+      header: () => <span>GENERAL</span>,
+      cell: ({ row }) => {
+        const storesValue = row.original?.store || [];
+        const general = storesValue.find((e) => e.store_name === "general");
+
+        const value = storeStatusOptions.find(
+          (e) => e.value === general.supply
+        );
+
+        return <span>{value?.label}</span>;
+      },
     },
     {
-      id: "5kma53ae",
-      amount: 874,
-      status: "success",
-      email: "Silas22@gmail.com",
+      accessorKey: "instrumentation",
+      header: () => <span>INSTRUMENTATION</span>,
+      cell: ({ row }) => {
+        const storesValue = row.original?.store || [];
+        const instrumentation = storesValue.find(
+          (e) => e.store_name === "instrumentation"
+        );
+
+        const value = storeStatusOptions.find(
+          (e) => e.value === instrumentation.supply
+        );
+
+        return <span>{value?.label}</span>;
+      },
     },
     {
-      id: "bhqecj4p",
-      amount: 721,
-      status: "failed",
-      email: "carmella@hotmail.com",
+      accessorKey: "hydraulics",
+      header: () => <span>HYDRAULICS</span>,
+      cell: ({ row }) => {
+        const storesValue = row.original?.store || [];
+        const hydraulics = storesValue.find(
+          (e) => e.store_name === "hydraulics"
+        );
+
+        const value = storeStatusOptions.find(
+          (e) => e.value === hydraulics.supply
+        );
+
+        return <span>{value?.label}</span>;
+      },
     },
     {
-      id: "m5gr84i9",
-      amount: 316,
-      status: "success",
-      email: "ken99@yahoo.com",
+      accessorKey: "hose",
+      header: () => <span>HOSE</span>,
+      cell: ({ row }) => {
+        const storesValue = row.original?.store || [];
+        const hose = storesValue.find((e) => e.store_name === "hose");
+
+        const value = storeStatusOptions.find((e) => e.value === hose.supply);
+
+        return <span>{value?.label}</span>;
+      },
     },
     {
-      id: "3u1reuv4",
-      amount: 242,
-      status: "success",
-      email: "Abe45@gmail.com",
+      accessorKey: "counter_no",
+      header: () => <span>COUNTER NO</span>,
     },
     {
-      id: "derv1ws0",
-      amount: 837,
-      status: "processing",
-      email: "Monserrat44@gmail.com",
+      accessorKey: "ready",
+      header: () => <span>READY</span>,
+      cell: ({ row }) => {
+        const value = row.getValue("ready");
+
+        return value ? "YES" : "NO";
+      },
     },
     {
-      id: "5kma53ae",
-      amount: 874,
-      status: "success",
-      email: "Silas22@gmail.com",
+      accessorKey: "ready_to_bill",
+      header: () => <span>READY TO BILL</span>,
+      cell: ({ row }) => {
+        const value = row.getValue("ready_to_bill");
+
+        return value ? "YES" : "NO";
+      },
     },
     {
-      id: "bhqecj4p",
-      amount: 721,
-      status: "failed",
-      email: "carmella@hotmail.com",
+      accessorKey: "bill_ready",
+      header: () => <span>BILL READY</span>,
+      cell: ({ row }) => {
+        const value = row.getValue("bill_ready");
+
+        return value ? "YES" : "NO";
+      },
+    },
+    {
+      accessorKey: "order_status",
+      header: () => <span>ORDER STATUS</span>,
+    },
+    {
+      accessorKey: "bill_no",
+      header: () => <span>BILL NO</span>,
+    },
+    {
+      accessorKey: "routing",
+      header: () => <span>ROUTING</span>,
+      cell: ({ row }) => {
+        const value = row.getValue("routing");
+
+        const type = routingOptions.find((e) => e.value === value);
+
+        return <span>{type?.label}</span>;
+      },
+    },
+    {
+      accessorKey: "security_out",
+      header: () => <span>SECURITY OUT</span>,
+      cell: ({ row }) => {
+        const value = row.getValue("security_out");
+
+        return value ? "OUT" : "";
+      },
+    },
+    {
+      accessorKey: "reg_no",
+      header: () => <span>REG NO</span>,
     },
   ];
 
-  // const columns = [
-  //   {
-  //     accessorKey: "status",
-  //     header: "Status",
-  //   },
-  //   {
-  //     accessorKey: "email",
-  //     header: ({ column }) => {
-  //       return (
-  //         <Button
-  //           variant="ghost"
-  //           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //         >
-  //           Email
-  //           <ArrowUpDown className="ml-2 h-4 w-4" />
-  //         </Button>
-  //       );
-  //     },
-  //   },
-  //   {
-  //     accessorKey: "amount",
-  //     header: "Amount",
-  //   },
-  // ];
+  function fetchSupplyData() {
+    axios.get("/supply/dashboard").then((res) => {
+      setSupplyData(res);
+    });
+  }
 
-  const columns = [
-    "SL.NO",
-    "DOC NO",
-    "DATE",
-    "P O NO",
-    "DATE",
-    "CUSTOMER NAME",
-    "SMC",
-    "GENERAL",
-    "INSTRUMENTATION",
-    "HYDRAULICS",
-    "HOSE",
-    "COUNTER NO",
-    "READY",
-    "READY TO BILL",
-    "BILL READY",
-    "ORDER STATUS",
-    "BILL NO",
-    "ROUTING",
-    "SECURITY OUT",
-    "REG NO",
-  ].map((header) => ({
-    accessorKey: header.toLowerCase().replace(" ", "_"),
-    header: () => (
-      <span className="text-center flex flex-col items-center">{header}</span>
-    ),
-  }));
+  useEffect(() => {
+    fetchSupplyData();
+  }, []);
+
+  console.log({ supplyData });
 
   return (
     <PageLayout>
-      <DataTable columns={columns} data={data} />
+      <DataTable columns={columns} data={supplyData} />
     </PageLayout>
   );
 };
