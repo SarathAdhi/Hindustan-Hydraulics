@@ -1,30 +1,64 @@
-const jwt = require('jsonwebtoken');
-const fs = require('fs');
+exports.updateBill = catchAsync(async (req, res, next) => {
+	console.log("updateBill 123", req.body);
+	const { doc_no, bill_no } = req.body;
+	// const query = doc_no || bill_no;
+	if (doc_no) {
+		console.log(1)
+		const bill = await billingModel.findOne({ doc_no: doc_no });
+		console.log(2)
+		if (!bill) {
+			console.log(3)
+			return next(new AppError("Bill Not Found", 400));
+		}
+	}
+	if (bill_no) {
+		console.log(4)
+		const bill = await billingModel.findOne({ bill_no: bill_no });
+		console.log(5)
+		if (!bill) {
+			console.log(6)
+			return next(new AppError("Invalid Bill Number", 400));
+		}
+		if (bill.doc_no != doc_no) {
+			console.log(7)
+			return next(
+				new AppError("Bill no did not match with doc no!!", 400)
+			);
+		}
+	}
 
-// Read the secret key from the file
-const secretKey = fs.readFileSync('./backend/secret.key', 'utf8');
-
-// Create a payload for the token
-const payload = {
-  user_id: '123',
-  username: 'john_doe',
-  role: 'admin'
-};
-
-// Sign the JWT token
-const token = jwt.sign(payload, secretKey, { algorithm: 'HS256' });
-
-console.log('Signed JWT token:', token);
-
-// Verify the JWT token
-
-jwt.verify(token, secretKey, (err, decoded) => {
-  if (err) {
-    // Token verification failed
-    console.error('Invalid token:', err.message);
-    return;
-  }
-
-  // Token verification successful
-  console.log('Token verified successfully:', decoded);
+	console.log(8)
+	getAllowedFields(req, res, next);
+	console.log(9)
+	billingModel
+		.updateOne(
+			{ doc_no: doc_no },
+			{
+				order_status: req.body.order_status,
+				routing: req.body.routing,
+				bill_ready: req.body.bill_ready,
+			}
+		)
+		.then((result) => {
+			console.log(10)
+			updateOrderDocument(doc_no, {
+				bill_ready: req.body.bill_ready,
+				routing: req.body.routing,
+				order_status: req.body.order_status,
+			});
+			console.log(11)
+			res.status(200).json({
+				status: "success",
+				data: result,
+			});
+		})
+		.catch((err) => {
+			console.log(12)
+			console.error(err);
+			console.log(13)
+			res.status(500).json({
+				status: "error",
+				message: err,
+			});
+		});
 });

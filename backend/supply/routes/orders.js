@@ -4,16 +4,16 @@ const orderController = require("../controllers/orders");
 const authController = require("../controllers/auth");
 
 router.get(
-  "/all",
-  authController.protect,
-  authController.restrictTo("admin"),
-  orderController.getOrders
+	"/all",
+	authController.protect,
+	authController.restrictTo("admin"),
+	orderController.getOrders
 );
 router.get(
-  "/:doc_no",
-  authController.protect,
-  authController.restrictTo("admin"),
-  orderController.getOrder
+	"/:doc_no",
+	authController.protect,
+	authController.restrictTo("admin"),
+	orderController.getOrder
 );
 
 // router.post('/create', authController.protect, authController.restrictTo('admin'), orderController.createOrder);

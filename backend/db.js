@@ -7,28 +7,29 @@ const database = process.env.DB_NAME;
 const url = mongoURL({ host, port, username, password, database });
 
 function mongoURL(options) {
-        options = options || {};
-        var URL = 'mongodb://';
-        if (options.password && options.username) URL += options.username + ':' + options.password + '@';
-        URL += (options.host || 'localhost') + ':';
-        URL += (options.port || '27017') + '/';
-        URL += (options.database || 'hindustan');
-        URL += '?authSource=admin';
-        return URL;
+	options = options || {};
+	var URL = "mongodb://";
+	if (options.password && options.username)
+		URL += options.username + ":" + options.password + "@";
+	URL += (options.host || "localhost") + ":";
+	URL += (options.port || "27017") + "/";
+	URL += options.database || "hindustan";
+	URL += "?authSource=admin";
+	return URL;
 }
 
 const connectDB = async () => {
-  try {
-    console.log(url);
-    await mongoose.connect(url, {
-      useNewUrlParser: true,
-    });
+	try {
+		console.log(url);
+		await mongoose.connect(url, {
+			useNewUrlParser: true,
+		});
 
-    console.log("MongoDB is Connected...");
-  } catch (err) {
-    console.error(err.message);
-    process.exit(1);
-  }
+		console.log("MongoDB is Connected...");
+	} catch (err) {
+		console.error(err.message);
+		process.exit(1);
+	}
 };
 
 module.exports = connectDB;

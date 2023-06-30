@@ -1,16 +1,16 @@
-const Auth = require('../schema/auth');
-const jwt = require('jsonwebtoken');
-const { v4: uuidv4 } = require('uuid');
-const fs = require('fs');
-const config = require("../../config")
+const Auth = require("../schema/auth");
+const jwt = require("jsonwebtoken");
+const { v4: uuidv4 } = require("uuid");
+const fs = require("fs");
+const config = require("../../config");
 const catchAsync = require("../../utils/catchAsync");
 
 // const privatekey = fs.readFileSync(config.jwt.privateKey);
 // const publickey = fs.readFileSync(config.jwt.publicKey);
 const secretKey = fs.readFileSync(config.jwt.secretKey);
 const JWT_ALGORITHM = config.jwt.algorithm;
-const bcrypt = require('bcryptjs');
-const AppError = require('../../utils/error');
+const bcrypt = require("bcryptjs");
+const AppError = require("../../utils/error");
 
 const orderModel = require("../schema/orders");
 const storeModel = require("../schema/stores");
@@ -18,166 +18,187 @@ const billingModel = require("../schema/billing");
 const counterModel = require("../schema/counter");
 const securityModel = require("../schema/security");
 
-
-
-exports.signup = async(req, res, next) => {
-    // console.log(req.body.last_name);
-    const role = 'user';
-    const auth = new Auth({
-        uuid: uuidv4().replace(/-/gi, ""),
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-        email: req.body.email,
-        mobile: req.body.mobile,
-        password: req.body.password,
-        role: role,
-    });
-    auth.save().then(result => {
-        // console.log(result);
-        res.status(201).json({
-            "status": "success",
-            "data": {
-                "email": result.email,
-                "tokens": {
-                    "access_token": jwt.sign({ uuid: result.uuid, role: role }, secretKey, { algorithm: JWT_ALGORITHM, expiresIn: config.jwt.expiresIn }),
-                }
-            }
-        });
-    }).catch(err => {
-        console.log(err);
-        if(err.code==11000){
-            //Bad request = 400
-            return res.status(400).json({
-                "status": "error",
-                "data": "Email already exists"
-            });
-        }
-        res.status(500).json({
-            "status": "error",
-            "data": err
-        });
-    });;
+exports.signup = async (req, res, next) => {
+	// console.log(req.body.last_name);
+	const role = "user";
+	const auth = new Auth({
+		uuid: uuidv4().replace(/-/gi, ""),
+		first_name: req.body.first_name,
+		last_name: req.body.last_name,
+		email: req.body.email,
+		mobile: req.body.mobile,
+		password: req.body.password,
+		role: role,
+	});
+	auth.save()
+		.then((result) => {
+			// console.log(result);
+			res.status(201).json({
+				status: "success",
+				data: {
+					email: result.email,
+					tokens: {
+						access_token: jwt.sign(
+							{ uuid: result.uuid, role: role },
+							secretKey,
+							{
+								algorithm: JWT_ALGORITHM,
+								expiresIn: config.jwt.expiresIn,
+							}
+						),
+					},
+				},
+			});
+		})
+		.catch((err) => {
+			console.log(err);
+			if (err.code == 11000) {
+				//Bad request = 400
+				return res.status(400).json({
+					status: "error",
+					data: "Email already exists",
+				});
+			}
+			res.status(500).json({
+				status: "error",
+				data: err,
+			});
+		});
 };
 
-exports.login = async(req, res, next) => {
-    // console.log(req.body);
-    const { email, password } = req.body;
-    // console.log(email, password);
-    if (!email || !password) {
-        return res.status(400).json({
-            "status": "error",
-            "data": "Please provide email and password"
-        });
-    }
+exports.login = async (req, res, next) => {
+	// console.log(req.body);
+	const { email, password } = req.body;
+	// console.log(email, password);
+	if (!email || !password) {
+		return res.status(400).json({
+			status: "error",
+			data: "Please provide email and password",
+		});
+	}
 
-    const user = await Auth.findOne({
-        email: email
-    }).select('+password');
-    // await user.verifyPassword(password);
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+	const user = await Auth.findOne({
+		email: email,
+	}).select("+password");
+	// await user.verifyPassword(password);
+	if (!user || !(await bcrypt.compare(password, user.password))) {
+		return res.status(401).json({
+			status: "error",
+			data: "Invalid email or password",
+		});
+	}
 
-        return res.status(401).json({
-            "status": "error",
-            "data": "Invalid email or password"
-        });
-    }
+	res.status(200).json({
+		status: "success",
+		data: {
+			email: user.email,
+			tokens: {
+				access_token: jwt.sign(
+					{ uuid: user.uuid, role: user.role },
+					secretKey,
+					{
+						algorithm: JWT_ALGORITHM,
+						expiresIn: config.jwt.expiresIn,
+					}
+				),
+			},
+		},
+	});
+};
 
-    res.status(200).json({
-        "status": "success",
-        "data": {
+exports.protect = catchAsync(async (req, res, next) => {
+	let token;
+	if (
+		req.headers.authorization &&
+		req.headers.authorization.startsWith("Bearer")
+	) {
+		token = req.headers.authorization.split(" ")[1];
+	}
+	if (!token) {
+		return res.status(401).json({
+			status: "error",
+			data: "You are not logged in! Please log in to get access.",
+		});
+	}
 
-            "email": user.email,
-            "tokens": {
-                "access_token": jwt.sign({ uuid: user.uuid, role: user.role }, secretKey , { algorithm: JWT_ALGORITHM,expiresIn: config.jwt.expiresIn }),
+	const decoded = await jwt.verify(token, secretKey, {
+		algorithms: JWT_ALGORITHM,
+	});
+	// console.log(decoded);
+	const freshUser = await Auth.findOne({
+		uuid: decoded.uuid,
+	});
+	if (!freshUser) {
+		return res.status(401).json({
+			status: "error",
+			data: "The user belonging to this token does no longer exist.",
+		});
+	}
 
-            },
-        }
-    });
-}
+	//TODO: Implement password changed after token issued logic
+	// if (freshUser.changedPasswordAfter(decoded.iat)) {
 
-exports.protect = catchAsync(async(req, res, next) => {
-    let token;
-    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-        token = req.headers.authorization.split(' ')[1];
-    }
-    if (!token) {
-        return res.status(401).json({
-            "status": "error",
-            "data": "You are not logged in! Please log in to get access."
-        });
-    }
-
-    const decoded = await jwt.verify(token, secretKey, { algorithms: JWT_ALGORITHM},);
-    // console.log(decoded);
-    const freshUser = await Auth.findOne({
-        uuid: decoded.uuid
-    });
-    if (!freshUser) {
-        return res.status(401).json({
-            "status": "error",
-            "data": "The user belonging to this token does no longer exist."
-        });
-    }
-
-    //TODO: Implement password changed after token issued logic
-    // if (freshUser.changedPasswordAfter(decoded.iat)) {
-
-    req.user = freshUser;
-    next();
-})
+	req.user = freshUser;
+	next();
+});
 
 exports.restrictTo = (...roles) => {
-    return (req, res, next) => {
-        //TODO: Implement hierarchy logic for roles
-        if (req.user.role === 'admin') {
-            return next();
-        }
-        if (!roles.includes(req.user.role)) {
-            return res.status(403).json({
-                "status": "error",
-                "data": "You do not have permission to perform this action"
-            });
-        }
-        next();
-    }
-}
+	return (req, res, next) => {
+		//TODO: Implement hierarchy logic for roles
+		if (req.user.role === "admin") {
+			return next();
+		}
+		if (!roles.includes(req.user.role)) {
+			return res.status(403).json({
+				status: "error",
+				data: "You do not have permission to perform this action",
+			});
+		}
+		next();
+	};
+};
 
-exports.verifyToken = catchAsync(async(req, res, next) => {
-    try {
-        const bearerHeader = req.headers['authorization'];
-        if (typeof bearerHeader !== 'undefined') {
-            const bearer = bearerHeader.split(' ');
-            const bearerToken = bearer[1];
-            jwt.verify(bearerToken, secretKey, { algorithms: JWT_ALGORITHM}, (err, authData) => {
-                if (err) {
-                    return next(new AppError(err, 403));
-                } else {
-                    res.status(200).json({
-                        "status": "success",
-                        "data": { authData }
-                    });
-                }
-            });
-        } else {
-            res.sendStatus(403);
-        }
-    } catch (error) {
-        return next(new AppError(error, 403));
-    }
-})
+exports.verifyToken = catchAsync(async (req, res, next) => {
+	try {
+		const bearerHeader = req.headers["authorization"];
+		if (typeof bearerHeader !== "undefined") {
+			const bearer = bearerHeader.split(" ");
+			const bearerToken = bearer[1];
+			jwt.verify(
+				bearerToken,
+				secretKey,
+				{ algorithms: JWT_ALGORITHM },
+				(err, authData) => {
+					if (err) {
+						return next(new AppError(err, 403));
+					} else {
+						res.status(200).json({
+							status: "success",
+							data: { authData },
+						});
+					}
+				}
+			);
+		} else {
+			res.sendStatus(403);
+		}
+	} catch (error) {
+		return next(new AppError(error, 403));
+	}
+});
 
-exports.clearAllData = catchAsync(async(req, res, next) => {
-    try {
-        await orderModel.deleteMany({});
-        await storeModel.deleteMany({});
-        await billingModel.deleteMany({});
-        await counterModel.deleteMany({});
-        await securityModel.deleteMany({});
-        res.status(200).json({
-            "status": "success",
-            "data": "All data deleted successfully"
-        });
-    } catch (error) {
-        return next(new AppError(error, 403));
-    }
-})
+exports.clearAllData = catchAsync(async (req, res, next) => {
+	try {
+		await orderModel.deleteMany({});
+		await storeModel.deleteMany({});
+		await billingModel.deleteMany({});
+		await counterModel.deleteMany({});
+		await securityModel.deleteMany({});
+		res.status(200).json({
+			status: "success",
+			data: "All data deleted successfully",
+		});
+	} catch (error) {
+		return next(new AppError(error, 403));
+	}
+});
