@@ -35,9 +35,10 @@ exports.createBill = catchAsync(async (req, res, next) => {
           .findOneAndUpdate(
             { doc_no },
             {
-              bill_ready: true,
+              bill_ready: billing.bill_ready,
               bill_no: billing.bill_no,
               routing: billing.routing,
+              order_status : billing.order_status,
             }
           )
           .then((order) => {
