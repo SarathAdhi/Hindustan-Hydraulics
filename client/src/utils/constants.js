@@ -33,3 +33,25 @@ export const storeOptions = [
   "Hydraulics",
   "Hose",
 ].map((label) => ({ label, value: label.toLowerCase() }));
+
+export const orderStatusOptions = [
+  {
+    label: "Part Supplied",
+    value: "part",
+  },
+  {
+    label: "Fully Supplied",
+    value: "full",
+  },
+];
+
+export const storeStatusOptions = [
+  {
+    label: "Part Supply",
+    value: "part",
+  },
+  {
+    label: "Fully Supply",
+    value: "full",
+  },
+];
