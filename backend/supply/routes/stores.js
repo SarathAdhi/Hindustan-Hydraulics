@@ -3,17 +3,45 @@ const router = express.Router();
 const storeController = require("../controllers/stores");
 const authController = require("../controllers/auth");
 
-router.put(
+router.get(
+	"/unbilled",
+	authController.protect,
+	authController.restrictTo("admin"),
+	storeController.getUnBilledStores
+);
+
+router.get(
+	"/:doc_no",
+	authController.protect,
+	authController.restrictTo("admin"),
+	storeController.getStores
+);
+
+router.get(
+	"/",
+	authController.protect,
+	authController.restrictTo("admin"),
+	storeController.getAllStore
+);
+
+router.post(
 	"/entry",
 	authController.protect,
 	authController.restrictTo("admin"),
 	storeController.entry
 );
-router.get(
-	"/:doc_no",
+router.put(
+	"/update",
 	authController.protect,
 	authController.restrictTo("admin"),
-	storeController.getSupplies
+	storeController.updateStore
+);
+
+router.delete(
+	"/delete",
+	authController.protect,
+	authController.restrictTo("admin"),
+	storeController.deleteStore
 );
 
 module.exports = router;

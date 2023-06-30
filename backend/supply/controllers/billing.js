@@ -1,21 +1,32 @@
 const billingModel = require("../schema/billing");
 const orderModel = require("../schema/orders");
+const storeModel = require("../schema/stores");
 const AppError = require("../../utils/error");
 const { updateOrderDocument } = require("./orders");
 const catchAsync = require("../../utils/catchAsync");
 const EventEmitter = require("../../lib/EventEmitter.class");
 const { compareSync } = require("bcryptjs");
 
-getAllowedFields = (req) => {
+getAllowedFieldsForBilling = (req) => {
 	const allowedFields = ["routing", "order_status", "bill_ready"];
-
+	console.log("Ok");
 	const filteredBody = {};
 	Object.keys(req.body).forEach((el) => {
 		if (allowedFields.includes(el)) filteredBody[el] = req.body[el];
 	});
+	console.log("Hi", filteredBody);
 
 	req.body = filteredBody;
 	return req.body;
+};
+
+updateReadyToBillStatusForStore = (doc_no) => {
+	storeModel
+		.updateMany({ doc_no }, { ready_to_bill: true })
+		.then((result) => {
+			console.log("Updated ready to bill status for store");
+			return true;
+		});
 };
 
 exports.createBill = catchAsync(async (req, res, next) => {
@@ -57,6 +68,7 @@ exports.createBill = catchAsync(async (req, res, next) => {
 						}
 					)
 					.then((order) => {
+						updateReadyToBillStatusForStore(doc_no);
 						const eventEmitter = new EventEmitter();
 						eventEmitter.emit({ event: "billing" });
 						res.status(200).json({
@@ -163,7 +175,7 @@ exports.getModifyAllowedFields = catchAsync(async (req, res, next) => {
 
 //FIXME: Route works even if bill no is passed as purchase_order_no and vice versa
 exports.updateBill = catchAsync(async (req, res, next) => {
-	const { doc_no, bill_no } = req.body;
+	const { doc_no, bill_no } = req.query;
 	// const query = doc_no || bill_no;
 	if (doc_no) {
 		const bill = await billingModel.findOne({ doc_no: doc_no });
@@ -185,7 +197,7 @@ exports.updateBill = catchAsync(async (req, res, next) => {
 		}
 	}
 
-	req.body = getAllowedFields(req);
+	req.body = getAllowedFieldsForBilling(req);
 
 	billingModel
 		.updateOne(
@@ -218,9 +230,8 @@ exports.updateBill = catchAsync(async (req, res, next) => {
 		});
 });
 
-
 exports.updateBillNumber = catchAsync(async (req, res, next) => {
-	const { doc_no, bill_no } = req.body;
+	const { doc_no, bill_no } = req.query;
 
 	const bill = await billingModel.findOne({ doc_no });
 	if (!bill) {
@@ -247,7 +258,7 @@ exports.updateBillNumber = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteBill = catchAsync(async (req, res, next) => {
-	const { doc_no } = req.body;
+	const { doc_no } = req.query;
 
 	const bill = await billingModel.findOne({ doc_no });
 	if (!bill) {

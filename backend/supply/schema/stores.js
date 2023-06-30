@@ -48,14 +48,14 @@ const storeEntrySchema = new mongoose.Schema({
 		type: Boolean,
 		default: false,
 	},
+	ready_to_bill: {
+		type: Boolean,
+		default: false,
+	},
 	created_date: {
 		type: Date,
 		default: Date.now,
 	},
-	// ready_to_bill: {
-	//     type: Boolean,
-	//     default: false
-	// }
 });
 module.exports = storeEntrySchema;
 module.exports = mongoose.model("Supply-Store", storeEntrySchema);
