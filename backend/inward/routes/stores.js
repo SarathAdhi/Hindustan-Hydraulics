@@ -4,10 +4,10 @@ const storeController = require("../controllers/stores");
 const authController = require("../../supply/controllers/auth");
 
 router.post(
-  "/create",
-  authController.protect,
-  authController.restrictTo("admin"),
-  storeController.inwardStoresEntry
+	"/create",
+	authController.protect,
+	authController.restrictTo("admin"),
+	storeController.inwardStoresEntry
 );
 
 module.exports = router;

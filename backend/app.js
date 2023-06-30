@@ -1,20 +1,17 @@
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const { WebClient } = require('@slack/web-api');
-
-
+const express = require("express");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const { WebClient } = require("@slack/web-api");
 
 const router = express.Router();
 // const publish = require('./lib/RabbitMq.class');
 mongoose.set("strictQuery", true);
 
-require('dotenv').config()
+require("dotenv").config();
 
 const slackClient = new WebClient(process.env.SLACK_BOT_TOKEN);
-
 
 //Controllers
 const authController = require("./supply/controllers/auth");
@@ -46,17 +43,17 @@ ConnectDB();
 //Configurations
 app.use(logger("dev"));
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header(
+		"Access-Control-Allow-Headers",
+		"Origin, X-Requested-With, Content-Type, Accept"
+	);
+	next();
 });
 
 //Routes
@@ -77,21 +74,21 @@ app.use("/inward/security", SecurityInwardRouter);
 app.use("/inward/dashboard", InwardDashboardRouter);
 
 app.get(
-  "/",
-  authController.protect,
-  authController.restrictTo("user"),
-  (req, res) => {
-    res.json({
-      status: "success",
-      API: "Hindustan Web API",
-      version: "0.1.2",
-    });
-  }
+	"/",
+	authController.protect,
+	authController.restrictTo("user"),
+	(req, res) => {
+		res.json({
+			status: "success",
+			API: "Hindustan Web API",
+			version: "0.1.2",
+		});
+	}
 );
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  next(new AppError("Endpoint Not Found", 404));
+	next(new AppError("Endpoint Not Found", 404));
 });
 
 // error handler
@@ -108,43 +105,50 @@ app.use(function (req, res, next) {
 // console.log(typeof)
 
 app.use((err, req, res, next) => {
-    if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'production') {
-    console.log(err);
-    slackClient.chat.postMessage({
-        channel: 'C05C794T08M',
-        text: {"messge":err.message,err,req},
-      })
-        .then((result) => {
-          console.log('Message sent successfully:', result.ts);
-        })
-        .catch((error) => {
-          console.error('Error sending message to Slack:', error);
-        });
-      }
-    if (err instanceof mongoose.Error.ValidationError) {
-      res.status(400).json({ error: err.message });
-    }
-    res.status(err.statusCode || 500).json({
-        status: 'error',
-        message: err.message
-    });
-})
+	if (
+		process.env.NODE_ENV === "test" ||
+		process.env.NODE_ENV === "production"
+	) {
+		console.log(err);
+		slackClient.chat
+			.postMessage({
+				channel: "C05C794T08M",
+				text: { messge: err.message, err, req },
+			})
+			.then((result) => {
+				console.log("Message sent successfully:", result.ts);
+			})
+			.catch((error) => {
+				console.error("Error sending message to Slack:", error);
+			});
+	}
+	if (err instanceof mongoose.Error.ValidationError) {
+		res.status(400).json({ error: err.message });
+	}
+	res.status(err.statusCode || 500).json({
+		status: "error",
+		message: err.message,
+	});
+});
 
 const port = process.env.SERVER_PORT || 3000;
 
 app.listen(port, () => {
-  if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'production') {
-
-    slackClient.chat.postMessage({
-        channel: 'C05C794T08M',
-        text: "Server Started",
-      })
-        .then((result) => {
-          console.log('Message sent successfully:', result.ts);
-        })
-        .catch((error) => {
-          console.error('Error sending message to Slack:', error);
-        });
-      }
-    console.log('Server running on port ' + port);
+	if (
+		process.env.NODE_ENV === "test" ||
+		process.env.NODE_ENV === "production"
+	) {
+		slackClient.chat
+			.postMessage({
+				channel: "C05C794T08M",
+				text: "Server Started",
+			})
+			.then((result) => {
+				console.log("Message sent successfully:", result.ts);
+			})
+			.catch((error) => {
+				console.error("Error sending message to Slack:", error);
+			});
+	}
+	console.log("Server running on port " + port);
 });
