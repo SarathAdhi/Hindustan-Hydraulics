@@ -10,7 +10,7 @@ const counterEntrySchema = mongoose.Schema({
       "dc_no",
       "tc_note_no",
       "lc_bill_no",
-      "lc_bill_no",
+      "lc_note_no",
     ],
     // unique: true
   },
@@ -19,7 +19,7 @@ const counterEntrySchema = mongoose.Schema({
     required: true,
     unique: true,
   },
-  counter_no_date: {
+  counter_date: {
     type: Date,
     required: true,
   },

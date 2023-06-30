@@ -9,40 +9,40 @@ const { inwardEntry } = require("./inward");
 const EventEmitter = require("../../lib/EventEmitter.class");
 
 exports.inwardStoresEntry = catchAsync(async (req, res, next) => {
-  const { store, received, doc_type, doc_no, doc_date, supplier_name } =
-    req.body;
 
-  if (
-    !store ||
-    !received ||
-    !doc_type ||
-    !doc_no ||
-    !doc_date ||
-    !supplier_name
-  ) {
-    return next(new AppError("Please provide all the details!", 400));
-  }
 
-  const inward_details = await inwardModel.findOne({ doc_no });
+  const inward_details = await inwardModel.findOne({ doc_no : req.body.doc_no });
   if (!inward_details) {
-    inwardEntry(req.body);
+    const inward = await inwardEntry(req.body);
+    console.log("inward",inward);
   }
 
-  const check = Utils.verify_store_inward_scheme(
-    store,
-    supplier_name,
-    doc_type,
-    doc_no,
-    doc_date,
-    received
-  );
-  if (check) {
-    return next(new AppError(check, 400));
-  }
+  storeInwardModel.findOne({
+    doc_no: req.body.doc_no,
+    store: req.body.store,
+  }).then((store) => {
+    if (store) {
+      return next(new AppError("Store entry already exists for "+req.body.store+" store!", 400));
+    }
+  });
+
+  storeInwardModel.findOne({
+    doc_no: req.body.doc_no,
+  }).then((store) => {
+    console.log("Store",store);
+    if (!store) {
+      return 0;
+    }
+    if(store.doc_type != req.body.doc_type){
+      return next(new AppError("Document type mismatch!", 400));
+    }
+  });
+
+  const {store} = req.body;
+  
 
   storeInwardModel
-    .updateOne(
-      { doc_no, store: store },
+    .create(
       {
         store: store,
         supplier_name: req.body.supplier_name,
@@ -51,19 +51,20 @@ exports.inwardStoresEntry = catchAsync(async (req, res, next) => {
         doc_date: req.body.doc_date,
         received: req.body.received,
       },
-      { upsert: true }
     )
     .then((s) => {
+      console.log("Updating Inward Document");
       inwardModel
         .updateOne(
           {
             doc_no: req.body.doc_no,
-            store: { $elemMatch: { store_name: store } },
+            store: { $elemMatch: { store_name: req.body.store } },
           },
           {
             $set: {
               "store.$.received": req.body.received,
               materials_received: req.body.received,
+              security_inward: true
             },
           }
         )
@@ -76,14 +77,10 @@ exports.inwardStoresEntry = catchAsync(async (req, res, next) => {
           });
         })
         .catch((err) => {
-          console.log(err);
+          next(new AppError(err.message, 400));
         });
     })
     .catch((err) => {
-      console.error(err);
-      res.status(400).json({
-        status: "error",
-        data: err,
-      });
+      next(new AppError(err.message, 400));
     });
 });

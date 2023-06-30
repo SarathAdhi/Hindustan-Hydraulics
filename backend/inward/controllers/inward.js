@@ -21,7 +21,7 @@ exports.updateInwardDocument = (inward_doc_no, body) => {
   });
 };
 
-exports.inwardEntry = (body) => {
+exports.inwardEntry = async(body) => {
   console.log(body);
   const store = [
     {
@@ -54,11 +54,17 @@ exports.inwardEntry = (body) => {
     },
   ];
 
-  body.store = store;
 
-  inwardModel
-    .create(body)
+  await inwardModel
+    .create({
+      doc_type: body.doc_type,
+      doc_no: body.doc_no,
+      doc_date: body.doc_date,
+      supplier_name: body.supplier_name,
+      store: store,
+    })
     .then((inward) => {
+      console.log("created");
       console.log(inward);
       const eventEmitter = new EventEmitter();
       eventEmitter.emit({ event: "inwardEntry" });

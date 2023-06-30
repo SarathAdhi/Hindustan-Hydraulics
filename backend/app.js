@@ -121,6 +121,9 @@ app.use((err, req, res, next) => {
           console.error('Error sending message to Slack:', error);
         });
       }
+    if (err instanceof mongoose.Error.ValidationError) {
+      res.status(400).json({ error: err.message });
+    }
     res.status(err.statusCode || 500).json({
         status: 'error',
         message: err.message
