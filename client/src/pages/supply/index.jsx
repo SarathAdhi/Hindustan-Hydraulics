@@ -148,6 +148,13 @@ const SupplyPage = () => {
     {
       accessorKey: "order_status",
       header: () => <span>ORDER STATUS</span>,
+      cell: ({ row }) => {
+        const rowValue = row.getValue("order_status");
+
+        const value = storeStatusOptions.find((e) => e.value === rowValue);
+
+        return <span>{value?.label}</span>;
+      },
     },
     {
       accessorKey: "bill_no",
