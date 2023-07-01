@@ -13,10 +13,17 @@ import {
 import { DataTable } from "../../components/DataTable";
 import BillingForm from "../../modules/supply/BillingForm";
 import dayjs from "dayjs";
-import { Edit, RefreshCcw } from "lucide-react";
+import { Edit, RefreshCcw, TrashIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Input } from "../../components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "../../components/ui/popover";
+import { Close } from "@radix-ui/react-popover";
+import { ApiRoutes } from "../../utils/api-routes";
 
 const _defaultValues = {
   order_status: orderStatusOptions[0].value,
@@ -37,14 +44,20 @@ const SupplyBillingPage = () => {
   const [billingDefaultValue, setBillingDefaultValue] = useState({});
   const [searchFilter, setSearchFilter] = useState("");
 
-  async function fetchBill() {
-    setIsLoading(true);
+  async function handleDeleteBill(doc_no) {
+    await axios.delete(ApiRoutes.supply.billing.delete(doc_no));
+
+    fetchBill({ changeLoadingState: false });
+  }
+
+  async function fetchBill({ changeLoadingState = true }) {
+    if (changeLoadingState) setIsLoading(true);
 
     const data = await axios.get(
       isBillReady ? "/supply/bill/billed" : "/supply/bill/ready_to_bill"
     );
 
-    setIsLoading(false);
+    if (changeLoadingState) setIsLoading(false);
     setReadyToBill(data);
   }
 
@@ -71,28 +84,61 @@ const SupplyBillingPage = () => {
         const { order_status, bill_date, routing, bill_ready } = row.original;
 
         return (
-          <button
-            onClick={() => {
-              setTimeout(() => {
-                if (isBillReady)
-                  setBillingDefaultValue({
-                    order_status,
-                    bill_date,
-                    routing,
-                    bill_ready,
+          <div className="space-x-4">
+            <button
+              onClick={() => {
+                setTimeout(() => {
+                  if (isBillReady)
+                    setBillingDefaultValue({
+                      order_status,
+                      bill_date,
+                      routing,
+                      bill_ready,
+                      bill_no,
+                    });
+
+                  setDocInfo({
+                    doc_no,
+                    doc_type,
                     bill_no,
                   });
+                }, 200);
+              }}
+            >
+              <Edit size={20} />
+            </button>
 
-                setDocInfo({
-                  doc_no,
-                  doc_type,
-                  bill_no,
-                });
-              }, 200);
-            }}
-          >
-            <Edit size={18} />
-          </button>
+            {isBillReady && (
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button>
+                    <TrashIcon size={20} className="text-red-700" />
+                  </button>
+                </PopoverTrigger>
+
+                <PopoverContent side="bottom" align="start">
+                  <div className="grid gap-2">
+                    <h6>Are you sure you want to delete this Doc {doc_no}?</h6>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        onClick={() => handleDeleteBill(doc_no)}
+                        className="py-1 px-4 bg-red-700 text-white rounded-md"
+                      >
+                        Delete
+                      </button>
+
+                      <Close asChild>
+                        <button className="py-1 px-4 bg-gray-300 rounded-md">
+                          Cancel
+                        </button>
+                      </Close>
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            )}
+          </div>
         );
       },
     },
@@ -288,74 +334,76 @@ const SupplyBillingPage = () => {
   ];
 
   return (
-    <PageLayout className="flex flex-col gap-4">
-      <SupplyNavlinks className="mx-auto w-full max-w-[500px]" />
+    <>
+      <PageLayout className="flex flex-col gap-4">
+        <SupplyNavlinks className="mx-auto w-full max-w-[500px]" />
 
-      {!docInfo ? (
-        <div className="flex flex-col items-start gap-2">
-          <div className="w-full flex items-center justify-between">
-            <div className="border border-black bg-gray-300 p-1 rounded-md flex items-center gap-1">
-              <Button
-                variant={!isBillReady ? "success" : "ghost"}
-                asChild
-                className="py-1 px-4 h-auto"
-              >
-                <Link href="/supply/billing">Ready to Bill</Link>
-              </Button>
+        {!docInfo ? (
+          <div className="flex flex-col items-start gap-2">
+            <div className="w-full flex items-center justify-between">
+              <div className="border border-black bg-gray-300 p-1 rounded-md flex items-center gap-1">
+                <Button
+                  variant={!isBillReady ? "success" : "ghost"}
+                  asChild
+                  className="py-1 px-4 h-auto"
+                >
+                  <Link href="/supply/billing">Ready to Bill</Link>
+                </Button>
 
-              <Button
-                variant={isBillReady ? "success" : "ghost"}
-                asChild
-                className="py-1 px-4 h-auto"
-              >
-                <Link href="/supply/billing?billed=true">Billed</Link>
-              </Button>
+                <Button
+                  variant={isBillReady ? "success" : "ghost"}
+                  asChild
+                  className="py-1 px-4 h-auto"
+                >
+                  <Link href="/supply/billing?billed=true">Billed</Link>
+                </Button>
+              </div>
+
+              <div className="flex gap-2">
+                <Input
+                  className="h-8 border-black"
+                  onChange={(e) => setSearchFilter(e.target.value)}
+                  placeholder="Search..."
+                />
+
+                <button className="p-1" onClick={fetchBill}>
+                  <RefreshCcw size={20} />
+                </button>
+              </div>
             </div>
 
-            <div className="flex gap-2">
-              <Input
-                className="h-8 border-black"
-                onChange={(e) => setSearchFilter(e.target.value)}
-                placeholder="Search..."
-              />
+            <DataTable
+              columns={columns}
+              data={filteredReadyToBill}
+              isLoading={isLoading}
+              hidden={isBillReady ? [] : ["bill_no"]}
+            />
+          </div>
+        ) : (
+          <div className="mx-auto w-full max-w-[500px] space-y-2">
+            <div className="flex flex-col items-center">
+              <Button
+                variant="link"
+                className="p-0"
+                onClick={() => setDocInfo(null)}
+              >
+                Go Back
+              </Button>
 
-              <button className="p-1" onClick={fetchBill}>
-                <RefreshCcw size={20} />
-              </button>
+              <h5 className="text-center">
+                Doc Number: {docInfo?.doc_no} {isBillReady && "(UPDATE)"}
+              </h5>
             </div>
+
+            <BillingForm
+              defaultValues={isBillReady ? billingDefaultValue : _defaultValues}
+              docInfo={docInfo}
+              isUpdate={isBillReady}
+            />
           </div>
-
-          <DataTable
-            columns={columns}
-            data={filteredReadyToBill}
-            isLoading={isLoading}
-            hidden={isBillReady ? [] : ["bill_no"]}
-          />
-        </div>
-      ) : (
-        <div className="mx-auto w-full max-w-[500px] space-y-2">
-          <div className="flex flex-col items-center">
-            <Button
-              variant="link"
-              className="p-0"
-              onClick={() => setDocInfo(null)}
-            >
-              Go Back
-            </Button>
-
-            <h5 className="text-center">
-              Doc Number: {docInfo?.doc_no} {isBillReady && "(UPDATE)"}
-            </h5>
-          </div>
-
-          <BillingForm
-            defaultValues={isBillReady ? billingDefaultValue : _defaultValues}
-            docInfo={docInfo}
-            isUpdate={isBillReady}
-          />
-        </div>
-      )}
-    </PageLayout>
+        )}
+      </PageLayout>
+    </>
   );
 };
 
