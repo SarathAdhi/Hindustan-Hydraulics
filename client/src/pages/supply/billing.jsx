@@ -115,7 +115,10 @@ const SupplyBillingPage = () => {
 									if (isBillReady)
 										setBillingDefaultValue({
 											order_status,
-											bill_date,
+											bill_date:
+												dayjs(bill_date).format(
+													"YYYY-MM-DD"
+												),
 											routing,
 											bill_ready,
 											bill_no,
