@@ -28,7 +28,7 @@ const BillingForm = ({
 	async function handleBillingForm(values) {
 		try {
 			if (isUpdate) {
-				const { order_status, routing, bill_ready } = values;
+				const { order_status, routing, bill_ready, bill_date } = values;
 
 				await axios.put(
 					ApiRoutes.supply.billing.update({
@@ -38,6 +38,7 @@ const BillingForm = ({
 						order_status,
 						routing,
 						bill_ready,
+						bill_date,
 					}
 				);
 			} else {
@@ -94,7 +95,7 @@ const BillingForm = ({
 
 				<Input
 					type="date"
-					{...register("bill_date", { required: !isUpdate })}
+					{...register("bill_date", { required: true })}
 					label="Bill Date"
 					required
 					disabled={isUpdate && !allowedFields?.bill_date}
