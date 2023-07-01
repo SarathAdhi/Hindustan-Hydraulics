@@ -1,0 +1,773 @@
+{
+	"info": {
+		"_postman_id": "fa7c4173-a981-4f88-a31d-88f59b520f7e",
+		"name": "Hindustan",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14844049"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Signup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.status==200){\r",
+									"pm.environment.set(\"jwt\", pm.response.json().data.tokens.access_token);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\": \"Jeeva\",\r\n    \"last_name\":\"Pranesh\",\r\n    \"email\": \"jpranesh@gmail.com\",\r\n    \"mobile\": 8675737202,\r\n    \"password\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/signup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"if(pm.response.code>200 & pm.response.code<300){\r",
+									"pm.environment.set(\"jwt\", pm.response.json().data.tokens.access_token);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"jpranesh@gmail.com\",\r\n    \"password\":\"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/auth/verify",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Inward",
+			"item": [
+				{
+					"name": "Inward Material Entry",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"inward_doc_no\": \"CEW/300\",\r\n    \"supplier_name\": \"Zsoft\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/inward/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"inward",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inward Store Entry",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"inward_no\": 2,\r\n    \"store\": \"hose\",\r\n    \"customer_name\":\"Baumer India\",\r\n    \"doc_type\":\"bill_no\",\r\n    \"doc_no\":\"5000\",\r\n    \"received\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/inward/store/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"inward",
+								"store",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inward Security Entry",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"inward_no\": 1,\r\n    \"security_entry\": true,\r\n    \"reg_no\": 4555\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/inward/security/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"inward",
+								"security",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Inward",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/inward/get?inward_doc_no=CEW/252",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"inward",
+								"get"
+							],
+							"query": [
+								{
+									"key": "inward_doc_no",
+									"value": "CEW/252"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Supply",
+			"item": [
+				{
+					"name": "Counter",
+					"item": [
+						{
+							"name": "Counter Entry",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"purchase_order_no\": \"HH01\",\r\n    \"counter_no_type\": \"tc_bill_no\",\r\n    \"counter_no\": 8544,\r\n    \"customer_name\": \"Zuva Corp\",\r\n    \"routing\": \"transport\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/supply/counter/entry",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"supply",
+										"counter",
+										"entry"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Store",
+					"item": [
+						{
+							"name": "Store",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"store\":\"instrumentation\",\r\n    \"purchase_order_no\":\"HH01\",\r\n    \"supply\":\"full\",\r\n    \"ready\":true,\r\n    \"ready_to_bill\":true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/supply/store/entry",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"supply",
+										"store",
+										"entry"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Supplies",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/supply/store/HH01",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"supply",
+										"store",
+										"HH01"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{jwt}}",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Orders",
+					"item": [
+						{
+							"name": "Create Order",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"date\": \"2022-12-14\",\r\n    \"purchase_order_no\": \"HH01\",\r\n    \"customer_name\": \"Zuva Corp\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/supply/order/create",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"supply",
+										"order",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All Orders",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/supply/order/all",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"supply",
+										"order",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Order",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/supply/order/HH01",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"supply",
+										"order",
+										"HH01"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Order",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"purchase_order_no\": \"HH01\",\r\n    \"bill_ready\":\"false\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/supply/order/update",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"supply",
+										"order",
+										"update"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{jwt}}",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Billing",
+					"item": [
+						{
+							"name": "Generate Bill",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"purchase_order_no\":\"HH01\",\r\n    \"order_status\":\"part\",\r\n    \"bill_no\":\"HHP/001\",\r\n    \"routing\":\"transport\",\r\n    \"bill_ready\":true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/supply/bill/generate",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"supply",
+										"bill",
+										"generate"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Bill",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"purchase_order_no\":\"HH02\",\r\n    \"routing\":\"courier\",\r\n    \"bill_ready\":false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/bill/update",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bill",
+										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Bill No",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"purchase_order_no\":\"HH01\",\r\n    \"bill_no\":\"HHP/011\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/bill/update/bill_no",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bill",
+										"update",
+										"bill_no"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{jwt}}",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Security",
+					"item": [
+						{
+							"name": "Security Entry",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"purchase_order_no\": \"HH01\",\r\n    \"security_out\": true,\r\n    \"book_register_no\": 5855\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/supply/security/entry",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"supply",
+										"security",
+										"entry"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}",
+					"host": [
+						"{{baseUrl}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Publish",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/publish",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"publish"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download Report",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{jwt}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

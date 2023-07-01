@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const securityController = require("../controllers/security");
+const orderController = require("../controllers/orders");
 const authController = require("../controllers/auth");
 
-router.post(
-	"/entry",
+router.get(
+	"/",
 	authController.protect,
 	authController.restrictTo("admin"),
-	securityController.securityEntry
+	orderController.getOrders
 );
 
 module.exports = router;

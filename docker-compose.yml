@@ -19,8 +19,24 @@ services:
     image: mongo
     volumes:
       - hindustan_data:/data/db
-    # environment:
-    #   MONGO_INITDB_ROOT_USERNAME: root
-    #   MONGO_INITDB_ROOT_PASSWORD: zuvaLabs
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: zuvaLabs
+
+  rabbitmq:
+    image: rabbitmq:latest
+    ports:
+      - 5672:5672  # RabbitMQ default port
+      - 15672:15672  # RabbitMQ management console port
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq  # Persist data
+    environment:
+      - RABBITMQ_DEFAULT_USER=root  # Set the desired username
+      - RABBITMQ_DEFAULT_PASS=zuvaLabs  # Set the desired password
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbitmq_management
+
 volumes:
   hindustan_data:
+  rabbitmq_data:

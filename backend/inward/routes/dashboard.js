@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const storeController = require("../controllers/stores");
 const authController = require("../../supply/controllers/auth");
+const dashboardController = require("../controllers/dashboard");
 
-router.post(
-	"/create",
+router.get(
+	"/",
 	authController.protect,
 	authController.restrictTo("admin"),
-	storeController.inwardStoresEntry
+	dashboardController.getInwards
 );
 
 module.exports = router;
