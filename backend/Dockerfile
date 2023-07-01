@@ -1,7 +1,7 @@
 FROM node:19-alpine3.16
 WORKDIR /app
 COPY package.json .
-RUN npm install --quiet
+RUN npm install --quiet --legacy-peer-deps
 RUN npm i nodemon -g
 # RUN apt update
 # RUN apt install openssl -y
