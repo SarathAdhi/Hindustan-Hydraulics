@@ -15,8 +15,6 @@ const LoginPage = () => {
   const router = useRouter();
   const { isAuth, getProfile } = useStore();
 
-  console.log({ isAuth });
-
   useEffect(() => {
     if (isAuth) {
       const redirect = router.query?.redirect;
