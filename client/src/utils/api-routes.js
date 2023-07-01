@@ -8,9 +8,13 @@ export const ApiRoutes = {
     counter: "/supply/counter/entry",
     store: "/supply/store/entry",
     order: "/supply/order/create",
-    billing: "/supply/bill/generate",
-    billing_update: (values = {}) =>
-      `/supply/bill/update?${new URLSearchParams(values)}`,
+    billing: {
+      generate: "/supply/bill/generate",
+      update: (values = {}) =>
+        `/supply/bill/update?${new URLSearchParams(values)}`,
+      delete: (doc_no) => `/supply/bill/delete?doc_no=${doc_no}`,
+    },
+
     security: "/supply/security/entry",
   },
 };

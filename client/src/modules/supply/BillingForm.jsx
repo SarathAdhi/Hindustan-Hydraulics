@@ -26,7 +26,7 @@ const BillingForm = ({ defaultValues, docInfo, isUpdate = false }) => {
         const { order_status, routing, bill_ready } = values;
 
         await axios.put(
-          ApiRoutes.supply.billing_update({
+          ApiRoutes.supply.billing.update({
             ...docInfo,
           }),
           {
@@ -38,7 +38,7 @@ const BillingForm = ({ defaultValues, docInfo, isUpdate = false }) => {
       } else {
         const { bill_no, ...rest } = docInfo;
 
-        await axios.post(ApiRoutes.supply.billing, {
+        await axios.post(ApiRoutes.supply.billing.generate, {
           ...values,
           ...rest,
         });
