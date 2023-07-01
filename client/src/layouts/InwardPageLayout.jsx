@@ -6,16 +6,12 @@ import { useRouter } from "next/router";
 
 const pages = [
   {
-    name: "Materials",
-    href: "/inward/material",
+    name: "Store",
+    href: "/inward/store",
   },
   {
     name: "Security",
     href: "/inward/security",
-  },
-  {
-    name: "Store",
-    href: "/inward/store",
   },
 ];
 
@@ -27,7 +23,7 @@ const InwardPageLayout = ({ className, children }) => {
   return (
     <div className="space-y-4">
       <div className="max-w-full w-[500px] mx-auto">
-        <div className="flex flex-wrap sm:grid grid-cols-3 gap-2">
+        <div className="flex flex-wrap sm:grid grid-cols-2 gap-2">
           {pages.map(({ name, href }) => (
             <Button
               key={name}

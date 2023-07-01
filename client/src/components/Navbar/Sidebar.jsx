@@ -30,7 +30,7 @@ const pages = [
         name: "Inward",
         Icon: LogIn,
         parentRoute: "/inward/",
-        href: "/inward/material",
+        href: "/inward/store",
       },
       {
         name: "Supply",

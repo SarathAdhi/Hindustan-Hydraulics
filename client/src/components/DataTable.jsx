@@ -15,9 +15,13 @@ import {
 } from "./ui/table";
 import { Button } from "./ui/button";
 import { useState } from "react";
+import { Loader2Icon } from "lucide-react";
 
-export function DataTable({ columns, data }) {
+export function DataTable({ columns, data, hidden = [], isLoading = false }) {
   const [sorting, setSorting] = useState([]);
+  let columnVisibility = {};
+
+  hidden.forEach((e) => (columnVisibility[e] = false));
 
   const table = useReactTable({
     data,
@@ -28,8 +32,16 @@ export function DataTable({ columns, data }) {
     getSortedRowModel: getSortedRowModel(),
     state: {
       sorting,
+      columnVisibility,
     },
   });
+
+  if (isLoading)
+    return (
+      <div className="w-full grid place-content-center">
+        <Loader2Icon size={30} className="animate-spin" />
+      </div>
+    );
 
   return (
     <div>
@@ -79,10 +91,7 @@ export function DataTable({ columns, data }) {
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
+                <TableCell colSpan={columns.length} className="h-12">
                   No results.
                 </TableCell>
               </TableRow>

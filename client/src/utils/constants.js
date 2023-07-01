@@ -15,7 +15,7 @@ export const routingOptions = [
   "From UHP",
   "From SAM",
   "Branch Office",
-].map((label) => ({ label, value: label.toLowerCase().replace(" ", "_") }));
+].map((label) => ({ label, value: label.toLowerCase().replaceAll(" ", "_") }));
 
 export const counterTypeOptions = [
   "TC Bill No",
@@ -24,7 +24,7 @@ export const counterTypeOptions = [
   "TC Note No",
   "LC Bill No",
   "LC Note No",
-].map((label) => ({ label, value: label.toLowerCase().replace(" ", "_") }));
+].map((label) => ({ label, value: label.toLowerCase().replaceAll(" ", "_") }));
 
 export const storeOptions = [
   "SMC",

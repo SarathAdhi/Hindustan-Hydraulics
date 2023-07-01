@@ -3,7 +3,11 @@ import PageLayout from "../../layouts/PageLayout";
 import { withAuth } from "../../hoc/withAuth";
 import axios from "../../lib/axios";
 import { useEffect, useState } from "react";
-import { routingOptions, storeStatusOptions } from "../../utils/constants";
+import {
+  docTypeOptions,
+  routingOptions,
+  storeStatusOptions,
+} from "../../utils/constants";
 import dayjs from "dayjs";
 
 const SupplyPage = () => {
@@ -17,6 +21,17 @@ const SupplyPage = () => {
     {
       accessorKey: "doc_no",
       header: () => <span>DOC NO</span>,
+    },
+    {
+      accessorKey: "doc_type",
+      header: () => <span>DOC TYPE</span>,
+      cell: ({ row }) => {
+        const rowValue = row.getValue("doc_type");
+
+        const value = docTypeOptions.find((e) => e.value === rowValue);
+
+        return <span>{value?.label}</span>;
+      },
     },
     {
       accessorKey: "doc_date",
