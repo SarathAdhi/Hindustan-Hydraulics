@@ -26,10 +26,10 @@ import { Close } from "@radix-ui/react-popover";
 import { ApiRoutes } from "../../utils/api-routes";
 
 const _defaultValues = {
-	order_status: orderStatusOptions[0].value,
+	order_status: "",
 	bill_no: "",
 	bill_date: "",
-	routing: routingOptions[0].value,
+	routing: "",
 	bill_ready: false,
 };
 
@@ -73,7 +73,7 @@ const SupplyBillingPage = () => {
 	console.log(allowedFields);
 
 	useEffect(() => {
-		fetchBill(isBillReady);
+		fetchBill({});
 	}, [query?.billed]);
 
 	const filteredReadyToBill = readyToBill.filter(
@@ -180,10 +180,6 @@ const SupplyBillingPage = () => {
 			header: () => <span>S NO</span>,
 		},
 		{
-			accessorKey: "doc_no",
-			header: () => <span>DOC NO</span>,
-		},
-		{
 			accessorKey: "doc_type",
 			header: () => <span>DOC TYPE</span>,
 			cell: ({ row }) => {
@@ -193,6 +189,10 @@ const SupplyBillingPage = () => {
 
 				return <span>{value?.label}</span>;
 			},
+		},
+		{
+			accessorKey: "doc_no",
+			header: () => <span>DOC NO</span>,
 		},
 		{
 			accessorKey: "doc_date",
@@ -385,8 +385,8 @@ const SupplyBillingPage = () => {
 							<div className="border border-black bg-gray-300 p-1 rounded-md flex items-center gap-1">
 								<Button
 									variant={!isBillReady ? "success" : "ghost"}
-									asChild
 									className="py-1 px-4 h-auto"
+									asChild
 								>
 									<Link href="/supply/billing">
 										Ready to Bill
@@ -395,8 +395,8 @@ const SupplyBillingPage = () => {
 
 								<Button
 									variant={isBillReady ? "success" : "ghost"}
-									asChild
 									className="py-1 px-4 h-auto"
+									asChild
 								>
 									<Link href="/supply/billing?billed=true">
 										Billed
