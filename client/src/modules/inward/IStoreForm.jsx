@@ -31,18 +31,19 @@ const IStoreForm = ({
 	async function handleStoreForm(values) {
 		try {
 			if (isUpdate) {
-				// const { order_status, routing, bill_ready, bill_date } = values;
+				const { doc_date, received } = values;
 
 				await axios.put(
-					ApiRoutes.supply.store.update({
+					ApiRoutes.inward.store.update({
 						...storeInfo,
 					}),
 					{
-						...values,
+						doc_date,
+						received,
 					}
 				);
 			} else {
-				await axios.post(ApiRoutes.supply.store.entry, values);
+				await axios.post(ApiRoutes.inward.store.create, values);
 
 				reset();
 			}
@@ -64,6 +65,7 @@ const IStoreForm = ({
 				<Select
 					defaultValue={getValues("store")}
 					onValueChange={(e) => setValue("store", e)}
+					disabled={isUpdate && !allowedFields?.store}
 				>
 					<SelectTrigger>
 						<SelectValue placeholder="Select the store" />
@@ -82,6 +84,7 @@ const IStoreForm = ({
 				label="Supplier Name"
 				placeholder="Enter the Customer name"
 				required
+				disabled={isUpdate && !allowedFields?.supplier_name}
 			/>
 
 			<div className="w-full flex flex-col gap-2">
@@ -92,6 +95,7 @@ const IStoreForm = ({
 				<Select
 					defaultValue={getValues("doc_type")}
 					onValueChange={(e) => setValue("doc_type", e)}
+					disabled={isUpdate && !allowedFields?.doc_type}
 				>
 					<SelectTrigger>
 						<SelectValue placeholder="Select the Doc type" />
@@ -110,6 +114,7 @@ const IStoreForm = ({
 				label="Doc number"
 				placeholder="Enter the Doc number"
 				required
+				disabled={isUpdate && !allowedFields?.doc_no}
 			/>
 
 			<Input
@@ -117,6 +122,7 @@ const IStoreForm = ({
 				{...register("doc_date", { required: true })}
 				label="Doc Date"
 				required
+				disabled={isUpdate && !allowedFields?.doc_date}
 			/>
 
 			<Checkbox
@@ -124,6 +130,7 @@ const IStoreForm = ({
 				defaultChecked={getValues("received")}
 				onCheckedChange={(e) => setValue("received", e)}
 				label="Material Received"
+				disabled={isUpdate && !allowedFields?.received}
 			/>
 
 			<Button type="submit">{isUpdate ? "Update" : "Submit"}</Button>

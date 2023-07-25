@@ -6,7 +6,6 @@ import axios from "../../lib/axios";
 import SupplyNavlinks from "../../modules/supply/SupplyLayout";
 import {
 	docTypeOptions,
-	orderStatusOptions,
 	routingOptions,
 	storeStatusOptions,
 } from "../../utils/constants";
