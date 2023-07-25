@@ -50,69 +50,30 @@ const SupplySecurityPage = () => {
 				const doc_no = row.original?.doc_no;
 
 				return (
-					<div className="space-x-4 flex items-center">
-						<input
-							type="checkbox"
-							className="w-4 h-4 cursor-pointer"
-							checked={row.getIsSelected()}
-							onChange={(e) => {
-								const value = e.target.checked;
+					<input
+						type="checkbox"
+						className="w-4 h-4 cursor-pointer"
+						checked={row.getIsSelected()}
+						onChange={(e) => {
+							const value = e.target.checked;
 
-								table.resetRowSelection();
-								row.toggleSelected(!!value);
+							table.resetRowSelection();
+							row.toggleSelected(!!value);
 
-								setTimeout(() => {
-									setDefaultValue({
-										counter: {
-											...row.original,
-											type: view,
-										},
-									});
+							setTimeout(() => {
+								setDefaultValue({
+									counter: {
+										...row.original,
+										type: view,
+									},
+								});
 
-									setSecurityInfo({
-										ref_no: doc_no || counter_no,
-									});
-								}, 200);
-							}}
-						/>
-
-						{/* <Popover>
-							<PopoverTrigger asChild>
-								<button>
-									<TrashIcon
-										size={20}
-										className="text-red-700"
-									/>
-								</button>
-							</PopoverTrigger>
-
-							<PopoverContent side="bottom" align="start">
-								<div className="grid gap-2">
-									<h6>
-										Are you sure you want to delete this Doc{" "}
-										{doc_no}?
-									</h6>
-
-									<div className="grid grid-cols-2 gap-2">
-										<button
-											onClick={() =>
-												handleDeleteStore(doc_no, store)
-											}
-											className="py-1 px-4 bg-red-700 text-white rounded-md"
-										>
-											Delete
-										</button>
-
-										<Close asChild>
-											<button className="py-1 px-4 bg-gray-300 rounded-md">
-												Cancel
-											</button>
-										</Close>
-									</div>
-								</div>
-							</PopoverContent>
-						</Popover> */}
-					</div>
+								setSecurityInfo({
+									ref_no: doc_no || counter_no,
+								});
+							}, 200);
+						}}
+					/>
 				);
 			},
 		},
@@ -167,69 +128,30 @@ const SupplySecurityPage = () => {
 				const doc_no = row.original?.doc_no;
 
 				return (
-					<div className="space-x-4 flex items-center">
-						<input
-							type="checkbox"
-							className="w-4 h-4 cursor-pointer"
-							checked={row.getIsSelected()}
-							onChange={(e) => {
-								const value = e.target.checked;
+					<input
+						type="checkbox"
+						className="w-4 h-4 cursor-pointer"
+						checked={row.getIsSelected()}
+						onChange={(e) => {
+							const value = e.target.checked;
 
-								table.resetRowSelection();
-								row.toggleSelected(!!value);
+							table.resetRowSelection();
+							row.toggleSelected(!!value);
 
-								setTimeout(() => {
-									setDefaultValue({
-										store: {
-											...row.original,
-											type: view,
-										},
-									});
+							setTimeout(() => {
+								setDefaultValue({
+									store: {
+										...row.original,
+										type: view,
+									},
+								});
 
-									setSecurityInfo({
-										ref_no: doc_no || counter_no,
-									});
-								}, 200);
-							}}
-						/>
-
-						{/* <Popover>
-							<PopoverTrigger asChild>
-								<button>
-									<TrashIcon
-										size={20}
-										className="text-red-700"
-									/>
-								</button>
-							</PopoverTrigger>
-
-							<PopoverContent side="bottom" align="start">
-								<div className="grid gap-2">
-									<h6>
-										Are you sure you want to delete this Doc{" "}
-										{doc_no}?
-									</h6>
-
-									<div className="grid grid-cols-2 gap-2">
-										<button
-											onClick={() =>
-												handleDeleteStore(doc_no, store)
-											}
-											className="py-1 px-4 bg-red-700 text-white rounded-md"
-										>
-											Delete
-										</button>
-
-										<Close asChild>
-											<button className="py-1 px-4 bg-gray-300 rounded-md">
-												Cancel
-											</button>
-										</Close>
-									</div>
-								</div>
-							</PopoverContent>
-						</Popover> */}
-					</div>
+								setSecurityInfo({
+									ref_no: doc_no || counter_no,
+								});
+							}, 200);
+						}}
+					/>
 				);
 			},
 		},
@@ -432,12 +354,11 @@ const SupplySecurityPage = () => {
 		},
 	];
 
-	const entryColumns = [
+	const entryCouterColumns = [
 		{
 			id: "select",
 			cell: ({ row, table }) => {
 				const counter_no = row.original?.counter_no;
-				const doc_no = row.original?.doc_no;
 
 				return (
 					<div className="space-x-4 flex items-center">
@@ -453,20 +374,20 @@ const SupplySecurityPage = () => {
 
 								setTimeout(() => {
 									setDefaultValue({
-										entry: {
+										"entry-counter": {
 											...row.original,
 											type: view,
 										},
 									});
 
 									setSecurityInfo({
-										ref_no: doc_no || counter_no,
+										ref_no: counter_no,
 									});
 								}, 200);
 							}}
 						/>
 
-						{/* <Popover>
+						<Popover>
 							<PopoverTrigger asChild>
 								<button>
 									<TrashIcon
@@ -479,14 +400,14 @@ const SupplySecurityPage = () => {
 							<PopoverContent side="bottom" align="start">
 								<div className="grid gap-2">
 									<h6>
-										Are you sure you want to delete this Doc{" "}
-										{doc_no}?
+										Are you sure you want to delete this
+										Counter: {counter_no}?
 									</h6>
 
 									<div className="grid grid-cols-2 gap-2">
 										<button
 											onClick={() =>
-												handleDeleteStore(doc_no, store)
+												handleDeleteStore(counter_no)
 											}
 											className="py-1 px-4 bg-red-700 text-white rounded-md"
 										>
@@ -501,52 +422,88 @@ const SupplySecurityPage = () => {
 									</div>
 								</div>
 							</PopoverContent>
-						</Popover> */}
+						</Popover>
 					</div>
 				);
 			},
 		},
-		{
-			accessorKey: "counter_no_type",
-			header: () => <span>COUNTER TYPE</span>,
-			cell: ({ row }) => {
-				const rowValue = row.getValue("counter_no_type");
+		...counterColumns.filter((e) => e.id !== "select"),
+	];
 
-				const value = counterTypeOptions.find(
-					(e) => e.value === rowValue
+	const entryStoreColumns = [
+		{
+			id: "select",
+			cell: ({ row, table }) => {
+				const doc_no = row.getValue("doc_no");
+
+				return (
+					<div className="space-x-4 flex items-center">
+						<input
+							type="checkbox"
+							className="w-4 h-4 cursor-pointer"
+							checked={row.getIsSelected()}
+							onChange={(e) => {
+								const value = e.target.checked;
+
+								table.resetRowSelection();
+								row.toggleSelected(!!value);
+
+								setTimeout(() => {
+									setDefaultValue({
+										"entry-store": {
+											...row.original,
+											type: view,
+										},
+									});
+
+									setSecurityInfo({
+										ref_no: doc_no,
+									});
+								}, 200);
+							}}
+						/>
+
+						<Popover>
+							<PopoverTrigger asChild>
+								<button>
+									<TrashIcon
+										size={20}
+										className="text-red-700"
+									/>
+								</button>
+							</PopoverTrigger>
+
+							<PopoverContent side="bottom" align="start">
+								<div className="grid gap-2">
+									<h6>
+										Are you sure you want to delete this
+										Doc: {doc_no}?
+									</h6>
+
+									<div className="grid grid-cols-2 gap-2">
+										<button
+											onClick={() =>
+												handleDeleteStore(doc_no)
+											}
+											className="py-1 px-4 bg-red-700 text-white rounded-md"
+										>
+											Delete
+										</button>
+
+										<Close asChild>
+											<button className="py-1 px-4 bg-gray-300 rounded-md">
+												Cancel
+											</button>
+										</Close>
+									</div>
+								</div>
+							</PopoverContent>
+						</Popover>
+					</div>
 				);
-
-				return <span>{value?.label}</span>;
 			},
 		},
-		{
-			accessorKey: "counter_no",
-			header: () => <span>COUNTER NO</span>,
-		},
-		{
-			accessorKey: "counter_date",
-			header: () => <span>COUNTER DATE</span>,
-			cell: ({ row }) => {
-				const value = row.getValue("counter_date");
-
-				return dayjs(value).format("DD/MM/YYYY");
-			},
-		},
-		{
-			accessorKey: "routing",
-			header: () => <span>ROUTING</span>,
-			cell: ({ row }) => {
-				const rowValue = row.getValue("routing");
-
-				const value = routingOptions.find((e) => e.value === rowValue);
-
-				return <span>{value?.label}</span>;
-			},
-		},
-		{
-			accessorKey: "customer_name",
-			header: () => <span>CUSTOMER NAME</span>,
-		},
+		...storeColumns.filter((e) => e.id !== "select"),
 	];
 
 	const view = query?.view;
@@ -554,14 +511,14 @@ const SupplySecurityPage = () => {
 	const columns = {
 		counter: counterColumns,
 		store: storeColumns,
-		"entry-counter": entryColumns,
-		"entry-store": entryColumns,
+		"entry-counter": entryCouterColumns,
+		"entry-store": entryStoreColumns,
 	};
 
-	async function handleDeleteStore(doc_no, store) {
-		await axios.delete(ApiRoutes?.supply.store.delete({ doc_no, store }));
+	async function handleDeleteStore(ref_no) {
+		await axios.delete(ApiRoutes?.supply.security.delete({ ref_no }));
 
-		// fetchSecurityRecords({ changeLoadingState: false });
+		fetchSecurityRecords();
 	}
 
 	function checkView() {
@@ -716,7 +673,8 @@ const SupplySecurityPage = () => {
 				{!(
 					defaultValue.counter ||
 					defaultValue.store ||
-					defaultValue.entry
+					defaultValue["entry-store"] ||
+					defaultValue["entry-counter"]
 				) && (
 					<div className="w-full">
 						<DataTable
@@ -734,7 +692,8 @@ const SupplySecurityPage = () => {
 
 				{(defaultValue.counter ||
 					defaultValue.store ||
-					defaultValue.entry) && (
+					defaultValue["entry-store"] ||
+					defaultValue["entry-counter"]) && (
 					<div className="mx-auto w-full max-w-[500px] space-y-2">
 						<div className="flex flex-col items-center">
 							<Button

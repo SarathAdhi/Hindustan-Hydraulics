@@ -13,14 +13,14 @@ const SSecurityForm = ({
 	view = "counter",
 }) => {
 	const { register, handleSubmit, setValue, getValues, reset } = useForm({
-		defaultValues: { bill_checked: false, ...defaultValues[view] },
+		defaultValues: {
+			bill_checked: false,
+			book_register_no: defaultValues[view]?.reg_no,
+			...defaultValues[view],
+		},
 	});
 
-	console.log(defaultValues[view]);
-
 	async function handleSecurityForm(values) {
-		console.log({ values });
-
 		try {
 			if (view === "counter") {
 				console.log("counter");
@@ -68,14 +68,6 @@ const SSecurityForm = ({
 			className="card flex flex-col items-center gap-4"
 		>
 			<Input
-				{...register("po_no", { required: true })}
-				label="Purchase order number"
-				placeholder="Enter the Purchase order number"
-				required
-				disabled={!allowedFields?.po_no}
-			/>
-
-			<Input
 				{...register("book_register_no", { required: true })}
 				type="number"
 				label="Book Register number"
@@ -93,6 +85,7 @@ const SSecurityForm = ({
 			/>
 
 			<Checkbox
+				{...register("security_out", { required: true })}
 				name="security_out"
 				defaultChecked={getValues("security_out")}
 				onCheckedChange={(e) => setValue("security_out", e)}
