@@ -25,14 +25,14 @@ axios.interceptors.response.use(
 			toast.error(error.response.data.data);
 		} else if (
 			error.response?.data?.message &&
-			typeof error.response?.data?.data === "string"
+			typeof error.response?.data?.message === "string"
 		) {
 			toast.error(error.response.data.message);
-		} else if (error.response?.data?.error) {
-			toast.error(
-				error.response.data.error &&
-					typeof error.response?.data?.data === "string"
-			);
+		} else if (
+			error.response?.data?.error &&
+			typeof error.response?.data?.error === "string"
+		) {
+			toast.error(error.response.data.error);
 		}
 
 		return Promise.reject(error.response?.data);

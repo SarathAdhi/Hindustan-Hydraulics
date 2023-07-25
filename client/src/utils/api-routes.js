@@ -37,6 +37,17 @@ export const ApiRoutes = {
 			delete: (doc_no) => `/supply/bill/delete?doc_no=${doc_no}`,
 		},
 
-		security: "/supply/security/entry",
+		security: {
+			entry: "/supply/security/entry",
+			update: (values = {}) => {
+				Object.keys(values).forEach((key) =>
+					values[key] === undefined ? delete values[key] : {}
+				);
+
+				return `/supply/security/update?${new URLSearchParams(values)}`;
+			},
+			delete: (values = {}) =>
+				`/supply/security/delete?${new URLSearchParams(values)}`,
+		},
 	},
 };
