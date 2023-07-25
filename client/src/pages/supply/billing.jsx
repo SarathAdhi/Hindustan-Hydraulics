@@ -3,7 +3,7 @@ import PageLayout from "../../layouts/PageLayout";
 import { Button } from "../../components/ui/button";
 import { withAuth } from "../../hoc/withAuth";
 import axios from "../../lib/axios";
-import SupplyNavlinks from "../../modules/supply/SupplyBillingNavlinks";
+import SupplyNavlinks from "../../modules/supply/SupplyLayout";
 import {
 	docTypeOptions,
 	orderStatusOptions,

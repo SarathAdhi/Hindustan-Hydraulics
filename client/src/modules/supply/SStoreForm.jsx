@@ -15,13 +15,11 @@ import axios from "../../lib/axios";
 import { ApiRoutes } from "../../utils/api-routes";
 import {
 	docTypeOptions,
-	orderStatusOptions,
-	routingOptions,
 	storeOptions,
 	storeStatusOptions,
 } from "../../utils/constants";
 
-const SupplyForm = ({
+const SStoreForm = ({
 	defaultValues,
 	allowedFields,
 	storeInfo,
@@ -68,6 +66,7 @@ const SupplyForm = ({
 					name="store"
 					defaultValue={getValues("store")}
 					onValueChange={(e) => setValue("store", e)}
+					disabled={isUpdate && !allowedFields?.store}
 				>
 					<SelectTrigger>
 						<SelectValue placeholder="Select the store" />
@@ -89,6 +88,7 @@ const SupplyForm = ({
 				<Select
 					defaultValue={getValues("doc_type")}
 					onValueChange={(e) => setValue("doc_type", e)}
+					disabled={isUpdate && !allowedFields?.doc_type}
 				>
 					<SelectTrigger>
 						<SelectValue placeholder="Select the Doc type" />
@@ -107,6 +107,7 @@ const SupplyForm = ({
 				label="Doc number"
 				placeholder="Enter the Doc number"
 				required
+				disabled={isUpdate && !allowedFields?.doc_no}
 			/>
 
 			<Input
@@ -114,6 +115,7 @@ const SupplyForm = ({
 				{...register("doc_date", { required: true })}
 				label="Doc Date"
 				required
+				disabled={isUpdate && !allowedFields?.doc_date}
 			/>
 
 			<Input
@@ -121,6 +123,7 @@ const SupplyForm = ({
 				label="Purchase order number"
 				placeholder="Enter the Purchase order number"
 				required
+				disabled={isUpdate && !allowedFields?.po_no}
 			/>
 
 			<Input
@@ -128,6 +131,7 @@ const SupplyForm = ({
 				{...register("po_date", { required: true })}
 				label="Purchase order Date"
 				required
+				disabled={isUpdate && !allowedFields?.po_date}
 			/>
 
 			<Input
@@ -135,6 +139,7 @@ const SupplyForm = ({
 				label="Customer Name"
 				placeholder="Enter the Customer Name"
 				required
+				disabled={isUpdate && !allowedFields?.customer_name}
 			/>
 
 			<div className="w-full flex flex-col gap-2">
@@ -146,6 +151,7 @@ const SupplyForm = ({
 					name="supply"
 					defaultValue={getValues("supply")}
 					onValueChange={(e) => setValue("supply", e)}
+					disabled={isUpdate && !allowedFields?.supply}
 				>
 					<SelectTrigger>
 						<SelectValue placeholder="Select the supply" />
@@ -164,6 +170,7 @@ const SupplyForm = ({
 				defaultChecked={getValues("ready")}
 				onCheckedChange={(e) => setValue("ready", e)}
 				label="Ready"
+				disabled={isUpdate && !allowedFields?.ready}
 			/>
 
 			<Checkbox
@@ -171,11 +178,12 @@ const SupplyForm = ({
 				defaultChecked={getValues("ready_to_bill")}
 				onCheckedChange={(e) => setValue("ready_to_bill", e)}
 				label="Ready to bill"
+				disabled={isUpdate && !allowedFields?.ready_to_bill}
 			/>
 
-			<Button type="submit">Submit</Button>
+			<Button type="submit">{isUpdate ? "Update" : "Submit"}</Button>
 		</form>
 	);
 };
 
-export default SupplyForm;
+export default SStoreForm;
