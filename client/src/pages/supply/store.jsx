@@ -180,8 +180,8 @@ const SupplyStorePage = () => {
 		},
 		{
 			accessorKey: "store-type",
-			header: () => <span>STORE TYPE</span>,
-			cell: ({ row, column }) => {
+			header: () => <span>SUPPLY TYPE</span>,
+			cell: ({ row }) => {
 				const storeSupply = row.original?.supply;
 
 				const value = storeStatusOptions.find(

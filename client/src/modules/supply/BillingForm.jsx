@@ -35,10 +35,7 @@ const BillingForm = ({
 						...docInfo,
 					}),
 					{
-						order_status,
-						routing,
-						bill_ready,
-						bill_date,
+						...values,
 					}
 				);
 			} else {

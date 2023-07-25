@@ -63,7 +63,7 @@ export const inwardStoreOptions = [
 	"Hose",
 	"TC Counter",
 	"LC Counter",
-].map((label) => ({ label, value: label.toLowerCase() }));
+].map((label) => ({ label, value: label.toLowerCase().replaceAll(" ", "_") }));
 
 export const inwardDocTypeOptions = [
 	"Bill No",

@@ -56,8 +56,7 @@ const InwardStorePage = () => {
 				const doc_no = row.getValue("doc_no");
 				const store = row.original?.store;
 
-				const { po_date, doc_date, created_date, ...rest } =
-					row.original;
+				const { doc_date, created_date, ...rest } = row.original;
 
 				return (
 					<div className="space-x-4 flex items-center">
@@ -74,10 +73,6 @@ const InwardStorePage = () => {
 								setTimeout(() => {
 									if (isStoreUpdate)
 										setStoreDefaultValue({
-											po_date:
-												dayjs(po_date).format(
-													"YYYY-MM-DD"
-												),
 											doc_date:
 												dayjs(doc_date).format(
 													"YYYY-MM-DD"
@@ -177,7 +172,7 @@ const InwardStorePage = () => {
 		},
 		{
 			accessorKey: "supplier_name",
-			header: () => <span>CUSTOMER NAME</span>,
+			header: () => <span>SUPPLIER NAME</span>,
 		},
 	];
 
@@ -205,11 +200,9 @@ const InwardStorePage = () => {
 	const filteredStoreUnbilled = storeUnbilled.filter(
 		(e) =>
 			e?.doc_no.toLowerCase().includes(searchFilter.toLowerCase()) ||
-			e?.bill_no?.toLowerCase().includes(searchFilter.toLowerCase()) ||
-			e?.customer_name
-				?.toLowerCase()
-				.includes(searchFilter.toLowerCase()) ||
-			e?.doc_type?.toLowerCase().includes(searchFilter.toLowerCase())
+			e?.doc_type?.toLowerCase().includes(searchFilter.toLowerCase()) ||
+			e?.store?.toLowerCase().includes(searchFilter.toLowerCase()) ||
+			e?.supplier_name?.toLowerCase().includes(searchFilter.toLowerCase())
 	);
 
 	return (
