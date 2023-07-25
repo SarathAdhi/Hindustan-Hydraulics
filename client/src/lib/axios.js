@@ -18,12 +18,21 @@ axios.interceptors.response.use(
 		return response.data.data;
 	},
 	(error) => {
-		if (error.response?.data?.data) {
+		if (
+			error.response?.data?.data &&
+			typeof error.response?.data?.data === "string"
+		) {
 			toast.error(error.response.data.data);
-		} else if (error.response?.data?.message) {
+		} else if (
+			error.response?.data?.message &&
+			typeof error.response?.data?.data === "string"
+		) {
 			toast.error(error.response.data.message);
 		} else if (error.response?.data?.error) {
-			toast.error(error.response.data.error);
+			toast.error(
+				error.response.data.error &&
+					typeof error.response?.data?.data === "string"
+			);
 		}
 
 		return Promise.reject(error.response?.data);

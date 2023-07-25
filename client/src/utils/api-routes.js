@@ -1,11 +1,24 @@
 export const ApiRoutes = {
 	inward: {
 		create: "/inward/create",
-		store: "/inward/store/create",
+		store: {
+			create: "/inward/store/create",
+			"no-security": "/inward/store/no-security",
+			update: (values = {}) =>
+				`/inward/store/update?${new URLSearchParams(values)}`,
+			delete: (values = {}) =>
+				`/inward/store/delete?${new URLSearchParams(values)}`,
+		},
 		security: "/inward/security/create",
 	},
 	supply: {
-		counter: "/supply/counter/entry",
+		counter: {
+			entry: "/supply/counter/entry",
+			update: (values = {}) =>
+				`/supply/counter/update?${new URLSearchParams(values)}`,
+			delete: (values = {}) =>
+				`/supply/counter/delete?${new URLSearchParams(values)}`,
+		},
 
 		store: {
 			entry: "/supply/store/entry",

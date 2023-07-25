@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import PageLayout from "../../layouts/PageLayout";
-import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { withAuth } from "../../hoc/withAuth";
 import axios from "../../lib/axios";
-import SupplyNavlinks from "../../modules/supply/SupplyBillingNavlinks";
+import SupplyNavlinks from "../../modules/supply/SupplyLayout";
 import {
 	docTypeOptions,
 	storeOptions,
@@ -13,7 +12,7 @@ import {
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { RefreshCcw, TrashIcon } from "lucide-react";
-import SupplyForm from "../../modules/supply/SupplyForm";
+import SStoreForm from "../../modules/supply/SStoreForm";
 import { DataTable } from "../../components/DataTable";
 import dayjs from "dayjs";
 import {
@@ -47,6 +46,7 @@ const SupplyStorePage = () => {
 	const [searchFilter, setSearchFilter] = useState("");
 	const [storeDefaultValue, setStoreDefaultValue] = useState({});
 	const [storeInfo, setStoreInfo] = useState(null);
+	const [allowedFields, setAllowedFields] = useState({});
 
 	async function handleDeleteStore(doc_no, store) {
 		await axios.delete(ApiRoutes.supply.store.delete({ doc_no, store }));
@@ -168,72 +168,21 @@ const SupplyStorePage = () => {
 			},
 		},
 		{
-			accessorKey: "smc",
-			header: () => <span>SMC</span>,
-			cell: ({ row, column }) => {
-				const storeSupply = row.original?.supply;
+			accessorKey: "store-name",
+			header: () => <span>STORE NAME</span>,
+			cell: ({ row }) => {
+				const store = row.original?.store;
 
-				if (column.id !== row.original?.store) return <></>;
-
-				const value = storeStatusOptions.find(
-					(e) => e.value === storeSupply
-				);
+				const value = storeOptions.find((e) => e.value === store);
 
 				return <span>{value?.label}</span>;
 			},
 		},
 		{
-			accessorKey: "general",
-			header: () => <span>GENERAL</span>,
+			accessorKey: "store-type",
+			header: () => <span>STORE TYPE</span>,
 			cell: ({ row, column }) => {
 				const storeSupply = row.original?.supply;
-
-				if (column.id !== row.original?.store) return <></>;
-
-				const value = storeStatusOptions.find(
-					(e) => e.value === storeSupply
-				);
-
-				return <span>{value?.label}</span>;
-			},
-		},
-		{
-			accessorKey: "instrumentation",
-			header: () => <span>INSTRUMENTATION</span>,
-			cell: ({ row, column }) => {
-				const storeSupply = row.original?.supply;
-
-				if (column.id !== row.original?.store) return <></>;
-
-				const value = storeStatusOptions.find(
-					(e) => e.value === storeSupply
-				);
-
-				return <span>{value?.label}</span>;
-			},
-		},
-		{
-			accessorKey: "hydraulics",
-			header: () => <span>HYDRAULICS</span>,
-			cell: ({ row, column }) => {
-				const storeSupply = row.original?.supply;
-
-				if (column.id !== row.original?.store) return <></>;
-
-				const value = storeStatusOptions.find(
-					(e) => e.value === storeSupply
-				);
-
-				return <span>{value?.label}</span>;
-			},
-		},
-		{
-			accessorKey: "hose",
-			header: () => <span>HOSE</span>,
-			cell: ({ row, column }) => {
-				const storeSupply = row.original?.supply;
-
-				if (column.id !== row.original?.store) return <></>;
 
 				const value = storeStatusOptions.find(
 					(e) => e.value === storeSupply
@@ -262,12 +211,11 @@ const SupplyStorePage = () => {
 	];
 
 	useEffect(() => {
-		// axios.get("/supply/store/modify/allowed").then((res) => {
-		// 	const fields = {};
-		// 	res.map((e) => (fields[e] = true));
-		// 	// setAllowedFields(fields);
-		// 	console.log({ fields });
-		// });
+		axios.get("/supply/store/modify/allowed").then((res) => {
+			const fields = {};
+			res.map((e) => (fields[e] = true));
+			setAllowedFields(fields);
+		});
 	}, []);
 
 	async function fetchStoreUnbilled() {
@@ -299,8 +247,8 @@ const SupplyStorePage = () => {
 		<PageLayout className="flex flex-col gap-4">
 			<SupplyNavlinks className="mx-auto w-full max-w-[500px]" />
 
-			<div className="w-full flex flex-col items-start gap-2">
-				<div className="w-full flex items-center justify-between">
+			<div className="w-full flex flex-col items-center gap-2">
+				<div className="w-full flex flex-col items-center gap-2">
 					<div className="border border-black bg-gray-300 p-1 rounded-md flex items-center gap-1">
 						<Button
 							variant={!isStoreUpdate ? "success" : "ghost"}
@@ -321,10 +269,10 @@ const SupplyStorePage = () => {
 						</Button>
 					</div>
 
-					{isStoreUpdate && (
-						<div className="flex gap-2">
-							<Input
-								className="h-8 border-black"
+					{isStoreUpdate && !storeInfo && (
+						<div className="p-1 flex items-center border border-black rounded-full">
+							<input
+								className="py-2 px-4 h-8 bg-transparent rounded-full !outline-0"
 								onChange={(e) =>
 									setSearchFilter(e.target.value)
 								}
@@ -344,11 +292,13 @@ const SupplyStorePage = () => {
 				{isStoreUpdate ? (
 					<>
 						{!storeInfo && (
-							<DataTable
-								columns={columns}
-								data={filteredStoreUnbilled}
-								isLoading={isLoading}
-							/>
+							<div className="w-full">
+								<DataTable
+									columns={columns}
+									data={filteredStoreUnbilled}
+									isLoading={isLoading}
+								/>
+							</div>
 						)}
 
 						{storeInfo && (
@@ -357,7 +307,10 @@ const SupplyStorePage = () => {
 									<Button
 										variant="link"
 										className="p-0"
-										onClick={() => setStoreInfo(null)}
+										onClick={() => {
+											fetchStoreUnbilled();
+											setStoreInfo(null);
+										}}
 									>
 										Go Back
 									</Button>
@@ -368,8 +321,8 @@ const SupplyStorePage = () => {
 									</h5>
 								</div>
 
-								<SupplyForm
-									// allowedFields={allowedFields}
+								<SStoreForm
+									allowedFields={allowedFields}
 									defaultValues={storeDefaultValue}
 									storeInfo={storeInfo}
 									isUpdate={true}
@@ -379,7 +332,7 @@ const SupplyStorePage = () => {
 					</>
 				) : (
 					<div className="mx-auto w-full max-w-[500px] space-y-2">
-						<SupplyForm
+						<SStoreForm
 							// allowedFields={allowedFields}
 							defaultValues={_defaultValues}
 							isUpdate={false}
