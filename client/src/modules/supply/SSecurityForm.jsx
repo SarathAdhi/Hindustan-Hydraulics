@@ -13,7 +13,7 @@ const SSecurityForm = ({
 	view = "counter",
 }) => {
 	const { register, handleSubmit, setValue, getValues, reset } = useForm({
-		defaultValues: defaultValues[view],
+		defaultValues: { bill_checked: false, ...defaultValues[view] },
 	});
 
 	console.log(defaultValues[view]);
