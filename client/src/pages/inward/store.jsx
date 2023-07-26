@@ -269,7 +269,10 @@ const InwardStorePage = () => {
 									<Button
 										variant="link"
 										className="p-0"
-										onClick={() => setStoreInfo(null)}
+										onClick={() => {
+											fetchStoreUnbilled();
+											setStoreInfo(null);
+										}}
 									>
 										Go Back
 									</Button>

@@ -9,7 +9,19 @@ export const ApiRoutes = {
 			delete: (values = {}) =>
 				`/inward/store/delete?${new URLSearchParams(values)}`,
 		},
-		security: "/inward/security/create",
+
+		security: {
+			create: "/inward/security/create",
+			update: (values = {}) => {
+				Object.keys(values).forEach((key) =>
+					values[key] === undefined ? delete values[key] : {}
+				);
+
+				return `/inward/security/update?${new URLSearchParams(values)}`;
+			},
+			delete: (values = {}) =>
+				`/inward/security/delete?${new URLSearchParams(values)}`,
+		},
 	},
 	supply: {
 		counter: {

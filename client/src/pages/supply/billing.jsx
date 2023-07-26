@@ -431,7 +431,10 @@ const SupplyBillingPage = () => {
 							<Button
 								variant="link"
 								className="p-0"
-								onClick={() => setDocInfo(null)}
+								onClick={() => {
+									fetchBill();
+									setDocInfo(null);
+								}}
 							>
 								Go Back
 							</Button>
