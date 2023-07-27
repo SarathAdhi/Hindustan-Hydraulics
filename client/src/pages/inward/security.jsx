@@ -21,7 +21,7 @@ import { Close } from "@radix-ui/react-popover";
 
 const _defaultValues = {
 	reg_no: 0,
-	inward_reg_no: 0,
+	inward_reg_no: "",
 	security_inward: false,
 };
 

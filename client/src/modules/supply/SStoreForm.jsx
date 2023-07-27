@@ -74,7 +74,9 @@ const SStoreForm = ({
 
 					<SelectContent>
 						{storeOptions.map(({ label, value }) => (
-							<SelectItem value={value}>{label}</SelectItem>
+							<SelectItem key={value} value={value}>
+								{label}
+							</SelectItem>
 						))}
 					</SelectContent>
 				</Select>
@@ -96,7 +98,9 @@ const SStoreForm = ({
 
 					<SelectContent>
 						{docTypeOptions.map(({ label, value }) => (
-							<SelectItem value={value}>{label}</SelectItem>
+							<SelectItem key={value} value={value}>
+								{label}
+							</SelectItem>
 						))}
 					</SelectContent>
 				</Select>
@@ -159,7 +163,9 @@ const SStoreForm = ({
 
 					<SelectContent>
 						{storeStatusOptions.map(({ label, value }) => (
-							<SelectItem value={value}>{label}</SelectItem>
+							<SelectItem key={value} value={value}>
+								{label}
+							</SelectItem>
 						))}
 					</SelectContent>
 				</Select>

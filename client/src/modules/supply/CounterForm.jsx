@@ -68,7 +68,9 @@ const CounterForm = ({
 
 					<SelectContent>
 						{counterTypeOptions.map(({ label, value }) => (
-							<SelectItem value={value}>{label}</SelectItem>
+							<SelectItem key={value} value={value}>
+								{label}
+							</SelectItem>
 						))}
 					</SelectContent>
 				</Select>
@@ -114,7 +116,9 @@ const CounterForm = ({
 
 					<SelectContent>
 						{routingOptions.map(({ label, value }) => (
-							<SelectItem value={value}>{label}</SelectItem>
+							<SelectItem key={value} value={value}>
+								{label}
+							</SelectItem>
 						))}
 					</SelectContent>
 				</Select>

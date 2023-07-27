@@ -116,6 +116,10 @@ const SupplySecurityPage = () => {
 			accessorKey: "customer_name",
 			header: () => <span>CUSTOMER NAME</span>,
 		},
+		{
+			accessorKey: "reg_no",
+			header: () => <span>REG NO</span>,
+		},
 	];
 
 	const storeColumns = [

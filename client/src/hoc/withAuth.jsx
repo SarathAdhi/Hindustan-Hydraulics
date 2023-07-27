@@ -2,14 +2,16 @@ import { useRouter } from "next/router";
 import { useStore } from "../utils/store";
 
 export const withAuth = (Component) => (pageProps) => {
-  const router = useRouter();
-  const { isAuth } = useStore();
+	const router = useRouter();
+	const { isAuth } = useStore();
 
-  if (!isAuth) {
-    const redirect = router.asPath;
+	if (!isAuth) {
+		const redirect = router.asPath;
 
-    router.replace(`/auth/login?redirect=${redirect}`);
-  }
+		router.replace(`/auth/login?redirect=${redirect}`);
+	}
 
-  return <Component {...pageProps} />;
+	return <Component {...pageProps} />;
 };
+
+withAuth.displayName = "withAuth";
