@@ -295,7 +295,6 @@ const InwardStorePage = () => {
 				) : (
 					<div className="mx-auto w-full max-w-[500px] space-y-2">
 						<IStoreForm
-							// allowedFields={allowedFields}
 							defaultValues={_defaultValues}
 							isUpdate={false}
 						/>
