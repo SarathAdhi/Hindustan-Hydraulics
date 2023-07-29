@@ -68,7 +68,9 @@ const CounterForm = ({
 
 					<SelectContent>
 						{counterTypeOptions.map(({ label, value }) => (
-							<SelectItem value={value}>{label}</SelectItem>
+							<SelectItem key={value} value={value}>
+								{label}
+							</SelectItem>
 						))}
 					</SelectContent>
 				</Select>
@@ -114,11 +116,29 @@ const CounterForm = ({
 
 					<SelectContent>
 						{routingOptions.map(({ label, value }) => (
-							<SelectItem value={value}>{label}</SelectItem>
+							<SelectItem key={value} value={value}>
+								{label}
+							</SelectItem>
 						))}
 					</SelectContent>
 				</Select>
 			</div>
+
+			<Input
+				{...register("routing_name", { required: true })}
+				label="Routing name"
+				placeholder="Enter the Routing name"
+				required
+				disabled={isUpdate && !allowedFields?.routing_name}
+			/>
+
+			<Input
+				{...register("routing_receipt_no", { required: true })}
+				label="Routing receipt number"
+				placeholder="Enter the Routing receipt number"
+				required
+				disabled={isUpdate && !allowedFields?.routing_receipt_no}
+			/>
 
 			<Button type="submit">{isUpdate ? "Update" : "Submit"}</Button>
 		</form>

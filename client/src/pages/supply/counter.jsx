@@ -4,17 +4,10 @@ import { Button } from "../../components/ui/button";
 import { withAuth } from "../../hoc/withAuth";
 import axios from "../../lib/axios";
 import SupplyNavlinks from "../../modules/supply/SupplyLayout";
-import {
-	counterTypeOptions,
-	docTypeOptions,
-	routingOptions,
-	storeOptions,
-	storeStatusOptions,
-} from "../../utils/constants";
+import { counterTypeOptions, routingOptions } from "../../utils/constants";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { RefreshCcw, TrashIcon } from "lucide-react";
-import SStoreForm from "../../modules/supply/SStoreForm";
 import { DataTable } from "../../components/DataTable";
 import dayjs from "dayjs";
 import {
@@ -29,9 +22,11 @@ import CounterForm from "../../modules/supply/CounterForm";
 const _defaultValues = {
 	counter_no_type: "",
 	counter_no: "",
-	counter_date: 0,
+	counter_date: "",
 	customer_name: "",
 	routing: "",
+	routing_name: "",
+	routing_receipt_no: "",
 };
 
 const SupplyCounterPage = () => {

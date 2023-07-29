@@ -25,25 +25,38 @@ const SSecurityForm = ({
 			if (view === "counter") {
 				console.log("counter");
 
-				const { book_register_no, security_out, type, counter_no } =
-					values;
-
-				await axios.post(ApiRoutes.supply.security.entry, {
-					book_register_no: parseInt(book_register_no),
+				const {
+					book_register_no,
 					security_out,
 					type,
 					counter_no,
+					bill_checked,
+				} = values;
+
+				await axios.post(ApiRoutes.supply.security.entry, {
+					book_register_no: book_register_no,
+					security_out,
+					type,
+					counter_no,
+					bill_checked,
 				});
 			} else if (view === "store") {
 				console.log("store");
 
-				const { book_register_no, security_out, type, doc_no } = values;
-
-				await axios.post(ApiRoutes.supply.security.entry, {
-					book_register_no: parseInt(book_register_no),
+				const {
+					book_register_no,
 					security_out,
 					type,
 					doc_no,
+					bill_checked,
+				} = values;
+
+				await axios.post(ApiRoutes.supply.security.entry, {
+					book_register_no: book_register_no,
+					security_out,
+					type,
+					doc_no,
+					bill_checked,
 				});
 			} else if (view.includes("entry-")) {
 				console.log("entry-put");
@@ -69,7 +82,6 @@ const SSecurityForm = ({
 		>
 			<Input
 				{...register("book_register_no", { required: true })}
-				type="number"
 				label="Book Register number"
 				placeholder="Enter the Book Register number"
 				required

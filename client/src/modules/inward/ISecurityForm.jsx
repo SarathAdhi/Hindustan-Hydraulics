@@ -19,21 +19,23 @@ const ISecurityForm = ({
 	async function handleSecurityForm(values) {
 		try {
 			if (view === "create") {
-				const { security_inward, inward_reg_no } = values;
+				const { security_inward, inward_reg_no, bill_checked } = values;
 
 				await axios.post(ApiRoutes.inward.security.create, {
 					security_inward,
-					inward_reg_no: parseInt(inward_reg_no),
+					inward_reg_no: inward_reg_no,
+					bill_checked,
 					...securityInfo,
 				});
 			} else if (view === "update") {
-				const { security_inward, inward_reg_no } = values;
+				const { security_inward, inward_reg_no, bill_checked } = values;
 
 				await axios.put(
 					ApiRoutes.inward.security.update(securityInfo),
 					{
 						security_inward,
-						inward_reg_no: parseInt(inward_reg_no),
+						inward_reg_no: inward_reg_no,
+						bill_checked,
 					}
 				);
 			} else {
@@ -54,10 +56,17 @@ const ISecurityForm = ({
 			<Input
 				{...register("inward_reg_no", { required: true })}
 				label="Inward number"
-				type="number"
 				placeholder="Enter the Inward number"
 				required
 				disabled={!allowedFields?.inward_reg_no}
+			/>
+
+			<Checkbox
+				name="bill_checked"
+				defaultChecked={getValues("bill_checked")}
+				onCheckedChange={(e) => setValue("bill_checked", e)}
+				label="Bill Checked"
+				disabled={!allowedFields?.bill_checked}
 			/>
 
 			<Checkbox

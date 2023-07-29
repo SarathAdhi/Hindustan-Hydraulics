@@ -26,7 +26,7 @@ const InwardPageLayout = ({ className, children }) => {
 					variant={pathname === href ? "" : "outline"}
 					asChild
 				>
-					<Link className="text-center" href={href}>
+					<Link key={name} className="text-center" href={href}>
 						{name}
 					</Link>
 				</Button>

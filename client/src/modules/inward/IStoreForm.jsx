@@ -16,6 +16,7 @@ import { ApiRoutes } from "../../utils/api-routes";
 import {
 	inwardDocTypeOptions,
 	inwardStoreOptions,
+	routingOptions,
 } from "../../utils/constants";
 
 const IStoreForm = ({
@@ -24,9 +25,10 @@ const IStoreForm = ({
 	storeInfo,
 	isUpdate = false,
 }) => {
-	const { register, handleSubmit, setValue, getValues, reset } = useForm({
-		defaultValues,
-	});
+	const { register, handleSubmit, setValue, getValues, reset, control } =
+		useForm({
+			defaultValues,
+		});
 
 	async function handleStoreForm(values) {
 		try {
@@ -45,7 +47,7 @@ const IStoreForm = ({
 			} else {
 				await axios.post(ApiRoutes.inward.store.create, values);
 
-				reset();
+				reset(defaultValues);
 			}
 		} catch (error) {
 			console.log({ error });
@@ -73,7 +75,9 @@ const IStoreForm = ({
 
 					<SelectContent>
 						{inwardStoreOptions.map(({ label, value }) => (
-							<SelectItem value={value}>{label}</SelectItem>
+							<SelectItem key={value} value={value}>
+								{label}
+							</SelectItem>
 						))}
 					</SelectContent>
 				</Select>
@@ -103,7 +107,9 @@ const IStoreForm = ({
 
 					<SelectContent>
 						{inwardDocTypeOptions.map(({ label, value }) => (
-							<SelectItem value={value}>{label}</SelectItem>
+							<SelectItem key={value} value={value}>
+								{label}
+							</SelectItem>
 						))}
 					</SelectContent>
 				</Select>
@@ -123,6 +129,47 @@ const IStoreForm = ({
 				label="Doc Date"
 				required
 				disabled={isUpdate && !allowedFields?.doc_date}
+			/>
+
+			<div className="w-full flex flex-col gap-2">
+				<Label className="capitalize" htmlFor="routing">
+					Routing <span className="text-red-500">*</span>
+				</Label>
+
+				<Select
+					name="routing"
+					defaultValue={defaultValues?.routing}
+					onValueChange={(e) => setValue("routing", e)}
+					disabled={isUpdate && !allowedFields?.routing}
+				>
+					<SelectTrigger>
+						<SelectValue placeholder="Select the Routing" />
+					</SelectTrigger>
+
+					<SelectContent>
+						{routingOptions.map(({ label, value }) => (
+							<SelectItem key={value} value={value}>
+								{label}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
+			</div>
+
+			<Input
+				{...register("routing_name", { required: true })}
+				label="Routing name"
+				placeholder="Enter the Routing name"
+				required
+				disabled={isUpdate && !allowedFields?.routing_name}
+			/>
+
+			<Input
+				{...register("routing_receipt_no", { required: true })}
+				label="Routing receipt number"
+				placeholder="Enter the Routing receipt number"
+				required
+				disabled={isUpdate && !allowedFields?.routing_receipt_no}
 			/>
 
 			<Checkbox
