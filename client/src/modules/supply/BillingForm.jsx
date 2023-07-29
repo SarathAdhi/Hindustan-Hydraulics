@@ -123,6 +123,22 @@ const BillingForm = ({
 					</Select>
 				</div>
 
+				<Input
+					{...register("routing_name", { required: true })}
+					label="Routing name"
+					placeholder="Enter the Routing name"
+					required
+					disabled={isUpdate && !allowedFields?.routing_name}
+				/>
+
+				<Input
+					{...register("routing_receipt_no", { required: true })}
+					label="Routing receipt number"
+					placeholder="Enter the Routing receipt number"
+					required
+					disabled={isUpdate && !allowedFields?.routing_receipt_no}
+				/>
+
 				<Checkbox
 					name="bill_ready"
 					defaultChecked={getValues("bill_ready")}

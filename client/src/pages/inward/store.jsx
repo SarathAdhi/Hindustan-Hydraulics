@@ -28,6 +28,9 @@ const _defaultValues = {
 	doc_type: "",
 	doc_no: "",
 	doc_date: "",
+	routing: "",
+	routing_name: "",
+	routing_receipt_no: "",
 	received: false,
 };
 

@@ -29,6 +29,8 @@ const _defaultValues = {
 	bill_no: "",
 	bill_date: "",
 	routing: "",
+	routing_name: "",
+	routing_receipt_no: "",
 	bill_ready: false,
 };
 
