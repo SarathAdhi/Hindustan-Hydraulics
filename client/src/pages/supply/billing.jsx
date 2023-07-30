@@ -201,7 +201,7 @@ const SupplyBillingPage = () => {
 			cell: ({ row }) => {
 				const value = row.getValue("doc_date");
 
-				return dayjs(value).format("DD/MM/YYYY");
+				return value ? dayjs(value).format("DD/MM/YYYY") : "";
 			},
 		},
 		{
@@ -218,7 +218,7 @@ const SupplyBillingPage = () => {
 			cell: ({ row }) => {
 				const value = row.getValue("po_date");
 
-				return dayjs(value).format("DD/MM/YYYY");
+				return value ? dayjs(value).format("DD/MM/YYYY") : "";
 			},
 		},
 		{
