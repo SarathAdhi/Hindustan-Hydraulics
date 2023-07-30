@@ -12,7 +12,8 @@ import Image from "next/image";
 import MobileSidebar from "./MobileSidebar";
 
 const Topbar = ({ showBasicLayout }) => {
-	const { isAuth, logout, isSidebarOpen, toggleSidebar } = useStore();
+	const { isAuth, isAdmin, logout, isSidebarOpen, toggleSidebar } =
+		useStore();
 
 	return (
 		<header className="z-50 sticky top-0 w-full p-2 flex items-center justify-between border-b bg-white">
@@ -44,6 +45,12 @@ const Topbar = ({ showBasicLayout }) => {
 			<div className="flex gap-2">
 				{isAuth && (
 					<>
+						{isAdmin && (
+							<Button variant="outline" asChild>
+								<Link href="/admin">Users</Link>
+							</Button>
+						)}
+
 						<Button
 							variant="destructive"
 							onClick={logout}
