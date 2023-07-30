@@ -435,4 +435,4 @@ const InwardSecurityPage = () => {
 	);
 };
 
-export default withAuth(InwardSecurityPage);
+export default withAuth(InwardSecurityPage, "inward_security");
