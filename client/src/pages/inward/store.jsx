@@ -308,4 +308,4 @@ const InwardStorePage = () => {
 	);
 };
 
-export default withAuth(InwardStorePage);
+export default withAuth(InwardStorePage, "inward_store");

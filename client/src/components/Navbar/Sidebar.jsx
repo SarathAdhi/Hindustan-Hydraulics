@@ -16,11 +16,13 @@ const Sidebar = ({
 
 	const inwardStartUrl = roles
 		?.find((e) => e.includes("inward_"))
-		?.split("_")[1];
+		?.split("_")[1]
+		?.split("-")[0];
 
 	const supplyStartUrl = roles
 		?.find((e) => e.includes("supply_"))
-		?.split("_")[1];
+		?.split("_")[1]
+		?.split("-")[0];
 
 	const pages = [
 		{
