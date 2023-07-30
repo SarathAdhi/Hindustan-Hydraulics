@@ -12,9 +12,12 @@ const ISecurityForm = ({
 	securityInfo,
 	view = "create",
 }) => {
-	const { register, handleSubmit, setValue, getValues, reset } = useForm({
-		defaultValues: defaultValues,
-	});
+	const { register, handleSubmit, setValue, getValues, reset, watch } =
+		useForm({
+			defaultValues: defaultValues,
+		});
+
+	const btnDisabled = !(watch("bill_checked") || watch("security_inward"));
 
 	async function handleSecurityForm(values) {
 		try {
@@ -58,15 +61,15 @@ const ISecurityForm = ({
 				label="Inward number"
 				placeholder="Enter the Inward number"
 				required
-				disabled={!allowedFields?.inward_reg_no}
+				disabled={view === "update" && !allowedFields?.inward_reg_no}
 			/>
 
 			<Checkbox
 				name="bill_checked"
+				label="Bill Checked"
 				defaultChecked={getValues("bill_checked")}
 				onCheckedChange={(e) => setValue("bill_checked", e)}
-				label="Bill Checked"
-				disabled={!allowedFields?.bill_checked}
+				disabled={view === "update" && !allowedFields?.bill_checked}
 			/>
 
 			<Checkbox
@@ -74,10 +77,12 @@ const ISecurityForm = ({
 				defaultChecked={getValues("security_inward")}
 				onCheckedChange={(e) => setValue("security_inward", e)}
 				label="Security Entry"
-				disabled={!allowedFields?.security_inward}
+				disabled={view === "update" && !allowedFields?.security_inward}
 			/>
 
-			<Button type="submit">Submit</Button>
+			<Button disabled={btnDisabled} type="submit">
+				Submit
+			</Button>
 		</form>
 	);
 };

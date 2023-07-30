@@ -724,4 +724,4 @@ const SupplySecurityPage = () => {
 	);
 };
 
-export default withAuth(SupplySecurityPage);
+export default withAuth(SupplySecurityPage, "supply_security");

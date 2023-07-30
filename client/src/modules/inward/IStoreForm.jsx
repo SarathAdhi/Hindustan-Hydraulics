@@ -25,10 +25,12 @@ const IStoreForm = ({
 	storeInfo,
 	isUpdate = false,
 }) => {
-	const { register, handleSubmit, setValue, getValues, reset, control } =
+	const { register, handleSubmit, setValue, getValues, reset, watch } =
 		useForm({
 			defaultValues,
 		});
+
+	const btnDisabled = !watch("received");
 
 	async function handleStoreForm(values) {
 		try {
@@ -180,7 +182,9 @@ const IStoreForm = ({
 				disabled={isUpdate && !allowedFields?.received}
 			/>
 
-			<Button type="submit">{isUpdate ? "Update" : "Submit"}</Button>
+			<Button disabled={btnDisabled} type="submit">
+				{isUpdate ? "Update" : "Submit"}
+			</Button>
 		</form>
 	);
 };
