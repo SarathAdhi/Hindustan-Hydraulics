@@ -12,13 +12,17 @@ const SSecurityForm = ({
 	securityInfo,
 	view = "counter",
 }) => {
-	const { register, handleSubmit, setValue, getValues, reset } = useForm({
-		defaultValues: {
-			bill_checked: false,
-			book_register_no: defaultValues[view]?.reg_no,
-			...defaultValues[view],
-		},
-	});
+	const { register, handleSubmit, setValue, getValues, reset, watch } =
+		useForm({
+			defaultValues: {
+				bill_checked: false,
+				security_out: false,
+				book_register_no: defaultValues[view]?.reg_no,
+				...defaultValues[view],
+			},
+		});
+
+	const btnDisabled = !(watch("bill_checked") || watch("security_out"));
 
 	async function handleSecurityForm(values) {
 		try {
@@ -105,7 +109,9 @@ const SSecurityForm = ({
 				disabled={!allowedFields?.security_out}
 			/>
 
-			<Button type="submit">Submit</Button>
+			<Button disabled={btnDisabled} type="submit">
+				Submit
+			</Button>
 		</form>
 	);
 };

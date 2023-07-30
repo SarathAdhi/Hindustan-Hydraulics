@@ -434,7 +434,7 @@ const SupplyBillingPage = () => {
 								variant="link"
 								className="p-0"
 								onClick={() => {
-									fetchBill();
+									fetchBill({ changeLoadingState: true });
 									setDocInfo(null);
 								}}
 							>
@@ -464,4 +464,4 @@ const SupplyBillingPage = () => {
 	);
 };
 
-export default withAuth(SupplyBillingPage);
+export default withAuth(SupplyBillingPage, "billing");

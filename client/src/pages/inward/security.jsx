@@ -290,7 +290,7 @@ const InwardSecurityPage = () => {
 	};
 
 	async function handleDelete(doc_no) {
-		await axios.delete(ApiRoutes?.supply.security.delete({ doc_no }));
+		await axios.delete(ApiRoutes?.inward.security.delete({ doc_no }));
 
 		fetchSecurityRecords();
 	}

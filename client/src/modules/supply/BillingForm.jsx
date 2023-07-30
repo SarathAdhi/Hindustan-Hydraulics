@@ -21,15 +21,16 @@ const BillingForm = ({
 	docInfo,
 	isUpdate = false,
 }) => {
-	const { register, handleSubmit, setValue, getValues } = useForm({
-		defaultValues,
-	});
+	const { register, handleSubmit, setValue, getValues, reset, watch } =
+		useForm({
+			defaultValues,
+		});
+
+	const btnDisabled = !watch("bill_ready");
 
 	async function handleBillingForm(values) {
 		try {
 			if (isUpdate) {
-				const { order_status, routing, bill_ready, bill_date } = values;
-
 				await axios.put(
 					ApiRoutes.supply.billing.update({
 						...docInfo,
@@ -45,6 +46,8 @@ const BillingForm = ({
 					...values,
 					...rest,
 				});
+
+				reset();
 			}
 		} catch (error) {
 			console.log({ error });
@@ -144,10 +147,15 @@ const BillingForm = ({
 					defaultChecked={getValues("bill_ready")}
 					onCheckedChange={(e) => setValue("bill_ready", e)}
 					label="Bill ready"
+					required
 					disabled={isUpdate && !allowedFields?.bill_ready}
 				/>
 
-				<Button variant={isUpdate ? "success" : ""} type="submit">
+				<Button
+					disabled={btnDisabled}
+					variant={isUpdate ? "success" : ""}
+					type="submit"
+				>
 					{isUpdate ? "Update" : "Submit"}
 				</Button>
 			</form>

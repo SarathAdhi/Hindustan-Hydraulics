@@ -7,92 +7,91 @@ import { LogIn, ShoppingCart } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { useRouter } from "next/router";
 
-const pages = [
-  {
-    title: "Dashboard",
-    items: [
-      {
-        name: "Inward",
-        Icon: LogIn,
-        href: "/inward",
-      },
-      {
-        name: "Supply",
-        Icon: ShoppingCart,
-        href: "/supply",
-      },
-    ],
-  },
-  {
-    title: "Forms",
-    items: [
-      {
-        name: "Inward",
-        Icon: LogIn,
-        parentRoute: "/inward/",
-        href: "/inward/store",
-      },
-      {
-        name: "Supply",
-        Icon: ShoppingCart,
-        parentRoute: "/supply/",
-        href: "/supply/store",
-      },
-    ],
-  },
-];
-
 const Sidebar = ({
-  className = "hidden lg:flex w-60 flex-shrink-0 flex-col gap-4 min-h-screen bg-white border-r",
+	className = "hidden lg:flex w-60 flex-shrink-0 flex-col gap-4 min-h-screen bg-white border-r",
 }) => {
-  const { pathname } = useRouter();
+	const { pathname } = useRouter();
 
-  const { isSidebarOpen, isAdmin } = useStore();
+	const { isSidebarOpen, isAdmin } = useStore();
 
-  console.log({ isAdmin });
+	const pages = [
+		{
+			title: "Dashboard",
+			items: [
+				{
+					name: "Inward",
+					Icon: LogIn,
+					href: "/inward",
+				},
+				{
+					name: "Supply",
+					Icon: ShoppingCart,
+					href: "/supply",
+				},
+			],
+		},
+		{
+			title: "Forms",
+			items: [
+				{
+					name: "Inward",
+					Icon: LogIn,
+					parentRoute: "/inward/",
+					href: "/inward/store",
+				},
+				{
+					name: "Supply",
+					Icon: ShoppingCart,
+					parentRoute: "/supply/",
+					href: "/supply/store",
+				},
+			],
+		},
+	];
 
-  if (!isSidebarOpen) return <></>;
+	if (!isSidebarOpen) return <></>;
 
-  return (
-    <aside className={cn("sticky top-0", className)}>
-      <div className="pd">
-        <Image
-          width={300}
-          height={300}
-          className="w-10 h-10"
-          src="/company-logo.png"
-          alt="Company Logo"
-        />
-      </div>
+	return (
+		<aside className={cn("sticky top-0", className)}>
+			<div className="pd">
+				<Image
+					width={300}
+					height={300}
+					className="w-10 h-10"
+					src="/company-logo.png"
+					alt="Company Logo"
+				/>
+			</div>
 
-      <div className="space-y-4">
-        {pages.map(({ title, items }) => (
-          <div key={title} className="space-y-2">
-            <Label className="ml-4">{title}</Label>
+			<div className="space-y-4">
+				{pages.map(({ title, items }) => (
+					<div key={title} className="space-y-2">
+						<Label className="ml-4">{title}</Label>
 
-            <div className="grid">
-              {items.map(({ name, Icon, href, parentRoute }) => (
-                <Link
-                  key={name}
-                  className={cn(
-                    "hover:bg-[#ee657e] hover:text-white p-2 pl-6 flex items-center gap-2 text-base",
-                    (parentRoute
-                      ? pathname.includes(parentRoute)
-                      : pathname === href) && "border-r-4 border-r-[#9d2d42]"
-                  )}
-                  href={href}
-                >
-                  <Icon size={18} />
+						<div className="grid">
+							{items.map(({ name, Icon, href, parentRoute }) => (
+								<Link
+									key={name}
+									className={cn(
+										"hover:bg-[#ee657e] hover:text-white p-2 pl-6 flex items-center gap-2 text-base",
+										(parentRoute
+											? pathname.includes(parentRoute)
+											: pathname === href) &&
+											"border-r-4 border-r-[#9d2d42]"
+									)}
+									href={href}
+								>
+									<Icon size={18} />
 
-                  <span>{name}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    </aside>
-  );
+									<span>{name}</span>
+								</Link>
+							))}
+						</div>
+					</div>
+				))}
+			</div>
+		</aside>
+	);
 };
 
 export default Sidebar;
