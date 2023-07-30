@@ -28,7 +28,12 @@ export const withAuth =
 		const isRoleExist = roles?.some((e) => e === role);
 
 		if (role && !isAdmin && !isRoleExist) {
-			toast.error(`You don't have permission to access ${role} page`);
+			toast.error(
+				`You don't have permission to access ${role.replace(
+					"_",
+					" "
+				)} page`
+			);
 
 			if (history) history.back();
 			else router.replace("/");
