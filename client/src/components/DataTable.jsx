@@ -63,7 +63,7 @@ export function DataTable({
 								{headerGroup.headers.map((header, i2) => {
 									return (
 										<TableHead
-											className="text-black font-bold flex-shrink-0 whitespace-nowrap"
+											className="text-black text-base font-bold flex-shrink-0 whitespace-nowrap"
 											key={header.id + i2}
 										>
 											{header.isPlaceholder
@@ -91,7 +91,7 @@ export function DataTable({
 								>
 									{row.getVisibleCells().map((cell, i2) => (
 										<TableCell
-											className="flex-shrink-0 whitespace-nowrap"
+											className="flex-shrink-0 whitespace-nowrap text-base font-medium"
 											key={cell.id + i2}
 										>
 											{flexRender(
