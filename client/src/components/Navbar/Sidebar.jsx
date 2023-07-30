@@ -14,7 +14,10 @@ const Sidebar = ({
 
 	const { isSidebarOpen, roles, isAdmin } = useStore();
 
-	const inwardStartUrl = roles?.find((e) => e.includes("inward_"));
+	const inwardStartUrl = roles
+		?.find((e) => e.includes("inward_"))
+		?.split("_")[1];
+
 	const supplyStartUrl = roles
 		?.find((e) => e.includes("supply_"))
 		?.split("_")[1];
