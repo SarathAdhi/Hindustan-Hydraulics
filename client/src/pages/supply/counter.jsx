@@ -152,7 +152,7 @@ const SupplyCounterPage = () => {
 			cell: ({ row }) => {
 				const value = row.getValue("counter_date");
 
-				return dayjs(value).format("DD/MM/YYYY");
+				return value ? dayjs(value).format("DD/MM/YYYY") : "";
 			},
 		},
 		{
