@@ -464,4 +464,4 @@ const SupplyBillingPage = () => {
 	);
 };
 
-export default withAuth(SupplyBillingPage, "billing");
+export default withAuth(SupplyBillingPage, "supply_billing");

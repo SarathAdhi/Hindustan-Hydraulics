@@ -20,7 +20,7 @@ export const useStore = create((set) => ({
 
 			set({
 				isAuth: true,
-				isAdmin: res.authData.role?.includes("admin"),
+				isAdmin: res.authData.roles?.includes("admin"),
 				roles: res.authData.roles,
 				permissions: res.authData.permissions,
 			});

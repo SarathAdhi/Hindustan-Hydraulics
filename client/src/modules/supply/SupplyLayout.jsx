@@ -12,12 +12,12 @@ const pages = [
 		href: "/supply/store",
 	},
 	{
-		key: "billing",
+		key: "supply_billing",
 		name: "Billing",
 		href: "/supply/billing",
 	},
 	{
-		key: "counter",
+		key: "supply_counter",
 		name: "Counter",
 		href: "/supply/counter",
 	},
@@ -30,7 +30,7 @@ const pages = [
 
 const SupplyNavlinks = ({ className = "" }) => {
 	const { pathname } = useRouter();
-	const { roles } = useStore();
+	const { roles, isAdmin } = useStore();
 
 	return (
 		<div
@@ -43,10 +43,17 @@ const SupplyNavlinks = ({ className = "" }) => {
 				<Button
 					key={name}
 					variant={pathname === href ? "" : "outline"}
-					disabled={roles?.includes(key)}
 					asChild
 				>
-					<Link className="text-center" href={href}>
+					<Link
+						className={cn(
+							"text-center",
+							!isAdmin &&
+								!roles?.includes(key) &&
+								"pointer-events-none opacity-70 !cursor-not-allowed"
+						)}
+						href={href}
+					>
 						{name}
 					</Link>
 				</Button>

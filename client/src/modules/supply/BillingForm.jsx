@@ -127,18 +127,18 @@ const BillingForm = ({
 				</div>
 
 				<Input
-					{...register("routing_name", { required: true })}
+					{...register("routing_name", { required: !isUpdate })}
 					label="Routing name"
 					placeholder="Enter the Routing name"
-					required
+					required={!isUpdate}
 					disabled={isUpdate && !allowedFields?.routing_name}
 				/>
 
 				<Input
-					{...register("routing_receipt_no", { required: true })}
+					{...register("routing_receipt_no", { required: !isUpdate })}
 					label="Routing receipt number"
 					placeholder="Enter the Routing receipt number"
-					required
+					required={!isUpdate}
 					disabled={isUpdate && !allowedFields?.routing_receipt_no}
 				/>
 

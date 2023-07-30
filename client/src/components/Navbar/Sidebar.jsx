@@ -12,7 +12,12 @@ const Sidebar = ({
 }) => {
 	const { pathname } = useRouter();
 
-	const { isSidebarOpen, isAdmin } = useStore();
+	const { isSidebarOpen, roles, isAdmin } = useStore();
+
+	const inwardStartUrl = roles?.find((e) => e.includes("inward_"));
+	const supplyStartUrl = roles
+		?.find((e) => e.includes("supply_"))
+		?.split("_")[1];
 
 	const pages = [
 		{
@@ -22,11 +27,13 @@ const Sidebar = ({
 					name: "Inward",
 					Icon: LogIn,
 					href: "/inward",
+					disabled: !isAdmin,
 				},
 				{
 					name: "Supply",
 					Icon: ShoppingCart,
 					href: "/supply",
+					disabled: !isAdmin,
 				},
 			],
 		},
@@ -37,13 +44,15 @@ const Sidebar = ({
 					name: "Inward",
 					Icon: LogIn,
 					parentRoute: "/inward/",
-					href: "/inward/store",
+					href: `/inward/${isAdmin ? "store" : inwardStartUrl}`,
+					disabled: !inwardStartUrl && !isAdmin,
 				},
 				{
 					name: "Supply",
 					Icon: ShoppingCart,
 					parentRoute: "/supply/",
-					href: "/supply/store",
+					href: `/supply/${isAdmin ? "store" : supplyStartUrl}`,
+					disabled: !supplyStartUrl && !isAdmin,
 				},
 			],
 		},
@@ -69,23 +78,33 @@ const Sidebar = ({
 						<Label className="ml-4">{title}</Label>
 
 						<div className="grid">
-							{items.map(({ name, Icon, href, parentRoute }) => (
-								<Link
-									key={name}
-									className={cn(
-										"hover:bg-[#ee657e] hover:text-white p-2 pl-6 flex items-center gap-2 text-base",
-										(parentRoute
-											? pathname.includes(parentRoute)
-											: pathname === href) &&
-											"border-r-4 border-r-[#9d2d42]"
-									)}
-									href={href}
-								>
-									<Icon size={18} />
+							{items.map(
+								({
+									name,
+									Icon,
+									href,
+									parentRoute,
+									disabled,
+								}) => (
+									<Link
+										key={name}
+										className={cn(
+											"hover:bg-[#ee657e] hover:text-white p-2 pl-6 flex items-center gap-2 text-base",
+											(parentRoute
+												? pathname.includes(parentRoute)
+												: pathname === href) &&
+												"border-r-4 border-r-[#9d2d42]",
+											disabled &&
+												"pointer-events-none opacity-70 !cursor-not-allowed"
+										)}
+										href={href}
+									>
+										<Icon size={18} />
 
-									<span>{name}</span>
-								</Link>
-							))}
+										<span>{name}</span>
+									</Link>
+								)
+							)}
 						</div>
 					</div>
 				))}

@@ -61,7 +61,7 @@ const InwardPage = () => {
 			cell: ({ row }) => {
 				const value = row.getValue("doc_date");
 
-				return dayjs(value).format("DD/MM/YYYY");
+				return value ? dayjs(value).format("DD/MM/YYYY") : "";
 			},
 		},
 		{
@@ -201,28 +201,6 @@ const InwardPage = () => {
 		},
 	];
 
-	// const columns = [
-	//   "SL.NO",
-	//   "DOC NO INWARD",
-	//   "Date",
-	//   "SUPPLIER NAME",
-	//   "SMC",
-	//   "GENERAL",
-	//   "INSTRUMENTAL",
-	//   "HYDRAULICS",
-	//   "HOSE",
-	//   "TC COUNTER",
-	//   "LC COUNTER",
-	//   "MATERIALS RECEIVED",
-	//   "SECURITY INWARD",
-	//   "INWARD REG. NO",
-	// ].map((header) => ({
-	//   accessorKey: header.toLowerCase().replace(" ", "_"),
-	//   header: () => (
-	//     <span className="text-center flex flex-col items-center">{header}</span>
-	//   ),
-	// }));
-
 	return (
 		<PageLayout>
 			<DataTable columns={columns} data={inwardData} />
@@ -230,4 +208,4 @@ const InwardPage = () => {
 	);
 };
 
-export default withAuth(InwardPage);
+export default withAuth(InwardPage, "", true);
