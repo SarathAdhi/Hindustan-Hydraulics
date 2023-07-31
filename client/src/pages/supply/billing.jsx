@@ -302,10 +302,6 @@ const SupplyBillingPage = () => {
 			},
 		},
 		{
-			accessorKey: "counter_no",
-			header: () => <span>COUNTER NO</span>,
-		},
-		{
 			accessorKey: "ready",
 			header: () => <span>READY</span>,
 			cell: ({ row }) => {
@@ -350,6 +346,15 @@ const SupplyBillingPage = () => {
 			header: () => <span>BILL NO</span>,
 		},
 		{
+			accessorKey: "bill_date",
+			header: () => <span>BILL DATE</span>,
+			cell: ({ row }) => {
+				const value = row.getValue("bill_date");
+
+				return value ? dayjs(value).format("DD/MM/YYYY") : "";
+			},
+		},
+		{
 			accessorKey: "routing",
 			header: () => <span>ROUTING</span>,
 			cell: ({ row }) => {
@@ -359,6 +364,14 @@ const SupplyBillingPage = () => {
 
 				return <span>{type?.label}</span>;
 			},
+		},
+		{
+			accessorKey: "routing_name",
+			header: () => <span>ROUTING NAME</span>,
+		},
+		{
+			accessorKey: "routing_receipt_no",
+			header: () => <span>ROUTING RECEIPT NO</span>,
 		},
 		{
 			accessorKey: "security_out",
@@ -424,7 +437,19 @@ const SupplyBillingPage = () => {
 							columns={columns}
 							data={filteredReadyToBill}
 							isLoading={isLoading}
-							hidden={isBillReady ? [] : ["bill_no"]}
+							hidden={
+								isBillReady
+									? []
+									: [
+											"bill_no",
+											"order_status",
+											"bill_date",
+											"routing",
+											"routing_name",
+											"routing_receipt_no",
+											"bill_ready",
+									  ]
+							}
 						/>
 					</div>
 				) : (

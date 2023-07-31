@@ -167,10 +167,9 @@ const IStoreForm = ({
 			/>
 
 			<Input
-				{...register("routing_receipt_no", { required: true })}
+				{...register("routing_receipt_no")}
 				label="Routing receipt number"
 				placeholder="Enter the Routing receipt number"
-				required
 				disabled={isUpdate && !allowedFields?.routing_receipt_no}
 			/>
 

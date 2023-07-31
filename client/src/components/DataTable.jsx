@@ -55,7 +55,7 @@ export function DataTable({
 
 	return (
 		<div>
-			<div className="grid !overflow-auto rounded-md border border-b-0 border-gray-500">
+			<div className="grid !overflow-auto rounded-md border border-b-0 border-gray-500 bg-white">
 				<Table className="w-full">
 					<TableHeader>
 						{table?.getHeaderGroups()?.map((headerGroup, i1) => (

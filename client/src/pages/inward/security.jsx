@@ -272,6 +272,19 @@ const InwardSecurityPage = () => {
 		},
 		...createColumns.filter((e) => e.id !== "select"),
 		{
+			accessorKey: "bill_checked",
+			header: () => <span>BILL CHECKED</span>,
+			cell: ({ row }) => {
+				const value = row.getValue("bill_checked");
+
+				return (
+					<span className={value ? "text-green-600" : "text-red-600"}>
+						{value ? "YES" : "NO"}
+					</span>
+				);
+			},
+		},
+		{
 			accessorKey: "inward_reg_no",
 			header: () => <span>REG NO</span>,
 			cell: ({ row }) => {

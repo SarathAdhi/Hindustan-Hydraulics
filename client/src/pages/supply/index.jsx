@@ -195,10 +195,11 @@ const SupplyPage = () => {
 			header: () => <span>READY</span>,
 			cell: ({ row }) => {
 				const value = row.getValue("ready");
+				const isCounter = row.getValue("counter_no");
 
 				return (
 					<span className={cn(value && "text-red-600")}>
-						{value ? "YES" : "NO"}
+						{value ? "YES" : isCounter ? "" : "NO"}
 					</span>
 				);
 			},
@@ -208,10 +209,11 @@ const SupplyPage = () => {
 			header: () => <span>READY TO BILL</span>,
 			cell: ({ row }) => {
 				const value = row.getValue("ready_to_bill");
+				const isCounter = row.getValue("counter_no");
 
 				return (
 					<span className={cn(value && "text-[#974806]")}>
-						{value ? "YES" : "NO"}
+						{value ? "YES" : isCounter ? "" : "NO"}
 					</span>
 				);
 			},
@@ -221,10 +223,11 @@ const SupplyPage = () => {
 			header: () => <span>BILL READY</span>,
 			cell: ({ row }) => {
 				const value = row.getValue("bill_ready");
+				const isCounter = row.getValue("counter_no");
 
 				return (
 					<span className={cn(value && "text-[#4111f3]")}>
-						{value ? "YES" : "NO"}
+						{value ? "YES" : isCounter ? "" : "NO"}
 					</span>
 				);
 			},
@@ -279,10 +282,6 @@ const SupplyPage = () => {
 			},
 		},
 		{
-			accessorKey: "reg_no",
-			header: () => <span>REG NO</span>,
-		},
-		{
 			accessorKey: "bill_checked",
 			header: () => <span>BILL CHECKED</span>,
 			cell: ({ row }) => {
@@ -290,6 +289,10 @@ const SupplyPage = () => {
 
 				return value ? "YES" : "NO";
 			},
+		},
+		{
+			accessorKey: "reg_no",
+			header: () => <span>REG NO</span>,
 		},
 	];
 
