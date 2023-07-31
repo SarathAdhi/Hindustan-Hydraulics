@@ -6,7 +6,7 @@ import { withAuth } from "../../hoc/withAuth";
 import axios from "../../lib/axios";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
-import { routingOptions } from "../../utils/constants";
+import { inwardDocTypeOptions, routingOptions } from "../../utils/constants";
 
 const InwardPage = () => {
 	const [inwardData, setInwardData] = useState([]);
@@ -54,6 +54,19 @@ const InwardPage = () => {
 		{
 			accessorKey: "doc_no",
 			header: () => <span>DOC NO</span>,
+		},
+		{
+			accessorKey: "doc_type",
+			header: () => <span>DOC TYPE</span>,
+			cell: ({ row }) => {
+				const rowValue = row.getValue("doc_type");
+
+				const value = inwardDocTypeOptions.find(
+					(e) => e.value === rowValue
+				);
+
+				return <span>{value?.label}</span>;
+			},
 		},
 		{
 			accessorKey: "doc_date",
@@ -187,6 +200,19 @@ const InwardPage = () => {
 			header: () => <span>SECURITY INWARD</span>,
 			cell: ({ row }) => {
 				const value = row.getValue("security_inward");
+
+				return (
+					<span className={value ? "text-green-600" : "text-red-600"}>
+						{value ? "YES" : "NO"}
+					</span>
+				);
+			},
+		},
+		{
+			accessorKey: "bill_checked",
+			header: () => <span>BILL CHECKED</span>,
+			cell: ({ row }) => {
+				const value = row.getValue("bill_checked");
 
 				return (
 					<span className={value ? "text-green-600" : "text-red-600"}>

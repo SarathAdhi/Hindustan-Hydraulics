@@ -37,8 +37,9 @@ export const withAuth =
 				)} page`
 			);
 
-			if (history) history.back();
-			else router.replace("/");
+			// if (history) history.back();
+			// else
+			router.replace("/");
 
 			return <></>;
 		}
