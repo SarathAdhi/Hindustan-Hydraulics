@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
-import PageLayout from "../../layouts/PageLayout";
-import InwardPageLayout from "../../modules/inward/InwardPageLayout";
-import { Button } from "../../components/ui/button";
-import { withAuth } from "../../hoc/withAuth";
-import axios from "../../lib/axios";
-import { inwardDocTypeOptions } from "../../utils/constants";
+import PageLayout from "../../../layouts/PageLayout";
+import InwardPageLayout from "../../../modules/inward/InwardPageLayout";
+import { Button } from "../../../components/ui/button";
+import { withAuth } from "../../../hoc/withAuth";
+import axios from "../../../lib/axios";
+import { inwardDocTypeOptions } from "../../../utils/constants";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { RefreshCcw, TrashIcon } from "lucide-react";
-import { DataTable } from "../../components/DataTable";
+import { DataTable } from "../../../components/DataTable";
 import dayjs from "dayjs";
-import { ApiRoutes } from "../../utils/api-routes";
-import ISecurityForm from "../../modules/inward/ISecurityForm";
+import { ApiRoutes } from "../../../utils/api-routes";
+import ISecurityForm from "../../../modules/inward/ISecurityForm";
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
-} from "../../components/ui/popover";
+} from "../../../components/ui/popover";
 import { Close } from "@radix-ui/react-popover";
 
 const _defaultValues = {
@@ -26,8 +26,6 @@ const _defaultValues = {
 };
 
 const InwardSecurityPage = () => {
-	const { query, replace } = useRouter();
-
 	const [isLoading, setIsLoading] = useState(true);
 	const [securityData, setSecurityData] = useState([]);
 	const [searchFilter, setSearchFilter] = useState("");
@@ -35,7 +33,7 @@ const InwardSecurityPage = () => {
 	const [securityInfo, setSecurityInfo] = useState(null);
 	const [allowedFields, setAllowedFields] = useState({});
 
-	const createColumns = [
+	const columns = [
 		{
 			id: "select",
 			cell: ({ row, table }) => {
@@ -202,118 +200,10 @@ const InwardSecurityPage = () => {
 		},
 	];
 
-	const updateColumns = [
-		{
-			id: "select",
-			cell: ({ row, table }) => {
-				const doc_no = row.original?.doc_no;
-
-				return (
-					<div className="space-x-4 flex items-center">
-						<input
-							type="checkbox"
-							className="w-4 h-4 cursor-pointer"
-							checked={row.getIsSelected()}
-							onChange={(e) => {
-								const value = e.target.checked;
-
-								table.resetRowSelection();
-								row.toggleSelected(!!value);
-
-								setTimeout(() => {
-									setDefaultValue({
-										...row.original,
-									});
-
-									setSecurityInfo({
-										doc_no,
-									});
-								}, 200);
-							}}
-						/>
-
-						<Popover>
-							<PopoverTrigger asChild>
-								<button>
-									<TrashIcon
-										size={20}
-										className="text-red-700"
-									/>
-								</button>
-							</PopoverTrigger>
-
-							<PopoverContent side="bottom" align="start">
-								<div className="grid gap-2">
-									<h6>
-										Are you sure you want to delete this Doc{" "}
-										{doc_no}?
-									</h6>
-
-									<div className="grid grid-cols-2 gap-2">
-										<button
-											onClick={() => handleDelete(doc_no)}
-											className="py-1 px-4 bg-red-700 text-white rounded-md"
-										>
-											Delete
-										</button>
-
-										<Close asChild>
-											<button className="py-1 px-4 bg-gray-300 rounded-md">
-												Cancel
-											</button>
-										</Close>
-									</div>
-								</div>
-							</PopoverContent>
-						</Popover>
-					</div>
-				);
-			},
-		},
-		...createColumns.filter((e) => e.id !== "select"),
-		{
-			accessorKey: "bill_checked",
-			header: () => <span>BILL CHECKED</span>,
-			cell: ({ row }) => {
-				const value = row.getValue("bill_checked");
-
-				return (
-					<span className={value ? "text-green-600" : "text-red-600"}>
-						{value ? "YES" : "NO"}
-					</span>
-				);
-			},
-		},
-		{
-			accessorKey: "inward_reg_no",
-			header: () => <span>REG NO</span>,
-			cell: ({ row }) => {
-				const value = row.getValue("inward_reg_no");
-
-				return value;
-			},
-		},
-	];
-
-	const view = query?.view;
-
-	const columns = {
-		create: createColumns,
-		update: updateColumns,
-	};
-
 	async function handleDelete(doc_no) {
 		await axios.delete(ApiRoutes?.inward.security.delete({ doc_no }));
 
 		fetchSecurityRecords();
-	}
-
-	function checkView() {
-		const isViewExist = Object.keys(columns).some((e) => e === query?.view);
-
-		if (!isViewExist) replace("/inward/security?view=create");
-
-		return isViewExist;
 	}
 
 	useEffect(() => {
@@ -327,16 +217,10 @@ const InwardSecurityPage = () => {
 	async function fetchSecurityRecords() {
 		setIsLoading(true);
 
-		let data = null;
+		let data = await axios.get("/inward/security/no-security");
 
-		if (view === "create") {
-			data = await axios.get("/inward/security/no-security");
-		} else if (view === "update") {
-			data = await axios.get("/inward/security/security-marked");
-		}
-
-		setSecurityData(data);
 		setIsLoading(false);
+		setSecurityData(data);
 	}
 
 	console.log({ defaultValue, securityInfo });
@@ -344,10 +228,8 @@ const InwardSecurityPage = () => {
 	useEffect(() => {
 		setDefaultValue(_defaultValues);
 
-		const isViewExist = checkView();
-
-		if (isViewExist) fetchSecurityRecords();
-	}, [query?.view]);
+		fetchSecurityRecords();
+	}, []);
 
 	const filteredSecurity = securityData?.filter(
 		(e) =>
@@ -359,10 +241,6 @@ const InwardSecurityPage = () => {
 			e?.doc_type?.toLowerCase().includes(searchFilter.toLowerCase())
 	);
 
-	const entryRecords = filteredSecurity?.filter((e) =>
-		view?.includes(e?.type)
-	);
-
 	return (
 		<PageLayout className="flex flex-col gap-4">
 			<InwardPageLayout className="mx-auto w-full max-w-[500px]" />
@@ -371,23 +249,19 @@ const InwardSecurityPage = () => {
 				<div className="w-full flex flex-col items-center gap-2">
 					<div className="border border-black bg-gray-300 p-1 rounded-md flex items-center gap-1">
 						<Button
-							variant={view === "create" ? "success" : "ghost"}
+							variant="success"
 							className="py-1 px-4 h-auto"
 							asChild
 						>
-							<Link href="/inward/security?view=create">
-								Create
-							</Link>
+							<Link href="/inward/security">Create</Link>
 						</Button>
 
 						<Button
-							variant={view === "update" ? "success" : "ghost"}
+							variant="ghost"
 							className="py-1 px-4 h-auto"
 							asChild
 						>
-							<Link href="/inward/security?view=update">
-								Update
-							</Link>
+							<Link href="/inward/security/update">Update</Link>
 						</Button>
 					</div>
 
@@ -404,45 +278,13 @@ const InwardSecurityPage = () => {
 					</div>
 				</div>
 
-				{!defaultValue.doc_no && (
-					<div className="w-full">
-						<DataTable
-							columns={columns[view]}
-							data={
-								view?.includes("entry-")
-									? entryRecords
-									: filteredSecurity
-							}
-							changes={view}
-							isLoading={isLoading}
-						/>
-					</div>
-				)}
-
-				{defaultValue.doc_no && (
-					<div className="mx-auto w-full max-w-[500px] space-y-2">
-						<div className="flex flex-col items-center">
-							<Button
-								variant="link"
-								className="p-0"
-								onClick={() => {
-									fetchSecurityRecords();
-									setSecurityInfo(null);
-									setDefaultValue(_defaultValues);
-								}}
-							>
-								Go Back
-							</Button>
-						</div>
-
-						<ISecurityForm
-							allowedFields={allowedFields}
-							defaultValues={defaultValue}
-							view={view}
-							securityInfo={securityInfo}
-						/>
-					</div>
-				)}
+				<div className="w-full">
+					<DataTable
+						columns={columns}
+						data={filteredSecurity}
+						isLoading={isLoading}
+					/>
+				</div>
 			</div>
 		</PageLayout>
 	);

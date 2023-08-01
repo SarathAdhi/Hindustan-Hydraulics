@@ -27,8 +27,6 @@ const CounterForm = ({
 	async function handleCounterForm(values) {
 		try {
 			if (isUpdate) {
-				// const { order_status, routing, bill_ready, bill_date } = values;
-
 				await axios.put(
 					ApiRoutes.supply.counter.update({
 						...counterInfo,

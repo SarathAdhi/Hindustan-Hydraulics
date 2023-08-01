@@ -18,6 +18,7 @@ import {
 	storeOptions,
 	storeStatusOptions,
 } from "../../utils/constants";
+import { parseObject } from "../../utils/parse-object";
 
 const SStoreForm = ({
 	defaultValues,
@@ -35,15 +36,14 @@ const SStoreForm = ({
 	async function handleStoreForm(values) {
 		try {
 			if (isUpdate) {
-				// const { order_status, routing, bill_ready, bill_date } = values;
+				const updateValues = parseObject(
+					values,
+					Object.keys(allowedFields)
+				);
 
 				await axios.put(
-					ApiRoutes.supply.store.update({
-						...storeInfo,
-					}),
-					{
-						...values,
-					}
+					ApiRoutes.supply.store.update(storeInfo),
+					updateValues
 				);
 			} else {
 				await axios.post(ApiRoutes.supply.store.entry, values);

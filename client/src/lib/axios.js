@@ -1,6 +1,7 @@
 import Axios from "axios";
 import { toast } from "react-hot-toast";
 import { getCookie } from "cookies-next";
+import { saveAs } from "file-saver";
 
 const axios = Axios.create({
 	baseURL: process.env.SERVER_BASE_URL || "",
@@ -14,6 +15,8 @@ axios.interceptors.response.use(
 		if (response.data.message) {
 			toast.success(response.data.message);
 		}
+
+		// if (response.data instanceof Blob) return response.data;
 
 		return response.data.data;
 	},
