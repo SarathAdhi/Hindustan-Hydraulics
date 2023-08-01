@@ -10,41 +10,17 @@ import { inwardDocTypeOptions, routingOptions } from "../../utils/constants";
 
 const InwardPage = () => {
 	const [inwardData, setInwardData] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
 
 	async function fetchInwardData() {
+		setIsLoading(true);
 		axios.get("/inward/dashboard").then((res) => setInwardData(res));
+		setIsLoading(false);
 	}
 
 	useEffect(() => {
 		fetchInwardData();
 	}, []);
-
-	console.log(inwardData);
-
-	// const columns = [
-	//   {
-	//     accessorKey: "status",
-	//     header: "Status",
-	//   },
-	//   {
-	//     accessorKey: "email",
-	//     header: ({ column }) => {
-	//       return (
-	//         <Button
-	//           variant="ghost"
-	//           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-	//         >
-	//           Email
-	//           <ArrowUpDown className="ml-2 h-4 w-4" />
-	//         </Button>
-	//       );
-	//     },
-	//   },
-	//   {
-	//     accessorKey: "amount",
-	//     header: "Amount",
-	//   },
-	// ];
 
 	const columns = [
 		{
@@ -229,7 +205,11 @@ const InwardPage = () => {
 
 	return (
 		<PageLayout>
-			<DataTable columns={columns} data={inwardData} />
+			<DataTable
+				isLoading={isLoading}
+				columns={columns}
+				data={inwardData}
+			/>
 		</PageLayout>
 	);
 };
