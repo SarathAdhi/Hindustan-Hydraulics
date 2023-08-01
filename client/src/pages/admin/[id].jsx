@@ -115,16 +115,27 @@ const AdminPage = () => {
 			) : (
 				<div className="flex flex-col gap-4">
 					<div className="flex flex-col items-start gap-4">
-						<h4>
+						<h2>
 							{user?.first_name} {user?.last_name}
-						</h4>
+						</h2>
 
-						<a
-							href={`mailto:${user.email}`}
-							className="text-blue-600"
-						>
-							{user.email}
-						</a>
+						<div className="space-x-1">
+							<a
+								href={`mailto:${user.mobile}`}
+								className="pr-2 text-blue-600"
+							>
+								{user.mobile}
+							</a>
+
+							<strong>&#183;</strong>
+
+							<a
+								href={`mailto:${user.email}`}
+								className="pl-2 text-blue-600"
+							>
+								{user.email}
+							</a>
+						</div>
 					</div>
 
 					<hr className="w-full" />
@@ -170,7 +181,7 @@ const AdminPage = () => {
 								const gridCN = `grid-cols-${subForm.length}`;
 
 								return (
-									<div className="space-y-2">
+									<div key={form} className="space-y-2">
 										<h4 className="uppercase">{form}</h4>
 
 										<div
@@ -187,7 +198,13 @@ const AdminPage = () => {
 														);
 
 													return (
-														<fieldset className="p-4 pt-2 border-2 rounded-lg">
+														<fieldset
+															key={
+																form +
+																subFormName
+															}
+															className="p-4 pt-2 border-2 rounded-lg"
+														>
 															<legend className="px-2 uppercase font-bold">
 																{subFormName}
 															</legend>
@@ -201,7 +218,12 @@ const AdminPage = () => {
 																			value,
 																		},
 																	]) => (
-																		<div className="flex items-center justify-between gap-4">
+																		<div
+																			key={
+																				key
+																			}
+																			className="flex items-center justify-between gap-4"
+																		>
 																			<p className="capitalize">
 																				{
 																					actionName
@@ -218,39 +240,49 @@ const AdminPage = () => {
 																				onCheckedChange={(
 																					e
 																				) => {
-																					const callFn =
+																					if (
+																						viewTab ===
+																						"permanent"
+																					) {
+																						const callFn =
+																							handleRoleAssignment(
+																								e,
+																								key
+																							);
+
+																						toast.promise(
+																							callFn,
+																							{
+																								loading: `${
+																									e
+																										? "Assigning"
+																										: "Unassigning"
+																								} role...`,
+																								success:
+																									(
+																										<p className="capitalize">
+																											{`${subFormName}-${actionName}`}{" "}
+																											role{" "}
+																											{e
+																												? "assigned"
+																												: "unassigned"}
+																										</p>
+																									),
+																								error: (
+																									<p>
+																										Something
+																										went
+																										wrong.
+																									</p>
+																								),
+																							}
+																						);
+																					} else {
 																						handleRoleAssignment(
 																							e,
 																							key
 																						);
-
-																					toast.promise(
-																						callFn,
-																						{
-																							loading: `${
-																								e
-																									? "Assigning"
-																									: "Unassigning"
-																							} role...`,
-																							success:
-																								(
-																									<p className="capitalize">
-																										{`${subFormName}-${actionName}`}{" "}
-																										role{" "}
-																										{e
-																											? "assigned"
-																											: "unassigned"}
-																									</p>
-																								),
-																							error: (
-																								<p>
-																									Something
-																									went
-																									wrong.
-																								</p>
-																							),
-																						}
-																					);
+																					}
 																				}}
 																			/>
 																		</div>
@@ -315,9 +347,14 @@ const AdminPage = () => {
 					<DialogFooter>
 						<Button
 							onClick={async () => {
+								const toastId = toast.loading(
+									"Assigning temporary role..."
+								);
+
 								const duration =
 									timeSelector.hours * 60 +
 									timeSelector.minutes;
+
 								await axios.post(
 									`/roles/create_temp?email=${user.email}`,
 									{
@@ -325,6 +362,8 @@ const AdminPage = () => {
 										duration,
 									}
 								);
+
+								toast.dismiss(toastId);
 							}}
 						>
 							Save changes

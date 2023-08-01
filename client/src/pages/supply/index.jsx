@@ -13,6 +13,7 @@ import { cn } from "../../lib/utils";
 
 const SupplyPage = () => {
 	const [supplyData, setSupplyData] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
 
 	const columns = [
 		{
@@ -297,20 +298,26 @@ const SupplyPage = () => {
 	];
 
 	function fetchSupplyData() {
+		setIsLoading(true);
+
 		axios.get("/supply/dashboard").then((res) => {
 			setSupplyData(res);
 		});
+
+		setIsLoading(false);
 	}
 
 	useEffect(() => {
 		fetchSupplyData();
 	}, []);
 
-	console.log({ supplyData });
-
 	return (
 		<PageLayout>
-			<DataTable columns={columns} data={supplyData} />
+			<DataTable
+				isLoading={isLoading}
+				columns={columns}
+				data={supplyData}
+			/>
 		</PageLayout>
 	);
 };
