@@ -11,11 +11,112 @@ import {
 import dayjs from "dayjs";
 import { cn } from "../../lib/utils";
 
+import Axios from "axios";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "../../components/ui/popover";
+import { Close } from "@radix-ui/react-popover";
+import { ApiRoutes } from "../../utils/api-routes";
+import { RefreshCcw, TrashIcon } from "lucide-react";
+import {
+	Dialog,
+	DialogContent,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "../../components/ui/dialog";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import { toast } from "react-hot-toast";
+
 const SupplyPage = () => {
 	const [supplyData, setSupplyData] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
+	const [isDialogOpen, setIsDialogOpen] = useState(false);
+	const [search, setSearch] = useState("");
+	const [dateSelector, setDateSelector] = useState({
+		from_date: "",
+		to_date: "",
+	});
+
+	async function handleDeleteSupply(doc_no, store) {
+		await axios.delete(ApiRoutes.supply.store.delete({ doc_no, store }));
+
+		fetchSupplyData();
+	}
+
+	async function fetchSupplyData() {
+		setIsLoading(true);
+
+		const res = await axios.get("/supply/dashboard");
+		setSupplyData(res);
+
+		setIsLoading(false);
+	}
+
+	useEffect(() => {
+		fetchSupplyData();
+	}, []);
 
 	const columns = [
+		{
+			id: "select",
+			cell: ({ row }) => {
+				const doc_no = row.getValue("doc_no");
+				const store = (row.original?.store || []).find(
+					(e) => e?.received
+				);
+
+				console.log(store);
+
+				return (
+					<div className="space-x-4 flex items-center">
+						<Popover>
+							<PopoverTrigger asChild>
+								<button>
+									<TrashIcon
+										size={20}
+										className="text-red-700"
+									/>
+								</button>
+							</PopoverTrigger>
+
+							<PopoverContent side="bottom" align="start">
+								<div className="grid gap-2">
+									<h6>
+										Are you sure you want to delete this Doc{" "}
+										{doc_no}?
+									</h6>
+
+									<div className="grid grid-cols-2 gap-2">
+										<button
+											onClick={() =>
+												handleDeleteSupply(
+													doc_no,
+													store?.store_name
+												)
+											}
+											className="py-1 px-4 bg-red-700 text-white rounded-md"
+										>
+											Delete
+										</button>
+
+										<Close asChild>
+											<button className="py-1 px-4 bg-gray-300 rounded-md">
+												Cancel
+											</button>
+										</Close>
+									</div>
+								</div>
+							</PopoverContent>
+						</Popover>
+					</div>
+				);
+			},
+		},
 		{
 			accessorKey: "s_no",
 			header: () => <span>S NO</span>,
@@ -297,26 +398,108 @@ const SupplyPage = () => {
 		},
 	];
 
-	function fetchSupplyData() {
-		setIsLoading(true);
-
-		axios.get("/supply/dashboard").then((res) => {
-			setSupplyData(res);
-		});
-
-		setIsLoading(false);
-	}
-
-	useEffect(() => {
-		fetchSupplyData();
-	}, []);
+	const filteredData = supplyData.filter(
+		(e) =>
+			e?.doc_no?.toLowerCase()?.includes(search.toLowerCase()) ||
+			e?.bill_no?.toLowerCase()?.includes(search.toLowerCase()) ||
+			e?.counter_no?.toLowerCase()?.includes(search.toLowerCase()) ||
+			e?.doc_type?.toLowerCase()?.includes(search.toLowerCase()) ||
+			e?.customer_name?.toLowerCase()?.includes(search.toLowerCase()) ||
+			e?.routing?.toLowerCase()?.includes(search.toLowerCase()) ||
+			e?.routing_name?.toLowerCase()?.includes(search.toLowerCase()) ||
+			e?.routing_receipt_no
+				?.toLowerCase()
+				?.includes(search.toLowerCase()) ||
+			e?.reg_no?.toLowerCase()?.includes(search.toLowerCase())
+	);
 
 	return (
-		<PageLayout>
+		<PageLayout className="flex flex-col gap-4">
+			<div className="flex items-center justify-between">
+				<div className="bg-white w-72 border border-black rounded-full flex items-center justify-between">
+					<input
+						className="px-4 py-2 focus:outline-none rounded-full"
+						placeholder="Search..."
+						onChange={(e) => setSearch(e.target.value)}
+					/>
+
+					<button className="pr-2" onClick={fetchSupplyData}>
+						<RefreshCcw className="active:animate-spin" />
+					</button>
+				</div>
+
+				<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+					<DialogTrigger asChild>
+						<Button variant="success">Download</Button>
+					</DialogTrigger>
+
+					<DialogContent className="sm:max-w-[425px]">
+						<DialogHeader>
+							<DialogTitle>Download Report</DialogTitle>
+						</DialogHeader>
+
+						<div className="mt-5 grid grid-cols-2 gap-2">
+							<Input
+								label="From"
+								value={dateSelector.from_date}
+								onChange={(e) =>
+									setDateSelector({
+										...dateSelector,
+										from_date: e.target.value,
+									})
+								}
+								type="date"
+							/>
+
+							<Input
+								label="To"
+								value={dateSelector.to_date}
+								onChange={(e) =>
+									setDateSelector({
+										...dateSelector,
+										to_date: e.target.value,
+									})
+								}
+								type="date"
+							/>
+						</div>
+
+						<DialogFooter>
+							<Button
+								onClick={async () => {
+									const toastId = toast.loading(
+										"Downloading Report..."
+									);
+
+									try {
+										const { data } = await Axios({
+											url: `${
+												process.env.SERVER_BASE_URL
+											}/supply/dashboard/report?${new URLSearchParams(
+												dateSelector
+											)}`,
+											method: "GET",
+											responseType: "blob",
+										});
+
+										saveAs(data, "supply-report.xlsx");
+									} catch (err) {}
+
+									setIsDialogOpen(false);
+									toast.dismiss(toastId);
+								}}
+							>
+								Download
+							</Button>
+						</DialogFooter>
+					</DialogContent>
+				</Dialog>
+			</div>
+
 			<DataTable
 				isLoading={isLoading}
 				columns={columns}
-				data={supplyData}
+				data={filteredData}
 			/>
 		</PageLayout>
 	);

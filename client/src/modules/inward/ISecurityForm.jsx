@@ -5,12 +5,13 @@ import { Button } from "../../components/ui/button";
 import { Checkbox } from "../../components/ui/checkbox";
 import axios from "../../lib/axios";
 import { ApiRoutes } from "../../utils/api-routes";
+import { parseObject } from "../../utils/parse-object";
 
 const ISecurityForm = ({
 	defaultValues,
 	allowedFields,
 	securityInfo,
-	view = "create",
+	isUpdate = false,
 }) => {
 	const { register, handleSubmit, setValue, getValues, reset, watch } =
 		useForm({
@@ -21,7 +22,7 @@ const ISecurityForm = ({
 
 	async function handleSecurityForm(values) {
 		try {
-			if (view === "create") {
+			if (!isUpdate) {
 				const { security_inward, inward_reg_no, bill_checked } = values;
 
 				await axios.post(ApiRoutes.inward.security.create, {
@@ -30,22 +31,19 @@ const ISecurityForm = ({
 					bill_checked,
 					...securityInfo,
 				});
-			} else if (view === "update") {
-				const { security_inward, inward_reg_no, bill_checked } = values;
+
+				reset();
+			} else {
+				const updateValues = parseObject(
+					values,
+					Object.keys(allowedFields)
+				);
 
 				await axios.put(
 					ApiRoutes.inward.security.update(securityInfo),
-					{
-						security_inward,
-						inward_reg_no: inward_reg_no,
-						bill_checked,
-					}
+					updateValues
 				);
-			} else {
-				alert("Something went wrong");
 			}
-
-			reset();
 		} catch (error) {
 			console.log({ error });
 		}
@@ -61,7 +59,7 @@ const ISecurityForm = ({
 				label="Inward number"
 				placeholder="Enter the Inward number"
 				required
-				disabled={view === "update" && !allowedFields?.inward_reg_no}
+				disabled={isUpdate && !allowedFields?.inward_reg_no}
 			/>
 
 			<Checkbox
@@ -69,7 +67,7 @@ const ISecurityForm = ({
 				label="Bill Checked"
 				defaultChecked={getValues("bill_checked")}
 				onCheckedChange={(e) => setValue("bill_checked", e)}
-				disabled={view === "update" && !allowedFields?.bill_checked}
+				disabled={isUpdate && !allowedFields?.bill_checked}
 			/>
 
 			<Checkbox
@@ -77,11 +75,11 @@ const ISecurityForm = ({
 				defaultChecked={getValues("security_inward")}
 				onCheckedChange={(e) => setValue("security_inward", e)}
 				label="Security Entry"
-				disabled={view === "update" && !allowedFields?.security_inward}
+				disabled={isUpdate && !allowedFields?.security_inward}
 			/>
 
 			<Button disabled={btnDisabled} type="submit">
-				Submit
+				{isUpdate ? "Update" : "Submit"}
 			</Button>
 		</form>
 	);

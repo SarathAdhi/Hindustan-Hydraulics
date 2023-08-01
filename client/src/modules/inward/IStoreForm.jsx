@@ -18,12 +18,13 @@ import {
 	inwardStoreOptions,
 	routingOptions,
 } from "../../utils/constants";
+import { parseObject } from "../../utils/parse-object";
 
 const IStoreForm = ({
 	defaultValues,
 	allowedFields,
-	storeInfo,
 	isUpdate = false,
+	storeInfo,
 }) => {
 	const { register, handleSubmit, setValue, getValues, reset, watch } =
 		useForm({
@@ -35,16 +36,14 @@ const IStoreForm = ({
 	async function handleStoreForm(values) {
 		try {
 			if (isUpdate) {
-				const { doc_date, received } = values;
+				const updateValues = parseObject(
+					values,
+					Object.keys(allowedFields)
+				);
 
 				await axios.put(
-					ApiRoutes.inward.store.update({
-						...storeInfo,
-					}),
-					{
-						doc_date,
-						received,
-					}
+					ApiRoutes.inward.store.update(storeInfo),
+					updateValues
 				);
 			} else {
 				await axios.post(ApiRoutes.inward.store.create, values);

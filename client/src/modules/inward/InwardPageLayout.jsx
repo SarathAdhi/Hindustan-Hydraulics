@@ -27,7 +27,7 @@ const InwardPageLayout = ({ className }) => {
 			{pages.map(({ name, href, key }) => (
 				<Button
 					key={name}
-					variant={pathname === href ? "" : "outline"}
+					variant={pathname.includes(href) ? "" : "outline"}
 					asChild
 				>
 					<Link

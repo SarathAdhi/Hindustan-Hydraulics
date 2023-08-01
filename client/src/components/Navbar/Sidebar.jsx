@@ -94,7 +94,7 @@ const Sidebar = ({
 									<Link
 										key={name}
 										className={cn(
-											"hover:bg-[#ee657e] hover:text-white p-2 pl-6 flex items-center gap-2 text-base",
+											"hover:bg-[#ee657e] hover:text-white p-2 pl-6 flex items-center gap-2 text-base duration-200 transition-all",
 											(parentRoute
 												? pathname.includes(parentRoute)
 												: pathname === href) &&

@@ -14,6 +14,7 @@ import { Checkbox } from "../../components/ui/checkbox";
 import axios from "../../lib/axios";
 import { ApiRoutes } from "../../utils/api-routes";
 import { orderStatusOptions, routingOptions } from "../../utils/constants";
+import { parseObject } from "../../utils/parse-object";
 
 const BillingForm = ({
 	defaultValues,
@@ -31,14 +32,15 @@ const BillingForm = ({
 	async function handleBillingForm(values) {
 		try {
 			if (isUpdate) {
-				await axios.put(
-					ApiRoutes.supply.billing.update({
-						...docInfo,
-					}),
-					{
-						...values,
-					}
+				const updateValues = parseObject(
+					values,
+					Object.keys(allowedFields)
 				);
+
+				await axios.put(ApiRoutes.supply.billing.update(docInfo), {
+					...updateValues,
+					bill_ready: defaultValues?.bill_ready,
+				});
 			} else {
 				const { bill_no, ...rest } = docInfo;
 
