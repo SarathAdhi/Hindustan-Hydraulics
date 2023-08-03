@@ -37,16 +37,15 @@ const SupplyStoreAddPage = () => {
 			id: "select",
 			cell: ({ row }) => {
 				const doc_no = row.getValue("doc_no");
-				const store = row.original?.store;
+				const store = row.original?.store || [];
 
-				const { po_date, doc_date, created_date, ...rest } =
-					row.original;
+				const storeValue = store.find((e) => e.supply !== "none");
 
 				return (
 					<div className="flex items-center gap-4">
 						<Link
 							className="w-4 h-4"
-							href={`/supply/store/edit?doc_no=${doc_no}&type=add`}
+							href={`/supply/store/edit?doc_no=${doc_no}&store=${storeValue?.store_name}&type=add`}
 						>
 							<input
 								type="checkbox"
