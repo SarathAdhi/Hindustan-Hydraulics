@@ -367,6 +367,7 @@ const AdminPage = () => {
 								);
 
 								toast.dismiss(toastId);
+								fetchUser(false);
 								setIsModalOpen(false);
 							}}
 						>

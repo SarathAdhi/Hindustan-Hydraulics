@@ -35,6 +35,8 @@ const SupplyStorePage = () => {
 						...data,
 						store: "",
 						supply: "",
+						ready: false,
+						ready_to_bill: false,
 						po_date: dayjs(data?.po_date).format("YYYY-MM-DD"),
 						doc_date: dayjs(data?.doc_date).format("YYYY-MM-DD"),
 				  }
