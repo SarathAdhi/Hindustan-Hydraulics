@@ -41,6 +41,14 @@ const SupplyStorePage = () => {
 					>
 						<Link href="/supply/store/update">Update</Link>
 					</Button>
+
+					<Button
+						variant="ghost"
+						className="py-1 px-4 h-auto"
+						asChild
+					>
+						<Link href="/supply/store/add">Add</Link>
+					</Button>
 				</div>
 
 				<div className="mx-auto w-full max-w-[500px] space-y-2">
