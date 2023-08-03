@@ -198,7 +198,7 @@ const SStoreForm = ({
 			/>
 
 			<Button disabled={btnDisabled} type="submit">
-				{isUpdate ? "Update" : "Submit"}
+				{isAddType ? "Add" : isUpdate ? "Update" : "Submit"}
 			</Button>
 		</form>
 	);

@@ -5,62 +5,29 @@ import { Button } from "../../../components/ui/button";
 import { withAuth } from "../../../hoc/withAuth";
 import axios from "../../../lib/axios";
 import { inwardDocTypeOptions } from "../../../utils/constants";
-import { useRouter } from "next/router";
 import Link from "next/link";
-import { RefreshCcw, TrashIcon } from "lucide-react";
+import { RefreshCcw } from "lucide-react";
 import { DataTable } from "../../../components/DataTable";
 import dayjs from "dayjs";
-import { ApiRoutes } from "../../../utils/api-routes";
-import ISecurityForm from "../../../modules/inward/ISecurityForm";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "../../../components/ui/popover";
-import { Close } from "@radix-ui/react-popover";
-
-const _defaultValues = {
-	bill_checked: false,
-	inward_reg_no: "",
-	security_inward: false,
-};
 
 const InwardSecurityPage = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [securityData, setSecurityData] = useState([]);
 	const [searchFilter, setSearchFilter] = useState("");
-	const [defaultValue, setDefaultValue] = useState(_defaultValues);
-	const [securityInfo, setSecurityInfo] = useState(null);
-	const [allowedFields, setAllowedFields] = useState({});
 
 	const columns = [
 		{
 			id: "select",
-			cell: ({ row, table }) => {
+			cell: ({ row }) => {
 				const doc_no = row.original?.doc_no;
 
 				return (
-					<input
-						type="checkbox"
-						className="w-4 h-4 cursor-pointer"
-						checked={row.getIsSelected()}
-						onChange={(e) => {
-							const value = e.target.checked;
-
-							table.resetRowSelection();
-							row.toggleSelected(!!value);
-
-							setTimeout(() => {
-								setDefaultValue({
-									...row.original,
-								});
-
-								setSecurityInfo({
-									doc_no,
-								});
-							}, 200);
-						}}
-					/>
+					<Link href={`/inward/security/edit?doc_no=${doc_no}`}>
+						<input
+							type="checkbox"
+							className="w-4 h-4 cursor-pointer"
+						/>
+					</Link>
 				);
 			},
 		},
@@ -200,20 +167,6 @@ const InwardSecurityPage = () => {
 		},
 	];
 
-	async function handleDelete(doc_no) {
-		await axios.delete(ApiRoutes?.inward.security.delete({ doc_no }));
-
-		fetchSecurityRecords();
-	}
-
-	useEffect(() => {
-		axios.get("/inward/security/modify/allowed").then((res) => {
-			const fields = {};
-			res.map((e) => (fields[e] = true));
-			setAllowedFields(fields);
-		});
-	}, []);
-
 	async function fetchSecurityRecords() {
 		setIsLoading(true);
 
@@ -223,11 +176,7 @@ const InwardSecurityPage = () => {
 		setSecurityData(data);
 	}
 
-	console.log({ defaultValue, securityInfo });
-
 	useEffect(() => {
-		setDefaultValue(_defaultValues);
-
 		fetchSecurityRecords();
 	}, []);
 

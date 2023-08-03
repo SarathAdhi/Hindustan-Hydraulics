@@ -16,15 +16,22 @@ const InwardStoreEditPage = () => {
 	const doc_id = query?.doc_no;
 
 	const [isLoading, setIsLoading] = useState(true);
-	const [storeDefaultValue, setStoreDefaultValue] = useState({});
+	const [storeDefaultValue, setStoreDefaultValue] = useState(null);
 	const [allowedFields, setAllowedFields] = useState({});
 
 	async function getStoreData() {
 		const defaultValue = await axios.get(`/inward/store/?doc_no=${doc_id}`);
-		setStoreDefaultValue({
-			...defaultValue[0],
-			doc_date: dayjs(defaultValue[0]?.doc_date).format("YYYY-MM-DD"),
-		});
+
+		setStoreDefaultValue(
+			defaultValue.length === 0
+				? null
+				: {
+						...defaultValue[0],
+						doc_date: dayjs(defaultValue[0]?.doc_date).format(
+							"YYYY-MM-DD"
+						),
+				  }
+		);
 
 		const res = await axios.get("/inward/store/modify/allowed");
 		const fields = {};
@@ -47,6 +54,8 @@ const InwardStoreEditPage = () => {
 					<div>
 						<Loader className="animate-spin" />
 					</div>
+				) : !storeDefaultValue ? (
+					<p>Not found</p>
 				) : (
 					<div className="w-full">
 						<div className="mx-auto w-full max-w-[500px] space-y-2">
