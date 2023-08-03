@@ -14,6 +14,8 @@ const SupplyStorePage = () => {
 	const { query } = useRouter();
 
 	const doc_id = query?.doc_no;
+	// For /supply/store/add
+	const isAddType = query?.type === "add";
 
 	const [isLoading, setIsLoading] = useState(true);
 	const [storeDefaultValue, setStoreDefaultValue] = useState({});
@@ -30,7 +32,11 @@ const SupplyStorePage = () => {
 			doc_date: dayjs(data[0]?.doc_date).format("YYYY-MM-DD"),
 		});
 
-		const res = await axios.get("/supply/store/modify/allowed");
+		const res = await axios.get(
+			isAddType
+				? "/supply/store/add_stores/modify/allowed"
+				: "/supply/store/modify/allowed"
+		);
 		const fields = {};
 		res.map((e) => (fields[e] = true));
 
@@ -69,6 +75,7 @@ const SupplyStorePage = () => {
 								doc_no: doc_id,
 								store: storeDefaultValue?.store,
 							}}
+							isAddType={isAddType}
 							isUpdate
 						/>
 					</div>

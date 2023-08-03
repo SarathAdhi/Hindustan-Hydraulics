@@ -68,7 +68,15 @@ const InwardPage = () => {
 
 				return (
 					<div className="space-x-4 flex items-center">
-						<Link href={`/inward/${doc_no}`}>E</Link>
+						<Link
+							className="w-4 h-4"
+							href={`/inward/store/edit?doc_no=${doc_no}`}
+						>
+							<input
+								type="checkbox"
+								className="w-full h-full cursor-pointer"
+							/>
+						</Link>
 
 						<Popover>
 							<PopoverTrigger asChild>

@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from "react";
-import PageLayout from "../../layouts/PageLayout";
-import { Button } from "../../components/ui/button";
-import { withAuth } from "../../hoc/withAuth";
-import axios from "../../lib/axios";
-import SupplyNavlinks from "../../modules/supply/SupplyLayout";
+import PageLayout from "../../../layouts/PageLayout";
+import { Button } from "../../../components/ui/button";
+import { withAuth } from "../../../hoc/withAuth";
+import axios from "../../../lib/axios";
+import SupplyNavlinks from "../../../modules/supply/SupplyLayout";
 import {
 	counterTypeOptions,
 	docTypeOptions,
 	routingOptions,
 	storeStatusOptions,
-} from "../../utils/constants";
+} from "../../../utils/constants";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { RefreshCcw, TrashIcon } from "lucide-react";
-import { DataTable } from "../../components/DataTable";
+import { DataTable } from "../../../components/DataTable";
 import dayjs from "dayjs";
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
-} from "../../components/ui/popover";
+} from "../../../components/ui/popover";
 import { Close } from "@radix-ui/react-popover";
-import { ApiRoutes } from "../../utils/api-routes";
-import SSecurityForm from "../../modules/supply/SSecurityForm";
+import { ApiRoutes } from "../../../utils/api-routes";
+import SSecurityForm from "../../../modules/supply/SSecurityForm";
 
 const _defaultValues = {
 	counter: null,
@@ -430,6 +430,24 @@ const SupplySecurityPage = () => {
 			},
 		},
 		...counterColumns.filter((e) => e.id !== "select"),
+		{
+			accessorKey: "bill_checked",
+			header: () => <span>BILL CHECKED</span>,
+			cell: ({ row }) => {
+				const value = row.getValue("bill_checked");
+
+				return value ? "YES" : "NO";
+			},
+		},
+		{
+			accessorKey: "security_out",
+			header: () => <span>SECURITY OUT</span>,
+			cell: ({ row }) => {
+				const value = row.getValue("security_out");
+
+				return value ? "YES" : "NO";
+			},
+		},
 	];
 
 	const entryStoreColumns = [

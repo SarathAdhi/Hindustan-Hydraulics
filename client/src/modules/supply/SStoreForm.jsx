@@ -25,6 +25,7 @@ const SStoreForm = ({
 	allowedFields,
 	storeInfo,
 	isUpdate = false,
+	isAddType = false,
 }) => {
 	const { register, handleSubmit, setValue, getValues, reset, watch } =
 		useForm({
@@ -69,7 +70,7 @@ const SStoreForm = ({
 					name="store"
 					defaultValue={getValues("store")}
 					onValueChange={(e) => setValue("store", e)}
-					disabled={isUpdate && !allowedFields?.store}
+					disabled={(isAddType || isUpdate) && !allowedFields?.store}
 				>
 					<SelectTrigger>
 						<SelectValue placeholder="Select the store" />
@@ -93,7 +94,9 @@ const SStoreForm = ({
 				<Select
 					defaultValue={getValues("doc_type")}
 					onValueChange={(e) => setValue("doc_type", e)}
-					disabled={isUpdate && !allowedFields?.doc_type}
+					disabled={
+						(isAddType || isUpdate) && !allowedFields?.doc_type
+					}
 				>
 					<SelectTrigger>
 						<SelectValue placeholder="Select the Doc type" />
@@ -114,7 +117,7 @@ const SStoreForm = ({
 				label="Doc number"
 				placeholder="Enter the Doc number"
 				required
-				disabled={isUpdate && !allowedFields?.doc_no}
+				disabled={(isAddType || isUpdate) && !allowedFields?.doc_no}
 			/>
 
 			<Input
@@ -122,7 +125,7 @@ const SStoreForm = ({
 				{...register("doc_date", { required: true })}
 				label="Doc Date"
 				required
-				disabled={isUpdate && !allowedFields?.doc_date}
+				disabled={(isAddType || isUpdate) && !allowedFields?.doc_date}
 			/>
 
 			<Input
@@ -130,7 +133,7 @@ const SStoreForm = ({
 				label="Purchase order number"
 				placeholder="Enter the Purchase order number"
 				required
-				disabled={isUpdate && !allowedFields?.po_no}
+				disabled={(isAddType || isUpdate) && !allowedFields?.po_no}
 			/>
 
 			<Input
@@ -138,7 +141,7 @@ const SStoreForm = ({
 				{...register("po_date", { required: true })}
 				label="Purchase order Date"
 				required
-				disabled={isUpdate && !allowedFields?.po_date}
+				disabled={(isAddType || isUpdate) && !allowedFields?.po_date}
 			/>
 
 			<Input
@@ -146,7 +149,9 @@ const SStoreForm = ({
 				label="Customer Name"
 				placeholder="Enter the Customer Name"
 				required
-				disabled={isUpdate && !allowedFields?.customer_name}
+				disabled={
+					(isAddType || isUpdate) && !allowedFields?.customer_name
+				}
 			/>
 
 			<div className="w-full flex flex-col gap-2">
@@ -158,7 +163,7 @@ const SStoreForm = ({
 					name="supply"
 					defaultValue={getValues("supply")}
 					onValueChange={(e) => setValue("supply", e)}
-					disabled={isUpdate && !allowedFields?.supply}
+					disabled={(isAddType || isUpdate) && !allowedFields?.supply}
 				>
 					<SelectTrigger>
 						<SelectValue placeholder="Select the supply" />
@@ -179,7 +184,7 @@ const SStoreForm = ({
 				defaultChecked={getValues("ready")}
 				onCheckedChange={(e) => setValue("ready", e)}
 				label="Ready"
-				disabled={isUpdate && !allowedFields?.ready}
+				disabled={(isAddType || isUpdate) && !allowedFields?.ready}
 			/>
 
 			<Checkbox
@@ -187,7 +192,9 @@ const SStoreForm = ({
 				defaultChecked={getValues("ready_to_bill")}
 				onCheckedChange={(e) => setValue("ready_to_bill", e)}
 				label="Ready to bill"
-				disabled={isUpdate && !allowedFields?.ready_to_bill}
+				disabled={
+					(isAddType || isUpdate) && !allowedFields?.ready_to_bill
+				}
 			/>
 
 			<Button disabled={btnDisabled} type="submit">

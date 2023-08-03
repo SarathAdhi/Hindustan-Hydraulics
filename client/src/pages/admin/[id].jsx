@@ -12,7 +12,6 @@ import { toast } from "react-hot-toast";
 import {
 	Dialog,
 	DialogContent,
-	DialogDescription,
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
@@ -35,8 +34,8 @@ const AdminPage = () => {
 	const [user, setUser] = useState(null);
 	const [roles, setRoles] = useState([]);
 
-	async function fetchUser() {
-		setIsLoading(true);
+	async function fetchUser(setLoader = true) {
+		if (setLoader) setIsLoading(true);
 
 		const _roles = await axios.get("/roles");
 		setRoles(_roles?.map((e) => e.role));
@@ -47,17 +46,15 @@ const AdminPage = () => {
 			setUser(res);
 		} catch (error) {}
 
-		setIsLoading(false);
+		if (setLoader) setIsLoading(false);
 	}
 
 	useEffect(() => {
-		fetchUser();
-	}, []);
+		if (uuid) fetchUser();
+	}, [uuid]);
 
 	const _rolesObject = {};
 	const isAdmin = user?.roles.includes("admin");
-
-	console.log({ isAdmin });
 
 	roles.forEach((e) => {
 		const form = e.split("_")[0];
@@ -67,12 +64,14 @@ const AdminPage = () => {
 		if (formName) {
 			const formObj = _rolesObject[form] || {};
 			const formNameObj = formObj[formName] || {};
+			const type = user?.roles.find((x) => x?.role === e)?.type;
 
-			formNameObj[action || "all"] = {
+			formNameObj[action || "create"] = {
 				value: isAdmin
 					? isAdmin
 					: user?.roles?.some((x) => x?.role === e),
 				key: e,
+				type,
 			};
 
 			_rolesObject[form] = { ...formObj, [formName]: formNameObj };
@@ -101,7 +100,6 @@ const AdminPage = () => {
 		}
 
 		setToastLoadingState(false);
-		// alert(role);
 	}
 
 	return (
@@ -216,6 +214,7 @@ const AdminPage = () => {
 																		{
 																			key,
 																			value,
+																			type,
 																		},
 																	]) => (
 																		<div
@@ -234,8 +233,12 @@ const AdminPage = () => {
 																				disabled={
 																					toastLoadingState
 																				}
-																				defaultChecked={
-																					value
+																				checked={
+																					viewTab.includes(
+																						type
+																					)
+																						? value
+																						: false
 																				}
 																				onCheckedChange={(
 																					e
@@ -283,6 +286,10 @@ const AdminPage = () => {
 																							key
 																						);
 																					}
+
+																					fetchUser(
+																						false
+																					);
 																				}}
 																			/>
 																		</div>
@@ -306,10 +313,6 @@ const AdminPage = () => {
 				<DialogContent className="sm:max-w-[425px]">
 					<DialogHeader>
 						<DialogTitle>Temporary Roles</DialogTitle>
-						{/* <DialogDescription>
-							Make changes to your profile here. Click save when
-							you're done.
-						</DialogDescription> */}
 					</DialogHeader>
 
 					<div className="grid gap-4 py-4">
@@ -364,6 +367,7 @@ const AdminPage = () => {
 								);
 
 								toast.dismiss(toastId);
+								setIsModalOpen(false);
 							}}
 						>
 							Save changes

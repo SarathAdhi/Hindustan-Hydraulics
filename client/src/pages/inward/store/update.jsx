@@ -7,11 +7,10 @@ import InwardPageLayout from "../../../modules/inward/InwardPageLayout";
 import {
 	inwardDocTypeOptions,
 	inwardStoreOptions,
+	routingOptions,
 } from "../../../utils/constants";
-import { useRouter } from "next/router";
 import Link from "next/link";
 import { RefreshCcw, TrashIcon } from "lucide-react";
-import IStoreForm from "../../../modules/inward/IStoreForm";
 import { DataTable } from "../../../components/DataTable";
 import dayjs from "dayjs";
 import {
@@ -22,23 +21,7 @@ import {
 import { Close } from "@radix-ui/react-popover";
 import { ApiRoutes } from "../../../utils/api-routes";
 
-const _defaultValues = {
-	store: "",
-	supplier_name: "",
-	doc_type: "",
-	doc_no: "",
-	doc_date: "",
-	routing: "",
-	routing_name: "",
-	routing_receipt_no: "",
-	received: false,
-};
-
 const InwardStoreUpdatePage = () => {
-	const { query } = useRouter();
-
-	const isStoreUpdate = query?.isUpdate === "true";
-
 	const [isLoading, setIsLoading] = useState(true);
 	const [storeUnbilled, setStoreUnbilled] = useState([]);
 	const [searchFilter, setSearchFilter] = useState("");
@@ -147,6 +130,25 @@ const InwardStoreUpdatePage = () => {
 		{
 			accessorKey: "supplier_name",
 			header: () => <span>SUPPLIER NAME</span>,
+		},
+		{
+			accessorKey: "routing",
+			header: () => <span>ROUTING</span>,
+			cell: ({ row }) => {
+				const value = row.getValue("routing");
+
+				const type = routingOptions.find((e) => e.value === value);
+
+				return <span>{type?.label}</span>;
+			},
+		},
+		{
+			accessorKey: "routing_name",
+			header: () => <span>ROUTING NAME</span>,
+		},
+		{
+			accessorKey: "routing_receipt_no",
+			header: () => <span>ROUTING RECEIPT NO</span>,
 		},
 	];
 
