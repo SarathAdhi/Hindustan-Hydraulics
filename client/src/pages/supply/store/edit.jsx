@@ -14,6 +14,7 @@ const SupplyStorePage = () => {
 	const { query } = useRouter();
 
 	const doc_id = query?.doc_no;
+	const store_name = query?.store;
 	// For /supply/store/add
 	const isAddType = query?.type === "add";
 
@@ -24,13 +25,25 @@ const SupplyStorePage = () => {
 	async function fetchStoreUnbilled() {
 		setIsLoading(true);
 
-		const data = await axios.get(`/supply/store/${doc_id}`);
+		const data = await axios.get(
+			`/supply/store?doc_no=${doc_id}&store=${store_name}`
+		);
 
-		setStoreDefaultValue({
-			...data[0],
-			po_date: dayjs(data[0]?.po_date).format("YYYY-MM-DD"),
-			doc_date: dayjs(data[0]?.doc_date).format("YYYY-MM-DD"),
-		});
+		setStoreDefaultValue(
+			isAddType
+				? {
+						...data,
+						store: "",
+						supply: "",
+						po_date: dayjs(data?.po_date).format("YYYY-MM-DD"),
+						doc_date: dayjs(data?.doc_date).format("YYYY-MM-DD"),
+				  }
+				: {
+						...data,
+						po_date: dayjs(data?.po_date).format("YYYY-MM-DD"),
+						doc_date: dayjs(data?.doc_date).format("YYYY-MM-DD"),
+				  }
+		);
 
 		const res = await axios.get(
 			isAddType
@@ -45,8 +58,10 @@ const SupplyStorePage = () => {
 	}
 
 	useEffect(() => {
-		if (doc_id) fetchStoreUnbilled();
-	}, [doc_id]);
+		if (doc_id && store_name) fetchStoreUnbilled();
+	}, [doc_id, store_name]);
+
+	console.log(doc_id, store_name);
 
 	return (
 		<PageLayout className="flex flex-col gap-4">
@@ -59,12 +74,20 @@ const SupplyStorePage = () => {
 					<div className="mx-auto w-full max-w-[500px] space-y-2">
 						<div className="flex flex-col items-center">
 							<Button variant="link" className="p-0" asChild>
-								<Link href="/supply/store/update">Go Back</Link>
+								<Link
+									href={
+										isAddType
+											? "/supply/store/add"
+											: "/supply/store/update"
+									}
+								>
+									Go Back
+								</Link>
 							</Button>
 
 							<h5 className="text-center">
 								Doc Number: {storeDefaultValue?.doc_no}
-								{" (UPDATE)"}
+								{!isAddType && " (UPDATE)"}
 							</h5>
 						</div>
 
@@ -73,7 +96,7 @@ const SupplyStorePage = () => {
 							defaultValues={storeDefaultValue}
 							storeInfo={{
 								doc_no: doc_id,
-								store: storeDefaultValue?.store,
+								store: store_name,
 							}}
 							isAddType={isAddType}
 							isUpdate={!isAddType}
