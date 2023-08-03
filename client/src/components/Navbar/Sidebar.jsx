@@ -98,7 +98,7 @@ const Sidebar = ({
 											(parentRoute
 												? pathname.includes(parentRoute)
 												: pathname === href) &&
-												"border-r-4 border-r-[#9d2d42]",
+												"bg-[#ee657e] text-white border-r-4 border-r-[#9d2d42]",
 											disabled &&
 												"pointer-events-none opacity-70 !cursor-not-allowed"
 										)}

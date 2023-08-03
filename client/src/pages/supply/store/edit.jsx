@@ -76,7 +76,7 @@ const SupplyStorePage = () => {
 								store: storeDefaultValue?.store,
 							}}
 							isAddType={isAddType}
-							isUpdate
+							isUpdate={!isAddType}
 						/>
 					</div>
 				)}
