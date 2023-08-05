@@ -4,50 +4,54 @@ import { Button } from "../../../components/ui/button";
 import { withAuth } from "../../../hoc/withAuth";
 import axios from "../../../lib/axios";
 import SupplyNavlinks from "../../../modules/supply/SupplyLayout";
-import { docTypeOptions, storeStatusOptions } from "../../../utils/constants";
+import {
+	counterTypeOptions,
+	docTypeOptions,
+	routingOptions,
+	storeStatusOptions,
+} from "../../../utils/constants";
+import Link from "next/link";
+import { RefreshCcw } from "lucide-react";
 import { DataTable } from "../../../components/DataTable";
 import dayjs from "dayjs";
-import { RefreshCcw } from "lucide-react";
-import Link from "next/link";
 
-const SupplyBillingPage = () => {
-	const [readyToBill, setReadyToBill] = useState([]);
+const SupplySecurityPage = () => {
 	const [isLoading, setIsLoading] = useState(true);
+	const [supplySecurityStore, setSupplySecurityStore] = useState([]);
 	const [searchFilter, setSearchFilter] = useState("");
-
-	async function fetchBill() {
-		setIsLoading(true);
-
-		const data = await axios.get("/supply/bill/ready_to_bill");
-
-		setIsLoading(false);
-		setReadyToBill(data);
-	}
-
-	useEffect(() => {
-		fetchBill();
-	}, []);
-
-	const filteredReadyToBill = readyToBill.filter((e) =>
-		JSON.stringify(e)?.toLowerCase()?.includes(searchFilter.toLowerCase())
-	);
 
 	const columns = [
 		{
 			id: "select",
 			cell: ({ row }) => {
-				const doc_no = row.getValue("doc_no");
-				const doc_type = row.getValue("doc_type");
+				const counter_no = row.original?.counter_no;
+				const doc_no = row.original?.doc_no;
 
 				return (
-					<Link
-						href={`/supply/billing/generate?doc_no=${doc_no}&doc_type=${doc_type}`}
-					>
-						<input
-							type="checkbox"
-							className="w-4 h-4 cursor-pointer"
-						/>
-					</Link>
+					<input
+						type="checkbox"
+						className="w-4 h-4 cursor-pointer"
+						// checked={row.getIsSelected()}
+						// onChange={(e) => {
+						// 	const value = e.target.checked;
+
+						// 	table.resetRowSelection();
+						// 	row.toggleSelected(!!value);
+
+						// 	setTimeout(() => {
+						// 		setDefaultValue({
+						// 			store: {
+						// 				...row.original,
+						// 				type: view,
+						// 			},
+						// 		});
+
+						// 		setSecurityInfo({
+						// 			ref_no: doc_no || counter_no,
+						// 		});
+						// 	}, 200);
+						// }}
+					/>
 				);
 			},
 		},
@@ -108,7 +112,7 @@ const SupplyBillingPage = () => {
 				const smc = storesValue.find((e) => e.store_name === "smc");
 
 				const value = storeStatusOptions.find(
-					(e) => e.value === smc.supply
+					(e) => e.value === smc?.supply
 				);
 
 				return <span>{value?.label}</span>;
@@ -124,7 +128,7 @@ const SupplyBillingPage = () => {
 				);
 
 				const value = storeStatusOptions.find(
-					(e) => e.value === general.supply
+					(e) => e.value === general?.supply
 				);
 
 				return <span>{value?.label}</span>;
@@ -140,7 +144,7 @@ const SupplyBillingPage = () => {
 				);
 
 				const value = storeStatusOptions.find(
-					(e) => e.value === instrumentation.supply
+					(e) => e.value === instrumentation?.supply
 				);
 
 				return <span>{value?.label}</span>;
@@ -156,7 +160,7 @@ const SupplyBillingPage = () => {
 				);
 
 				const value = storeStatusOptions.find(
-					(e) => e.value === hydraulics.supply
+					(e) => e.value === hydraulics?.supply
 				);
 
 				return <span>{value?.label}</span>;
@@ -170,11 +174,15 @@ const SupplyBillingPage = () => {
 				const hose = storesValue.find((e) => e.store_name === "hose");
 
 				const value = storeStatusOptions.find(
-					(e) => e.value === hose.supply
+					(e) => e.value === hose?.supply
 				);
 
 				return <span>{value?.label}</span>;
 			},
+		},
+		{
+			accessorKey: "counter_no",
+			header: () => <span>COUNTER NO</span>,
 		},
 		{
 			accessorKey: "ready",
@@ -195,6 +203,51 @@ const SupplyBillingPage = () => {
 			},
 		},
 		{
+			accessorKey: "bill_ready",
+			header: () => <span>BILL READY</span>,
+			cell: ({ row }) => {
+				const value = row.getValue("bill_ready");
+
+				return value ? "YES" : "NO";
+			},
+		},
+		{
+			accessorKey: "order_status",
+			header: () => <span>ORDER STATUS</span>,
+			cell: ({ row }) => {
+				const rowValue = row.getValue("order_status");
+
+				const value = storeStatusOptions.find(
+					(e) => e.value === rowValue
+				);
+
+				return <span>{value?.label}</span>;
+			},
+		},
+		{
+			accessorKey: "bill_no",
+			header: () => <span>BILL NO</span>,
+		},
+		{
+			accessorKey: "routing",
+			header: () => <span>ROUTING</span>,
+			cell: ({ row }) => {
+				const value = row.getValue("routing");
+
+				const type = routingOptions.find((e) => e.value === value);
+
+				return <span>{type?.label}</span>;
+			},
+		},
+		{
+			accessorKey: "routing_name",
+			header: () => <span>ROUTING NAME</span>,
+		},
+		{
+			accessorKey: "routing_receipt_no",
+			header: () => <span>ROUTING RECEIPT NO</span>,
+		},
+		{
 			accessorKey: "security_out",
 			header: () => <span>SECURITY OUT</span>,
 			cell: ({ row }) => {
@@ -209,27 +262,54 @@ const SupplyBillingPage = () => {
 		},
 	];
 
+	async function fetchSecurityStore() {
+		setIsLoading(true);
+
+		let data = await axios.get("/supply/security/not_ready_to_go_store");
+
+		setSupplySecurityStore(data);
+		setIsLoading(false);
+	}
+
+	useEffect(() => {
+		fetchSecurityStore();
+	}, []);
+
+	const filteredSecurity = supplySecurityStore?.filter((e) =>
+		JSON.stringify(e)?.toLowerCase()?.includes(searchFilter.toLowerCase())
+	);
+
 	return (
 		<PageLayout className="flex flex-col gap-4">
 			<SupplyNavlinks className="mx-auto w-full max-w-[500px]" />
 
-			<div className="flex flex-col items-start gap-2">
+			<div className="w-full flex flex-col items-center gap-2">
 				<div className="w-full flex flex-col items-center gap-2">
 					<div className="border border-black bg-gray-300 p-1 rounded-md flex items-center gap-1">
 						<Button
-							variant="success"
+							variant={"ghost"}
 							className="py-1 px-4 h-auto"
 							asChild
 						>
-							<Link href="/supply/billing">Ready to Bill</Link>
+							<Link href="/supply/security/counter">Counter</Link>
 						</Button>
 
 						<Button
-							variant="ghost"
+							variant={"success"}
 							className="py-1 px-4 h-auto"
 							asChild
 						>
-							<Link href="/supply/billing/billed">Billed</Link>
+							<Link href="/supply/security/store">Store</Link>
+						</Button>
+
+						<Button
+							variant={"ghost"}
+							className="py-1 px-4 h-auto"
+							asChild
+						>
+							<Link href="/supply/security/entry/counter">
+								Entry
+							</Link>
 						</Button>
 					</div>
 
@@ -240,20 +320,22 @@ const SupplyBillingPage = () => {
 							placeholder="Search..."
 						/>
 
-						<button className="p-1" onClick={fetchBill}>
+						<button className="p-1" onClick={fetchSecurityStore}>
 							<RefreshCcw size={20} />
 						</button>
 					</div>
 				</div>
 
-				<DataTable
-					columns={columns}
-					data={filteredReadyToBill}
-					isLoading={isLoading}
-				/>
+				<div className="w-full">
+					<DataTable
+						isLoading={isLoading}
+						columns={columns}
+						data={filteredSecurity}
+					/>
+				</div>
 			</div>
 		</PageLayout>
 	);
 };
 
-export default withAuth(SupplyBillingPage, "supply_billing");
+export default withAuth(SupplySecurityPage, "supply_security");

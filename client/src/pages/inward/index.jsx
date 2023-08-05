@@ -70,7 +70,7 @@ const InwardPage = () => {
 					<div className="space-x-4 flex items-center">
 						<Link
 							className="w-4 h-4"
-							href={`/inward/store/edit?doc_no=${doc_no}`}
+							href={`/inward/edit?doc_no=${doc_no}`}
 						>
 							<input
 								type="checkbox"
@@ -299,19 +299,19 @@ const InwardPage = () => {
 			accessorKey: "inward_reg_no",
 			header: () => <span>INWARD REG NO</span>,
 		},
+		{
+			accessorKey: "createdAt",
+			header: () => <span>CREATED AT</span>,
+			cell: ({ row }) => {
+				const value = row.getValue("createdAt");
+
+				return value ? dayjs(value).format("DD/MM/YYYY") : "";
+			},
+		},
 	];
 
-	const filteredData = inwardData.filter(
-		(e) =>
-			e?.doc_no?.toLowerCase()?.includes(search.toLowerCase()) ||
-			e?.doc_type?.toLowerCase()?.includes(search.toLowerCase()) ||
-			e?.supplier_name?.toLowerCase()?.includes(search.toLowerCase()) ||
-			e?.routing?.toLowerCase()?.includes(search.toLowerCase()) ||
-			e?.routing_name?.toLowerCase()?.includes(search.toLowerCase()) ||
-			e?.routing_receipt_no
-				?.toLowerCase()
-				?.includes(search.toLowerCase()) ||
-			e?.inward_reg_no?.toLowerCase()?.includes(search.toLowerCase())
+	const filteredData = inwardData.filter((e) =>
+		JSON.stringify(e)?.toLowerCase()?.includes(search.toLowerCase())
 	);
 
 	return (

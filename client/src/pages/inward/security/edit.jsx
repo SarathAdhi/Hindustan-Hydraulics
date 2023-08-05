@@ -13,6 +13,7 @@ const InwardSecurityEditPage = () => {
 	const { query } = useRouter();
 
 	const doc_id = query?.doc_no;
+	const isUpdate = query?.isUpdate === "true";
 
 	const [isLoading, setIsLoading] = useState(true);
 	const [securityDefaultValue, setSecurityDefaultValue] = useState({});
@@ -21,7 +22,7 @@ const InwardSecurityEditPage = () => {
 	async function fetchSecurityRecord() {
 		setIsLoading(true);
 
-		let data = await axios.get(`/inward/security/?doc_no=${doc_id}`);
+		let data = await axios.get(`/inward/security?doc_no=${doc_id}`);
 		setSecurityDefaultValue(data[0]);
 
 		const res = await axios.get("/inward/security/modify/allowed");
@@ -62,7 +63,7 @@ const InwardSecurityEditPage = () => {
 							securityInfo={{
 								doc_no: doc_id,
 							}}
-							isUpdate
+							isUpdate={isUpdate}
 						/>
 					</div>
 				)}

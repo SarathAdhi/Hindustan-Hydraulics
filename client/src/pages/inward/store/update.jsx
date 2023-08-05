@@ -165,12 +165,8 @@ const InwardStoreUpdatePage = () => {
 		fetchStoreUnbilled();
 	}, []);
 
-	const filteredStoreUnbilled = storeUnbilled.filter(
-		(e) =>
-			e?.doc_no.toLowerCase().includes(searchFilter.toLowerCase()) ||
-			e?.doc_type?.toLowerCase().includes(searchFilter.toLowerCase()) ||
-			e?.store?.toLowerCase().includes(searchFilter.toLowerCase()) ||
-			e?.supplier_name?.toLowerCase().includes(searchFilter.toLowerCase())
+	const filteredStoreUnbilled = storeUnbilled.filter((e) =>
+		JSON.stringify(e)?.toLowerCase()?.includes(searchFilter.toLowerCase())
 	);
 
 	return (

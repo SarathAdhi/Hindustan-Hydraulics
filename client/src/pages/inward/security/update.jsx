@@ -45,7 +45,7 @@ const InwardSecurityPage = () => {
 					<div className="flex items-center gap-4">
 						<Link
 							className="w-4 h-4"
-							href={`/inward/security/edit?doc_no=${doc_no}`}
+							href={`/inward/security/edit?doc_no=${doc_no}&isUpdate=true`}
 						>
 							<input
 								type="checkbox"
@@ -278,14 +278,8 @@ const InwardSecurityPage = () => {
 		fetchSecurityRecords();
 	}, []);
 
-	const filteredSecurity = securityData?.filter(
-		(e) =>
-			e?.doc_no?.toLowerCase().includes(searchFilter.toLowerCase()) ||
-			e?.bill_no?.toLowerCase().includes(searchFilter.toLowerCase()) ||
-			e?.customer_name
-				?.toLowerCase()
-				.includes(searchFilter.toLowerCase()) ||
-			e?.doc_type?.toLowerCase().includes(searchFilter.toLowerCase())
+	const filteredSecurity = securityData?.filter((e) =>
+		JSON.stringify(e)?.toLowerCase()?.includes(searchFilter.toLowerCase())
 	);
 
 	return (

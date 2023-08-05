@@ -45,14 +45,8 @@ const SupplyBillingBilledPage = () => {
 		fetchBill();
 	}, []);
 
-	const filteredReadyToBill = readyToBill.filter(
-		(e) =>
-			e?.doc_no.toLowerCase().includes(searchFilter.toLowerCase()) ||
-			e?.bill_no?.toLowerCase().includes(searchFilter.toLowerCase()) ||
-			e?.customer_name
-				?.toLowerCase()
-				.includes(searchFilter.toLowerCase()) ||
-			e?.doc_type?.toLowerCase().includes(searchFilter.toLowerCase())
+	const filteredReadyToBill = readyToBill.filter((e) =>
+		JSON.stringify(e)?.toLowerCase()?.includes(searchFilter.toLowerCase())
 	);
 
 	const columns = [
