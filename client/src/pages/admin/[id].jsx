@@ -54,7 +54,9 @@ const AdminPage = () => {
 	}, [uuid]);
 
 	const _rolesObject = {};
-	const isAdmin = user?.roles.includes("admin");
+	const isAdmin = user?.roles.some((x) => x?.role === "admin");
+
+	const isAdminType = user?.roles.find((x) => x?.role === "admin")?.type;
 
 	roles.forEach((e) => {
 		const form = e.split("_")[0];
@@ -173,10 +175,28 @@ const AdminPage = () => {
 							</Button>
 						</div>
 
+						<div className="bg-white rounded-lg p-4 w-full flex items-center justify-between gap-4">
+							<div>
+								<h6>Make Admin</h6>
+							</div>
+
+							<Switch
+								disabled={toastLoadingState}
+								checked={
+									viewTab === "permanent"
+										? isAdminType === "permanent"
+										: isAdminType === "temp"
+								}
+								onCheckedChange={(e) => {
+									handleRoleAssignment(e, "admin");
+									fetchUser(false);
+								}}
+							/>
+						</div>
+
 						<div className="w-full space-y-4">
 							{rolesValue.map(([form, _subForm]) => {
 								const subForm = Object.entries(_subForm);
-								const gridCN = `grid-cols-${subForm.length}`;
 
 								return (
 									<div key={form} className="space-y-2">
@@ -185,7 +205,7 @@ const AdminPage = () => {
 										<div
 											className={cn(
 												"bg-white grid gap-4 rounded-lg p-4",
-												gridCN
+												`grid-cols-${subForm.length}`
 											)}
 										>
 											{subForm.map(
@@ -315,7 +335,30 @@ const AdminPage = () => {
 						<DialogTitle>Temporary Roles</DialogTitle>
 					</DialogHeader>
 
-					<div className="grid gap-4 py-4">
+					<form
+						onSubmit={async (e) => {
+							e.preventDefault();
+							const toastId = toast.loading(
+								"Assigning temporary role..."
+							);
+
+							const duration =
+								timeSelector.hours * 60 + timeSelector.minutes;
+
+							await axios.post(
+								`/roles/create_temp?email=${user.email}`,
+								{
+									role: isModalOpen,
+									duration,
+								}
+							);
+
+							toast.dismiss(toastId);
+							fetchUser(false);
+							setIsModalOpen(false);
+						}}
+						className="grid gap-4 py-4"
+					>
 						<div className="grid grid-cols-2 gap-2">
 							<Input
 								label="Hours"
@@ -345,35 +388,11 @@ const AdminPage = () => {
 								max={60}
 							/>
 						</div>
-					</div>
 
-					<DialogFooter>
-						<Button
-							onClick={async () => {
-								const toastId = toast.loading(
-									"Assigning temporary role..."
-								);
-
-								const duration =
-									timeSelector.hours * 60 +
-									timeSelector.minutes;
-
-								await axios.post(
-									`/roles/create_temp?email=${user.email}`,
-									{
-										role: isModalOpen,
-										duration,
-									}
-								);
-
-								toast.dismiss(toastId);
-								fetchUser(false);
-								setIsModalOpen(false);
-							}}
-						>
-							Save changes
-						</Button>
-					</DialogFooter>
+						<DialogFooter>
+							<Button type="submit">Save changes</Button>
+						</DialogFooter>
+					</form>
 				</DialogContent>
 			</Dialog>
 		</PageLayout>

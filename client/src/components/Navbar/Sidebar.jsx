@@ -82,7 +82,7 @@ const Sidebar = ({
 					<div key={title} className="space-y-2">
 						<Label className="ml-4">{title}</Label>
 
-						<div className="grid">
+						<div className="grid gap-0.5">
 							{items.map(
 								({
 									name,

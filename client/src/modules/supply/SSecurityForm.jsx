@@ -17,8 +17,8 @@ const SSecurityForm = ({
 			defaultValues: {
 				bill_checked: false,
 				security_out: false,
-				book_register_no: defaultValues[view]?.reg_no,
-				...defaultValues[view],
+				book_register_no: defaultValues?.reg_no,
+				...defaultValues,
 			},
 		});
 
@@ -32,15 +32,22 @@ const SSecurityForm = ({
 				const {
 					book_register_no,
 					security_out,
-					type,
 					counter_no,
 					bill_checked,
 				} = values;
 
-				await axios.post(ApiRoutes.supply.security.entry, {
-					book_register_no: book_register_no,
+				console.log({
+					type: view,
+					book_register_no: parseInt(book_register_no),
 					security_out,
-					type,
+					counter_no,
+					bill_checked,
+				});
+
+				await axios.post(ApiRoutes.supply.security.entry, {
+					type: view,
+					book_register_no: parseInt(book_register_no),
+					security_out,
 					counter_no,
 					bill_checked,
 				});

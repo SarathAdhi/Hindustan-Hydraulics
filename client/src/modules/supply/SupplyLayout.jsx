@@ -24,7 +24,7 @@ const pages = [
 	{
 		key: "supply_security",
 		name: "Security",
-		href: "/supply/security",
+		href: "/supply/security/counter",
 	},
 ];
 

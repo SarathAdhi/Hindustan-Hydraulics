@@ -396,21 +396,19 @@ const SupplyPage = () => {
 			accessorKey: "reg_no",
 			header: () => <span>REG NO</span>,
 		},
+		{
+			accessorKey: "createdAt",
+			header: () => <span>CREATED AT</span>,
+			cell: ({ row }) => {
+				const value = row.getValue("createdAt");
+
+				return value ? dayjs(value).format("DD/MM/YYYY") : "";
+			},
+		},
 	];
 
-	const filteredData = supplyData.filter(
-		(e) =>
-			e?.doc_no?.toLowerCase()?.includes(search.toLowerCase()) ||
-			e?.bill_no?.toLowerCase()?.includes(search.toLowerCase()) ||
-			e?.counter_no?.toLowerCase()?.includes(search.toLowerCase()) ||
-			e?.doc_type?.toLowerCase()?.includes(search.toLowerCase()) ||
-			e?.customer_name?.toLowerCase()?.includes(search.toLowerCase()) ||
-			e?.routing?.toLowerCase()?.includes(search.toLowerCase()) ||
-			e?.routing_name?.toLowerCase()?.includes(search.toLowerCase()) ||
-			e?.routing_receipt_no
-				?.toLowerCase()
-				?.includes(search.toLowerCase()) ||
-			e?.reg_no?.toLowerCase()?.includes(search.toLowerCase())
+	const filteredData = supplyData.filter((e) =>
+		JSON.stringify(e)?.toLowerCase()?.includes(search.toLowerCase())
 	);
 
 	return (
