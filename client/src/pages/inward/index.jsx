@@ -26,8 +26,11 @@ import {
 import { Close } from "@radix-ui/react-popover";
 import { ApiRoutes } from "../../utils/api-routes";
 import Link from "next/link";
+import { useStore } from "../../utils/store";
 
 const InwardPage = () => {
+	const { isAdmin } = useStore();
+
 	const [inwardData, setInwardData] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -128,6 +131,15 @@ const InwardPage = () => {
 		{
 			accessorKey: "s_no",
 			header: () => <span>S NO</span>,
+		},
+		{
+			accessorKey: "createdAt",
+			header: () => <span>CREATED AT</span>,
+			cell: ({ row }) => {
+				const value = row.getValue("createdAt");
+
+				return value ? dayjs(value).format("DD/MM/YYYY") : "";
+			},
 		},
 		{
 			accessorKey: "doc_no",
@@ -303,15 +315,6 @@ const InwardPage = () => {
 			accessorKey: "inward_reg_no",
 			header: () => <span>INWARD REG NO</span>,
 		},
-		{
-			accessorKey: "createdAt",
-			header: () => <span>CREATED AT</span>,
-			cell: ({ row }) => {
-				const value = row.getValue("createdAt");
-
-				return value ? dayjs(value).format("DD/MM/YYYY") : "";
-			},
-		},
 	];
 
 	const filteredData = inwardData.filter((e) =>
@@ -334,9 +337,11 @@ const InwardPage = () => {
 				</div>
 
 				<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-					<DialogTrigger asChild>
-						<Button variant="success">Download</Button>
-					</DialogTrigger>
+					{isAdmin && (
+						<DialogTrigger asChild>
+							<Button variant="success">Download</Button>
+						</DialogTrigger>
+					)}
 
 					<DialogContent className="sm:max-w-[425px]">
 						<DialogHeader>
