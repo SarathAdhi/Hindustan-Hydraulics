@@ -37,12 +37,13 @@ const InwardStoreUpdatePage = () => {
 			id: "select",
 			cell: ({ row }) => {
 				const doc_no = row.getValue("doc_no");
+				const store = row.original?.store;
 
 				return (
 					<div className="flex items-center gap-4">
 						<Link
 							className="w-4 h-4"
-							href={`/inward/store/edit?doc_no=${doc_no}`}
+							href={`/inward/store/edit?doc_no=${doc_no}&store=${store}`}
 						>
 							<input
 								type="checkbox"

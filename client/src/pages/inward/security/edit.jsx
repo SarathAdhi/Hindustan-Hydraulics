@@ -13,8 +13,9 @@ const InwardSecurityEditPage = () => {
 	const { query } = useRouter();
 
 	const doc_id = query?.doc_no;
-	const isUpdate = query?.isUpdate === "true";
+	const _isUpdate = query?.isUpdate === "true";
 
+	const [isUpdate, setIsUpdate] = useState(_isUpdate);
 	const [isLoading, setIsLoading] = useState(true);
 	const [securityDefaultValue, setSecurityDefaultValue] = useState({});
 	const [allowedFields, setAllowedFields] = useState({});
@@ -22,8 +23,12 @@ const InwardSecurityEditPage = () => {
 	async function fetchSecurityRecord() {
 		setIsLoading(true);
 
-		let data = await axios.get(`/inward?doc_no=${doc_id}`);
-		setSecurityDefaultValue(typeof data === "object" ? data : data[0]);
+		const data = await axios.get(`/inward?doc_no=${doc_id}`);
+		const value = typeof data === "object" ? data : data[0];
+
+		if (value?.inward_reg_no) setIsUpdate(true);
+
+		setSecurityDefaultValue(value);
 
 		const res = await axios.get("/inward/security/modify/allowed");
 		const fields = {};
@@ -36,7 +41,7 @@ const InwardSecurityEditPage = () => {
 
 	useEffect(() => {
 		if (doc_id) fetchSecurityRecord();
-	}, [doc_id]);
+	}, [query]);
 
 	return (
 		<PageLayout className="flex flex-col gap-4">
