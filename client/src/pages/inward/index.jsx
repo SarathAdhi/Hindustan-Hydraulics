@@ -62,6 +62,8 @@ const InwardPage = () => {
 			id: "select",
 			cell: ({ row }) => {
 				const doc_no = row.getValue("doc_no");
+				const inward_reg_no = row.getValue("inward_reg_no");
+
 				const store = (row.original?.store || []).find(
 					(e) => e?.received
 				);
@@ -70,7 +72,9 @@ const InwardPage = () => {
 					<div className="space-x-4 flex items-center">
 						<Link
 							className="w-4 h-4"
-							href={`/inward/edit?doc_no=${doc_no}`}
+							href={`/inward/edit?doc_no=${doc_no}${
+								inward_reg_no ? "&isUpdate=true" : ""
+							}`}
 						>
 							<input
 								type="checkbox"

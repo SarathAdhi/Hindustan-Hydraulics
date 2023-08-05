@@ -14,17 +14,25 @@ const InwardStoreEditPage = () => {
 	const { query } = useRouter();
 
 	const doc_id = query?.doc_no;
+	const store = query?.store;
 
 	const [isLoading, setIsLoading] = useState(true);
 	const [storeDefaultValue, setStoreDefaultValue] = useState(null);
 	const [allowedFields, setAllowedFields] = useState({});
 
 	async function getStoreData() {
-		const defaultValue = await axios.get(`/inward/store/?doc_no=${doc_id}`);
+		const defaultValue = await axios.get(
+			`/inward/store/?doc_no=${doc_id}&store=${store}`
+		);
 
 		setStoreDefaultValue(
-			defaultValue.length === 0
-				? null
+			typeof defaultValue === "object"
+				? {
+						...defaultValue,
+						doc_date: dayjs(defaultValue?.doc_date).format(
+							"YYYY-MM-DD"
+						),
+				  }
 				: {
 						...defaultValue[0],
 						doc_date: dayjs(defaultValue[0]?.doc_date).format(
@@ -42,8 +50,8 @@ const InwardStoreEditPage = () => {
 	}
 
 	useEffect(() => {
-		if (doc_id) getStoreData();
-	}, [doc_id]);
+		if (doc_id && store) getStoreData();
+	}, [doc_id, store]);
 
 	return (
 		<PageLayout className="flex flex-col gap-4">
