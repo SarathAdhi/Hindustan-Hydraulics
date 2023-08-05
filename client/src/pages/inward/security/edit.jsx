@@ -22,8 +22,8 @@ const InwardSecurityEditPage = () => {
 	async function fetchSecurityRecord() {
 		setIsLoading(true);
 
-		let data = await axios.get(`/inward/security?doc_no=${doc_id}`);
-		setSecurityDefaultValue(data[0]);
+		let data = await axios.get(`/inward?doc_no=${doc_id}`);
+		setSecurityDefaultValue(typeof data === "object" ? data : data[0]);
 
 		const res = await axios.get("/inward/security/modify/allowed");
 		const fields = {};

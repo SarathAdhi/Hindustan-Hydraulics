@@ -31,8 +31,11 @@ import {
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { toast } from "react-hot-toast";
+import { useStore } from "../../utils/store";
 
 const SupplyPage = () => {
+	const { isAdmin } = useStore();
+
 	const [supplyData, setSupplyData] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -120,6 +123,15 @@ const SupplyPage = () => {
 		{
 			accessorKey: "s_no",
 			header: () => <span>S NO</span>,
+		},
+		{
+			accessorKey: "createdAt",
+			header: () => <span>CREATED AT</span>,
+			cell: ({ row }) => {
+				const value = row.getValue("createdAt");
+
+				return value ? dayjs(value).format("DD/MM/YYYY") : "";
+			},
 		},
 		{
 			accessorKey: "doc_no",
@@ -396,15 +408,6 @@ const SupplyPage = () => {
 			accessorKey: "reg_no",
 			header: () => <span>REG NO</span>,
 		},
-		{
-			accessorKey: "createdAt",
-			header: () => <span>CREATED AT</span>,
-			cell: ({ row }) => {
-				const value = row.getValue("createdAt");
-
-				return value ? dayjs(value).format("DD/MM/YYYY") : "";
-			},
-		},
 	];
 
 	const filteredData = supplyData.filter((e) =>
@@ -427,9 +430,11 @@ const SupplyPage = () => {
 				</div>
 
 				<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-					<DialogTrigger asChild>
-						<Button variant="success">Download</Button>
-					</DialogTrigger>
+					{isAdmin && (
+						<DialogTrigger asChild>
+							<Button variant="success">Download</Button>
+						</DialogTrigger>
+					)}
 
 					<DialogContent className="sm:max-w-[425px]">
 						<DialogHeader>
