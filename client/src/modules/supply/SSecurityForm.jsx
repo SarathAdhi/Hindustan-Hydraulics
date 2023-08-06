@@ -78,7 +78,7 @@ const SSecurityForm = ({
 				placeholder="Enter the Book Register number"
 				required
 				disabled={
-					type.includes("entry-") && !allowedFields?.book_register_no
+					defaultValues ? !allowedFields?.book_register_no : false
 				}
 			/>
 
@@ -87,9 +87,7 @@ const SSecurityForm = ({
 				defaultChecked={getValues("bill_checked")}
 				onCheckedChange={(e) => setValue("bill_checked", e)}
 				label="Bill Checked"
-				disabled={
-					type.includes("entry-") && !allowedFields?.bill_checked
-				}
+				disabled={defaultValues ? !allowedFields?.bill_checked : false}
 			/>
 
 			<Checkbox
@@ -98,9 +96,7 @@ const SSecurityForm = ({
 				defaultChecked={getValues("security_out")}
 				onCheckedChange={(e) => setValue("security_out", e)}
 				label="Ready to Go Out"
-				disabled={
-					type.includes("entry-") && !allowedFields?.security_out
-				}
+				disabled={defaultValues ? !allowedFields?.security_out : false}
 			/>
 
 			<Button disabled={btnDisabled} type="submit">

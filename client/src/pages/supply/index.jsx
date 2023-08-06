@@ -18,7 +18,6 @@ import {
 	PopoverTrigger,
 } from "../../components/ui/popover";
 import { Close } from "@radix-ui/react-popover";
-import { ApiRoutes } from "../../utils/api-routes";
 import { RefreshCcw, TrashIcon } from "lucide-react";
 import {
 	Dialog,
@@ -72,10 +71,8 @@ const SupplyPage = () => {
 				const doc_no = row.getValue("doc_no");
 				const counter_no = row.getValue("counter_no");
 				const reg_no = row.getValue("reg_no");
-
-				const store = (row.original?.store || []).find(
-					(e) => e?.received
-				);
+				const bill_no = row.getValue("bill_no");
+				const doc_type = row?.original?.doc_type;
 
 				const ref_no = doc_no || counter_no;
 
@@ -83,9 +80,23 @@ const SupplyPage = () => {
 					<div className="space-x-4 flex items-center">
 						<Link
 							className="w-4 h-4"
-							href={`/supply/edit?ref_no=${ref_no}&type=${
-								counter_no ? "counter" : "store"
-							}${reg_no ? "&isUpdate=true" : ""}`}
+							href={`/supply/edit?ref_no=${ref_no}${
+								bill_no
+									? `&bill_no=${bill_no}`
+									: doc_type
+									? `&doc_type=${doc_type}`
+									: ""
+							}&type=${counter_no ? "counter" : "store"}&form=${
+								reg_no
+									? `${
+											counter_no
+												? "entry-counter"
+												: "entry-store"
+									  }`
+									: counter_no
+									? "counter"
+									: "store"
+							}`}
 						>
 							<input
 								type="checkbox"
@@ -330,7 +341,7 @@ const SupplyPage = () => {
 				const isCounter = row.getValue("counter_no");
 
 				return (
-					<span className={cn(value && "text-red-600")}>
+					<span className={value ? "text-green-600" : "text-red-600"}>
 						{value ? "YES" : isCounter ? "" : "NO"}
 					</span>
 				);
@@ -344,7 +355,9 @@ const SupplyPage = () => {
 				const isCounter = row.getValue("counter_no");
 
 				return (
-					<span className={cn(value && "text-[#974806]")}>
+					<span
+						className={value ? "text-orange-500" : "text-red-600"}
+					>
 						{value ? "YES" : isCounter ? "" : "NO"}
 					</span>
 				);
@@ -358,7 +371,7 @@ const SupplyPage = () => {
 				const isCounter = row.getValue("counter_no");
 
 				return (
-					<span className={cn(value && "text-[#4111f3]")}>
+					<span className={value ? "text-[#4111f3]" : "text-red-600"}>
 						{value ? "YES" : isCounter ? "" : "NO"}
 					</span>
 				);
@@ -374,7 +387,17 @@ const SupplyPage = () => {
 					(e) => e.value === rowValue
 				);
 
-				return <span>{value?.label}</span>;
+				return (
+					<span
+						className={
+							rowValue === "part"
+								? "text-red-600"
+								: "text-green-600"
+						}
+					>
+						{value?.label}
+					</span>
+				);
 			},
 		},
 		{
@@ -419,7 +442,11 @@ const SupplyPage = () => {
 			cell: ({ row }) => {
 				const value = row.getValue("bill_checked");
 
-				return value ? "YES" : "NO";
+				return (
+					<span className={value ? "text-green-600" : "text-red-600"}>
+						{value ? "YES" : "NO"}
+					</span>
+				);
 			},
 		},
 		{

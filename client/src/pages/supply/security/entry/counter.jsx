@@ -34,7 +34,7 @@ const SupplySecurityPage = () => {
 				return (
 					<div className="space-x-4 flex items-center">
 						<Link
-							href={`/supply/security/create?ref_no=${counter_no}&type=entry-counter`}
+							href={`/supply/security/edit?ref_no=${counter_no}&type=entry-counter`}
 						>
 							<input
 								type="checkbox"

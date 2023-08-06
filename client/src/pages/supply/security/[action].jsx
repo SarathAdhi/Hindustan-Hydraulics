@@ -41,7 +41,11 @@ const SupplySecurityPage = () => {
 
 		let data = await axios.get(`/supply/security/?ref_no=${ref_no}`);
 
-		if (action !== "edit" && data) {
+		console.log({ data });
+
+		if (action !== "create" && !data) {
+			replace(`/supply/security/create?ref_no=${ref_no}&type=${type}`);
+		} else if (data && action !== "edit") {
 			replace(`/supply/security/edit?ref_no=${ref_no}&type=${type}`);
 		}
 		// let data = await axios.get(
