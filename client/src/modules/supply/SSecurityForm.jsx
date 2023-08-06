@@ -10,7 +10,7 @@ const SSecurityForm = ({
 	defaultValues,
 	allowedFields,
 	securityInfo,
-	view = "counter",
+	type = "counter",
 }) => {
 	const { register, handleSubmit, setValue, getValues, reset, watch } =
 		useForm({
@@ -22,11 +22,11 @@ const SSecurityForm = ({
 			},
 		});
 
-	const btnDisabled = !(watch("bill_checked") || watch("security_out"));
+	const btnDisabled = !watch("security_out");
 
 	async function handleSecurityForm(values) {
 		try {
-			if (view === "counter") {
+			if (type === "counter") {
 				console.log("counter");
 
 				const {
@@ -36,40 +36,27 @@ const SSecurityForm = ({
 					bill_checked,
 				} = values;
 
-				console.log({
-					type: view,
-					book_register_no: parseInt(book_register_no),
-					security_out,
-					counter_no,
-					bill_checked,
-				});
-
 				await axios.post(ApiRoutes.supply.security.entry, {
-					type: view,
-					book_register_no: parseInt(book_register_no),
-					security_out,
-					counter_no,
-					bill_checked,
-				});
-			} else if (view === "store") {
-				console.log("store");
-
-				const {
-					book_register_no,
-					security_out,
-					type,
-					doc_no,
-					bill_checked,
-				} = values;
-
-				await axios.post(ApiRoutes.supply.security.entry, {
+					type: type,
 					book_register_no: book_register_no,
 					security_out,
-					type,
-					doc_no,
+					counter_no,
 					bill_checked,
 				});
-			} else if (view.includes("entry-")) {
+			} else if (type === "store") {
+				console.log("store");
+
+				const { book_register_no, security_out, doc_no, bill_checked } =
+					values;
+
+				await axios.post(ApiRoutes.supply.security.entry, {
+					type: type,
+					doc_no: securityInfo?.ref_no,
+					book_register_no: book_register_no,
+					security_out,
+					bill_checked,
+				});
+			} else if (type.includes("entry-")) {
 				console.log("entry-put");
 
 				await axios.put(
@@ -117,7 +104,7 @@ const SSecurityForm = ({
 			/>
 
 			<Button disabled={btnDisabled} type="submit">
-				Submit
+				{type.includes("entry-") ? "Update" : "Submit"}
 			</Button>
 		</form>
 	);

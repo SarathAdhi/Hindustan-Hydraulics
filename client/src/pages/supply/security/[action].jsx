@@ -39,9 +39,8 @@ const SupplySecurityPage = () => {
 
 	const action = query?.action;
 	const ref_no = query?.ref_no;
+	const store = query?.store;
 	const type = query?.type;
-
-	console.log({ action, ref_no });
 
 	useEffect(() => {
 		axios.get("/supply/security/modify/allowed").then((res) => {
@@ -54,10 +53,10 @@ const SupplySecurityPage = () => {
 	async function fetchSecurityRecords() {
 		setIsLoading(true);
 
-		// let data = await axios.get(`/supply/security/?ref_no=${ref_no}`);
-		let data = await axios.get(
-			`/supply/counter/counter?counter_no=${ref_no}`
-		);
+		let data = await axios.get(`/supply/security/?ref_no=${ref_no}`);
+		// let data = await axios.get(
+		// 	`/supply/store/?doc_no=${ref_no}&store=${store}`
+		// );
 
 		setDefaultValue(data);
 		setIsLoading(false);
@@ -74,7 +73,11 @@ const SupplySecurityPage = () => {
 			<div className="w-full flex flex-col items-center gap-2">
 				<div className="mx-auto w-full max-w-[500px] space-y-2">
 					<div className="flex flex-col items-center">
-						<Button variant="link" className="p-0">
+						<Button
+							variant="link"
+							className="p-0"
+							onClick={() => history.back()}
+						>
 							Go Back
 						</Button>
 					</div>
@@ -85,7 +88,7 @@ const SupplySecurityPage = () => {
 						<SSecurityForm
 							allowedFields={allowedFields}
 							defaultValues={defaultValue}
-							view={type}
+							type={type}
 							securityInfo={{
 								ref_no,
 							}}

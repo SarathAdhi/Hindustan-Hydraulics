@@ -24,34 +24,21 @@ const SupplySecurityPage = () => {
 		{
 			id: "select",
 			cell: ({ row }) => {
-				const counter_no = row.original?.counter_no;
 				const doc_no = row.original?.doc_no;
+				// const store = row.original?.store || [];
+				// const storeType = store.find(
+				// 	(e) => e.supply !== "none"
+				// )?.store_name;
 
 				return (
-					<input
-						type="checkbox"
-						className="w-4 h-4 cursor-pointer"
-						// checked={row.getIsSelected()}
-						// onChange={(e) => {
-						// 	const value = e.target.checked;
-
-						// 	table.resetRowSelection();
-						// 	row.toggleSelected(!!value);
-
-						// 	setTimeout(() => {
-						// 		setDefaultValue({
-						// 			store: {
-						// 				...row.original,
-						// 				type: view,
-						// 			},
-						// 		});
-
-						// 		setSecurityInfo({
-						// 			ref_no: doc_no || counter_no,
-						// 		});
-						// 	}, 200);
-						// }}
-					/>
+					<Link
+						href={`/supply/security/create?ref_no=${doc_no}&type=store`}
+					>
+						<input
+							type="checkbox"
+							className="w-4 h-4 cursor-pointer"
+						/>
+					</Link>
 				);
 			},
 		},

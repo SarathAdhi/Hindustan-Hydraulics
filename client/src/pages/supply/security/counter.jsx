@@ -20,7 +20,6 @@ const SupplySecurityPage = () => {
 			id: "select",
 			cell: ({ row }) => {
 				const counter_no = row.original?.counter_no;
-				const doc_no = row.original?.doc_no;
 
 				return (
 					<Link
