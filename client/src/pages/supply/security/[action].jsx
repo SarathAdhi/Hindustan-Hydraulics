@@ -4,24 +4,8 @@ import { Button } from "../../../components/ui/button";
 import { withAuth } from "../../../hoc/withAuth";
 import axios from "../../../lib/axios";
 import SupplyNavlinks from "../../../modules/supply/SupplyLayout";
-import {
-	counterTypeOptions,
-	docTypeOptions,
-	routingOptions,
-	storeStatusOptions,
-} from "../../../utils/constants";
 import { useRouter } from "next/router";
-import Link from "next/link";
-import { Loader, RefreshCcw, TrashIcon } from "lucide-react";
-import { DataTable } from "../../../components/DataTable";
-import dayjs from "dayjs";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "../../../components/ui/popover";
-import { Close } from "@radix-ui/react-popover";
-import { ApiRoutes } from "../../../utils/api-routes";
+import { Loader } from "lucide-react";
 import SSecurityForm from "../../../modules/supply/SSecurityForm";
 
 const _defaultValues = {
@@ -31,7 +15,7 @@ const _defaultValues = {
 };
 
 const SupplySecurityPage = () => {
-	const { query } = useRouter();
+	const { query, replace } = useRouter();
 
 	const [isLoading, setIsLoading] = useState(true);
 	const [defaultValue, setDefaultValue] = useState(_defaultValues);
@@ -43,17 +27,23 @@ const SupplySecurityPage = () => {
 	const type = query?.type;
 
 	useEffect(() => {
-		axios.get("/supply/security/modify/allowed").then((res) => {
-			const fields = {};
-			res.map((e) => (fields[e] = true));
-			setAllowedFields(fields);
-		});
+		if (action === "edit") {
+			axios.get("/supply/security/modify/allowed").then((res) => {
+				const fields = {};
+				res.map((e) => (fields[e] = true));
+				setAllowedFields(fields);
+			});
+		}
 	}, []);
 
 	async function fetchSecurityRecords() {
 		setIsLoading(true);
 
 		let data = await axios.get(`/supply/security/?ref_no=${ref_no}`);
+
+		if (action !== "edit" && data) {
+			replace(`/supply/security/edit?ref_no=${ref_no}&type=${type}`);
+		}
 		// let data = await axios.get(
 		// 	`/supply/store/?doc_no=${ref_no}&store=${store}`
 		// );
@@ -65,6 +55,8 @@ const SupplySecurityPage = () => {
 	useEffect(() => {
 		if (ref_no) fetchSecurityRecords();
 	}, [ref_no]);
+
+	console.log({ allowedFields });
 
 	return (
 		<PageLayout className="flex flex-col gap-4">
