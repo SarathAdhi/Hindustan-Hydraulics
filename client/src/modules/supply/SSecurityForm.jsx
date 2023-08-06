@@ -29,18 +29,13 @@ const SSecurityForm = ({
 			if (type === "counter") {
 				console.log("counter");
 
-				const {
-					book_register_no,
-					security_out,
-					counter_no,
-					bill_checked,
-				} = values;
+				const { book_register_no, security_out, bill_checked } = values;
 
 				await axios.post(ApiRoutes.supply.security.entry, {
 					type: type,
 					book_register_no: book_register_no,
 					security_out,
-					counter_no,
+					counter_no: securityInfo?.ref_no,
 					bill_checked,
 				});
 			} else if (type === "store") {

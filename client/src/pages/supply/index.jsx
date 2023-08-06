@@ -32,6 +32,7 @@ import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { toast } from "react-hot-toast";
 import { useStore } from "../../utils/store";
+import Link from "next/link";
 
 const SupplyPage = () => {
 	const { isAdmin } = useStore();
@@ -45,8 +46,8 @@ const SupplyPage = () => {
 		to_date: "",
 	});
 
-	async function handleDeleteSupply(doc_no, store) {
-		await axios.delete(ApiRoutes.supply.store.delete({ doc_no, store }));
+	async function handleDeleteSupply(ref_no, type) {
+		await axios.delete(`/supply/delete?type=${type}&ref_no=${ref_no}`);
 
 		fetchSupplyData();
 	}
@@ -69,14 +70,29 @@ const SupplyPage = () => {
 			id: "select",
 			cell: ({ row }) => {
 				const doc_no = row.getValue("doc_no");
+				const counter_no = row.getValue("counter_no");
+				const reg_no = row.getValue("reg_no");
+
 				const store = (row.original?.store || []).find(
 					(e) => e?.received
 				);
 
-				console.log(store);
+				const ref_no = doc_no || counter_no;
 
 				return (
 					<div className="space-x-4 flex items-center">
+						<Link
+							className="w-4 h-4"
+							href={`/supply/edit?ref_no=${ref_no}&type=${
+								counter_no ? "counter" : "store"
+							}${reg_no ? "&isUpdate=true" : ""}`}
+						>
+							<input
+								type="checkbox"
+								className="w-full h-full cursor-pointer"
+							/>
+						</Link>
+
 						<Popover>
 							<PopoverTrigger asChild>
 								<button>
@@ -91,15 +107,17 @@ const SupplyPage = () => {
 								<div className="grid gap-2">
 									<h6>
 										Are you sure you want to delete this Doc{" "}
-										{doc_no}?
+										{ref_no}?
 									</h6>
 
 									<div className="grid grid-cols-2 gap-2">
 										<button
 											onClick={() =>
 												handleDeleteSupply(
-													doc_no,
-													store?.store_name
+													ref_no,
+													counter_no
+														? "counter"
+														: "store"
 												)
 											}
 											className="py-1 px-4 bg-red-700 text-white rounded-md"

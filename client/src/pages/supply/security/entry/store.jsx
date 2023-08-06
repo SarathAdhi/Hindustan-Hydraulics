@@ -32,7 +32,6 @@ const SupplySecurityPage = () => {
 			id: "select",
 			cell: ({ row }) => {
 				const doc_no = row.original?.doc_no;
-				const counter_no = row.original?.counter_no;
 
 				return (
 					<div className="space-x-4 flex items-center">
@@ -65,7 +64,7 @@ const SupplySecurityPage = () => {
 									<div className="grid grid-cols-2 gap-2">
 										<button
 											onClick={() =>
-												handleDeleteStore(counter_no)
+												handleDeleteStore(doc_no)
 											}
 											className="py-1 px-4 bg-red-700 text-white rounded-md"
 										>

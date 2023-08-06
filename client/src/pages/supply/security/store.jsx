@@ -212,10 +212,6 @@ const SupplySecurityPage = () => {
 			},
 		},
 		{
-			accessorKey: "bill_no",
-			header: () => <span>BILL NO</span>,
-		},
-		{
 			accessorKey: "routing",
 			header: () => <span>ROUTING</span>,
 			cell: ({ row }) => {
