@@ -33,30 +33,14 @@ const SupplySecurityPage = () => {
 
 				return (
 					<div className="space-x-4 flex items-center">
-						<input
-							type="checkbox"
-							className="w-4 h-4 cursor-pointer"
-							// checked={row.getIsSelected()}
-							// onChange={(e) => {
-							// 	const value = e.target.checked;
-
-							// 	table.resetRowSelection();
-							// 	row.toggleSelected(!!value);
-
-							// 	setTimeout(() => {
-							// 		setDefaultValue({
-							// 			"entry-counter": {
-							// 				...row.original,
-							// 				type: view,
-							// 			},
-							// 		});
-
-							// 		setSecurityInfo({
-							// 			ref_no: counter_no,
-							// 		});
-							// 	}, 200);
-							// }}
-						/>
+						<Link
+							href={`/supply/security/create?ref_no=${counter_no}&type=entry-counter`}
+						>
+							<input
+								type="checkbox"
+								className="w-4 h-4 cursor-pointer"
+							/>
+						</Link>
 
 						<Popover>
 							<PopoverTrigger asChild>
