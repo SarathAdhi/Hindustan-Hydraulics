@@ -121,7 +121,9 @@ const SupplyStoreEditPage = () => {
 
 	async function getStoreData() {
 		const defaultValue = await axios.get(
-			type === "store" ? `/supply/store?doc_no=${ref_no}` : ``
+			type === "store"
+				? `/supply/store?doc_no=${ref_no}`
+				: `/supply/counter/counter?counter_no=${ref_no}`
 		);
 
 		setStoresData(defaultValue || []);
@@ -137,23 +139,32 @@ const SupplyStoreEditPage = () => {
 		<PageLayout>
 			<div className="flex flex-col gap-4">
 				<div className="flex items-center justify-between gap-4">
-					<h2>Doc Number: {ref_no}</h2>
+					<h2>
+						{type === "counter" ? "Counter" : "Doc"} Number:{" "}
+						{ref_no}
+					</h2>
 
 					<Link
 						className="text-lg font-semibold text-blue-600 underline"
-						href={`/inward/security/edit?doc_no=${ref_no}${
-							isUpdate ? "&isUpdate=true" : ""
+						href={`/supply/security/create?ref_no=${ref_no}&type=${
+							type === "store" ? "entry-store" : "entry-counter"
 						}`}
 					>
 						{isUpdate ? "Update" : "Create"} Security
 					</Link>
 				</div>
 
-				<DataTable
-					columns={columns}
-					data={storesData}
-					isLoading={isLoading}
-				/>
+				{type === "store" ? (
+					<DataTable
+						columns={columns}
+						data={storesData}
+						isLoading={isLoading}
+					/>
+				) : (
+					<div>
+						<p>Hello</p>
+					</div>
+				)}
 			</div>
 		</PageLayout>
 	);

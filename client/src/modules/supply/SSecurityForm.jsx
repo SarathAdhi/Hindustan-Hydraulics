@@ -26,7 +26,7 @@ const SSecurityForm = ({
 
 	async function handleSecurityForm(values) {
 		try {
-			if (type === "counter") {
+			if (type === "counter" && !defaultValues) {
 				console.log("counter");
 
 				const { book_register_no, security_out, bill_checked } = values;
@@ -38,11 +38,10 @@ const SSecurityForm = ({
 					counter_no: securityInfo?.ref_no,
 					bill_checked,
 				});
-			} else if (type === "store") {
+			} else if (type === "store" && !defaultValues) {
 				console.log("store");
 
-				const { book_register_no, security_out, doc_no, bill_checked } =
-					values;
+				const { book_register_no, security_out, bill_checked } = values;
 
 				await axios.post(ApiRoutes.supply.security.entry, {
 					type: type,
@@ -51,7 +50,7 @@ const SSecurityForm = ({
 					security_out,
 					bill_checked,
 				});
-			} else if (type.includes("entry-")) {
+			} else if (type.includes("entry-") || defaultValues) {
 				console.log("entry-put");
 
 				await axios.put(
@@ -78,7 +77,9 @@ const SSecurityForm = ({
 				label="Book Register number"
 				placeholder="Enter the Book Register number"
 				required
-				disabled={!allowedFields?.book_register_no}
+				disabled={
+					type.includes("entry-") && !allowedFields?.book_register_no
+				}
 			/>
 
 			<Checkbox
@@ -86,7 +87,9 @@ const SSecurityForm = ({
 				defaultChecked={getValues("bill_checked")}
 				onCheckedChange={(e) => setValue("bill_checked", e)}
 				label="Bill Checked"
-				disabled={!allowedFields?.bill_checked}
+				disabled={
+					type.includes("entry-") && !allowedFields?.bill_checked
+				}
 			/>
 
 			<Checkbox
@@ -95,11 +98,13 @@ const SSecurityForm = ({
 				defaultChecked={getValues("security_out")}
 				onCheckedChange={(e) => setValue("security_out", e)}
 				label="Ready to Go Out"
-				disabled={!allowedFields?.security_out}
+				disabled={
+					type.includes("entry-") && !allowedFields?.security_out
+				}
 			/>
 
 			<Button disabled={btnDisabled} type="submit">
-				{type.includes("entry-") ? "Update" : "Submit"}
+				{defaultValues ? "Update" : "Submit"}
 			</Button>
 		</form>
 	);
