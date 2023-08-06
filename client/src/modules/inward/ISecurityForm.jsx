@@ -18,7 +18,7 @@ const ISecurityForm = ({
 			defaultValues: defaultValues,
 		});
 
-	const btnDisabled = !(watch("bill_checked") || watch("security_inward"));
+	const btnDisabled = !watch("security_inward");
 
 	async function handleSecurityForm(values) {
 		try {
