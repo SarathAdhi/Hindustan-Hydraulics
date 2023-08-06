@@ -24,7 +24,6 @@ import {
 	PopoverTrigger,
 } from "../../components/ui/popover";
 import { Close } from "@radix-ui/react-popover";
-import { ApiRoutes } from "../../utils/api-routes";
 import Link from "next/link";
 import { useStore } from "../../utils/store";
 
@@ -41,8 +40,8 @@ const InwardPage = () => {
 		to_date: "",
 	});
 
-	async function handleDeleteInward(doc_no, store) {
-		await axios.delete(ApiRoutes.inward.store.delete({ doc_no, store }));
+	async function handleDeleteInward(doc_no) {
+		await axios.delete(`/inward/delete?doc_no=${doc_no}`);
 
 		fetchInwardData();
 	}
