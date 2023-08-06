@@ -4,6 +4,7 @@ import { withAuth } from "../../hoc/withAuth";
 import axios from "../../lib/axios";
 import { useRouter } from "next/router";
 import {
+	counterTypeOptions,
 	inwardDocTypeOptions,
 	inwardStoreOptions,
 	routingOptions,
@@ -17,7 +18,9 @@ const SupplyStoreEditPage = () => {
 
 	const ref_no = query?.ref_no;
 	const type = query?.type;
-	const isUpdate = query?.isUpdate === "true";
+	const form = query?.form;
+	const bill_no = query?.bill_no;
+	const doc_type = query?.doc_type;
 
 	const [isLoading, setIsLoading] = useState(true);
 	const [storesData, setStoresData] = useState([]);
@@ -119,6 +122,79 @@ const SupplyStoreEditPage = () => {
 		},
 	];
 
+	const counterColumns = [
+		{
+			id: "select",
+			cell: ({ row }) => {
+				const counter_no = row.original?.counter_no;
+
+				return (
+					<Link
+						href={`/supply/security/create?ref_no=${counter_no}&type=counter`}
+					>
+						<input
+							type="checkbox"
+							className="w-4 h-4 cursor-pointer"
+						/>
+					</Link>
+				);
+			},
+		},
+		{
+			accessorKey: "counter_no_type",
+			header: () => <span>COUNTER TYPE</span>,
+			cell: ({ row }) => {
+				const rowValue = row.getValue("counter_no_type");
+
+				const value = counterTypeOptions.find(
+					(e) => e.value === rowValue
+				);
+
+				return <span>{value?.label}</span>;
+			},
+		},
+		{
+			accessorKey: "counter_no",
+			header: () => <span>COUNTER NO</span>,
+		},
+		{
+			accessorKey: "counter_date",
+			header: () => <span>COUNTER DATE</span>,
+			cell: ({ row }) => {
+				const value = row.getValue("counter_date");
+
+				return value ? dayjs(value).format("DD/MM/YYYY") : "";
+			},
+		},
+		{
+			accessorKey: "routing",
+			header: () => <span>ROUTING</span>,
+			cell: ({ row }) => {
+				const rowValue = row.getValue("routing");
+
+				const value = routingOptions.find((e) => e.value === rowValue);
+
+				return <span>{value?.label}</span>;
+			},
+		},
+		{
+			accessorKey: "routing_name",
+			header: () => <span>ROUTING NAME</span>,
+		},
+		{
+			accessorKey: "routing_receipt_no",
+			header: () => <span>ROUTING RECEIPT NO</span>,
+		},
+		{
+			accessorKey: "customer_name",
+			header: () => <span>CUSTOMER NAME</span>,
+		},
+		{
+			accessorKey: "reg_no",
+			header: () => <span>REG NO</span>,
+		},
+	];
+
 	async function getStoreData() {
 		const defaultValue = await axios.get(
 			type === "store"
@@ -126,7 +202,7 @@ const SupplyStoreEditPage = () => {
 				: `/supply/counter/counter?counter_no=${ref_no}`
 		);
 
-		setStoresData(defaultValue || []);
+		setStoresData(type === "store" ? defaultValue : [defaultValue] || []);
 
 		setIsLoading(false);
 	}
@@ -144,27 +220,40 @@ const SupplyStoreEditPage = () => {
 						{ref_no}
 					</h2>
 
-					<Link
-						className="text-lg font-semibold text-blue-600 underline"
-						href={`/supply/security/create?ref_no=${ref_no}&type=${
-							type === "store" ? "entry-store" : "entry-counter"
-						}`}
-					>
-						{isUpdate ? "Update" : "Create"} Security
-					</Link>
+					<div className="space-x-2">
+						<Link
+							className="text-lg font-semibold text-blue-600 underline"
+							href={
+								type === "counter"
+									? `/supply/counter/edit?counter_no=${ref_no}`
+									: bill_no
+									? `/supply/billing/edit?doc_no=${ref_no}&bill_no=${bill_no}`
+									: `/supply/billing/generate?doc_no=${ref_no}&doc_type=${doc_type}`
+							}
+						>
+							{bill_no ? "Generate" : "Update"} Billing
+						</Link>
+
+						<Link
+							className="text-lg font-semibold text-blue-600 underline"
+							href={
+								type === "counter"
+									? `/supply/security/create?ref_no=${ref_no}&type=counter`
+									: `/supply/security/create?ref_no=${ref_no}${
+											form ? `&type=${form}` : ""
+									  }`
+							}
+						>
+							Security Form
+						</Link>
+					</div>
 				</div>
 
-				{type === "store" ? (
-					<DataTable
-						columns={columns}
-						data={storesData}
-						isLoading={isLoading}
-					/>
-				) : (
-					<div>
-						<p>Hello</p>
-					</div>
-				)}
+				<DataTable
+					columns={type === "store" ? columns : counterColumns}
+					data={storesData}
+					isLoading={isLoading}
+				/>
 			</div>
 		</PageLayout>
 	);
