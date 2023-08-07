@@ -23,7 +23,6 @@ const SupplySecurityPage = () => {
 
 	const action = query?.action;
 	const ref_no = query?.ref_no;
-	const store = query?.store;
 	const type = query?.type;
 
 	useEffect(() => {
@@ -34,7 +33,7 @@ const SupplySecurityPage = () => {
 				setAllowedFields(fields);
 			});
 		}
-	}, []);
+	}, [action]);
 
 	async function fetchSecurityRecords() {
 		setIsLoading(true);
