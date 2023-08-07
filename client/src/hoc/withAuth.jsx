@@ -26,8 +26,8 @@ export const withAuth =
 		}
 
 		const isRoleExist =
-			roles?.some((e) => e === role || role === e) ||
-			permissions?.some((e) => e === role || role === e);
+			roles?.some((e) => e.includes(role) || role.includes(e)) ||
+			permissions?.some((e) => e.includes(role) || role.includes(e));
 
 		if (role && !isAdmin && !isRoleExist) {
 			toast.error(
