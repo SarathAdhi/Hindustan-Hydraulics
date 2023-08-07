@@ -6,7 +6,7 @@ export const withAuth =
 	(Component, role = "", checkForAdmin = false) =>
 	(pageProps) => {
 		const router = useRouter();
-		const { isAuth, roles, isAdmin } = useStore();
+		const { isAuth, roles, permissions, isAdmin } = useStore();
 
 		if (!isAuth) {
 			const redirect = router.asPath;
@@ -25,9 +25,9 @@ export const withAuth =
 			return <></>;
 		}
 
-		const isRoleExist = roles?.some(
-			(e) => e.includes(role) || role.includes(e)
-		);
+		const isRoleExist =
+			roles?.some((e) => e === role || role === e) ||
+			permissions?.some((e) => e === role || role === e);
 
 		if (role && !isAdmin && !isRoleExist) {
 			toast.error(

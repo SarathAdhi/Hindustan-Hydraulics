@@ -414,4 +414,4 @@ const InwardPage = () => {
 	);
 };
 
-export default withAuth(InwardPage, "", true);
+export default withAuth(InwardPage);
