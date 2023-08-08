@@ -6,6 +6,8 @@ import { Input } from "../components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../components/ui/button";
+import { withoutAuth } from "../hoc/withoutAuth";
+import axios from "../lib/axios";
 
 const ForgotPasswordPage = () => {
 	const { register, handleSubmit, reset } = useForm({
@@ -14,11 +16,9 @@ const ForgotPasswordPage = () => {
 		},
 	});
 
-	async function handleLogin(values) {
+	async function handleForgotPassword(values) {
 		try {
-			// const data = await axios.post("/auth/login", values);
-			reset();
-			toast.success("Reset link sent to your mail");
+			await axios.post("/auth/forgotPassword", values);
 		} catch (error) {
 			console.log({ error });
 		}
@@ -46,7 +46,7 @@ const ForgotPasswordPage = () => {
 				</div>
 
 				<form
-					onSubmit={handleSubmit(handleLogin)}
+					onSubmit={handleSubmit(handleForgotPassword)}
 					className="card w-full md:w-[500px] flex flex-col items-center gap-4"
 				>
 					<Input
@@ -73,4 +73,4 @@ const ForgotPasswordPage = () => {
 	);
 };
 
-export default ForgotPasswordPage;
+export default withoutAuth(ForgotPasswordPage);
