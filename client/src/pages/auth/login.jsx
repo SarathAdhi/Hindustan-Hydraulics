@@ -73,7 +73,7 @@ const LoginPage = () => {
 									{...register("email", { required: true })}
 									type="email"
 									label="Email"
-									placeholder="Enter your name"
+									placeholder="Enter your Email"
 									required
 								/>
 
@@ -102,15 +102,26 @@ const LoginPage = () => {
 								</Button>
 							</form>
 
-							<p className="mt-10 text-center text-sm text-gray-500">
-								Don't have an account already?{" "}
-								<Link
-									href="/auth/register"
-									className="font-semibold leading-6 text-indigo-600 hover:underline hover:text-indigo-500"
-								>
-									Register
-								</Link>
-							</p>
+							<div className="mt-10">
+								<p className="text-center text-sm">
+									<Link
+										href="/forgot-password"
+										className="font-semibold text-indigo-600 hover:underline hover:text-indigo-500"
+									>
+										Forgot Password?
+									</Link>
+								</p>
+
+								<p className="text-center text-sm text-gray-500">
+									Don't have an account already?{" "}
+									<Link
+										href="/auth/register"
+										className="font-semibold leading-6 text-indigo-600 hover:underline hover:text-indigo-500"
+									>
+										Register
+									</Link>
+								</p>
+							</div>
 						</div>
 					</div>
 
