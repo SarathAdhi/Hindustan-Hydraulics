@@ -233,4 +233,4 @@ const InwardSecurityPage = () => {
 	);
 };
 
-export default withAuth(InwardSecurityPage, "inward_security");
+export default withAuth(InwardSecurityPage, ["inward_security-create"]);

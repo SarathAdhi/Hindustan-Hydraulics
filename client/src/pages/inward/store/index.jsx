@@ -53,4 +53,4 @@ const InwardStorePage = () => {
 	);
 };
 
-export default withAuth(InwardStorePage, "inward_store");
+export default withAuth(InwardStorePage, ["inward_store-create"]);

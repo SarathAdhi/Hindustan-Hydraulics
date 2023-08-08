@@ -23,8 +23,8 @@ const InwardSecurityEditPage = () => {
 	async function fetchSecurityRecord() {
 		setIsLoading(true);
 
-		const data = await axios.get(`/inward?doc_no=${doc_id}`);
-		const value = typeof data === "object" ? data : data[0];
+		const data = await axios.get(`/inward/security?doc_no=${doc_id}`);
+		const value = Array.isArray(data) ? data[0] : data;
 
 		if (value?.inward_reg_no) setIsUpdate(true);
 
@@ -77,4 +77,4 @@ const InwardSecurityEditPage = () => {
 	);
 };
 
-export default withAuth(InwardSecurityEditPage, "inward_security");
+export default withAuth(InwardSecurityEditPage, ["inward_security-modify"]);

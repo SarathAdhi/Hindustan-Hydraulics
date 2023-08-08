@@ -5,13 +5,11 @@ import { Button } from "../../../components/ui/button";
 import { withAuth } from "../../../hoc/withAuth";
 import axios from "../../../lib/axios";
 import { inwardDocTypeOptions } from "../../../utils/constants";
-import { useRouter } from "next/router";
 import Link from "next/link";
 import { RefreshCcw, TrashIcon } from "lucide-react";
 import { DataTable } from "../../../components/DataTable";
 import dayjs from "dayjs";
 import { ApiRoutes } from "../../../utils/api-routes";
-import ISecurityForm from "../../../modules/inward/ISecurityForm";
 import {
 	Popover,
 	PopoverContent,
@@ -19,21 +17,10 @@ import {
 } from "../../../components/ui/popover";
 import { Close } from "@radix-ui/react-popover";
 
-const _defaultValues = {
-	bill_checked: false,
-	inward_reg_no: "",
-	security_inward: false,
-};
-
 const InwardSecurityPage = () => {
-	const { query } = useRouter();
-
 	const [isLoading, setIsLoading] = useState(true);
 	const [securityData, setSecurityData] = useState([]);
 	const [searchFilter, setSearchFilter] = useState("");
-	const [defaultValue, setDefaultValue] = useState(_defaultValues);
-	const [securityInfo, setSecurityInfo] = useState(null);
-	const [allowedFields, setAllowedFields] = useState({});
 
 	const columns = [
 		{
@@ -255,14 +242,6 @@ const InwardSecurityPage = () => {
 		fetchSecurityRecords();
 	}
 
-	useEffect(() => {
-		axios.get("/inward/security/modify/allowed").then((res) => {
-			const fields = {};
-			res.map((e) => (fields[e] = true));
-			setAllowedFields(fields);
-		});
-	}, []);
-
 	async function fetchSecurityRecords() {
 		setIsLoading(true);
 
@@ -273,8 +252,6 @@ const InwardSecurityPage = () => {
 	}
 
 	useEffect(() => {
-		setDefaultValue(_defaultValues);
-
 		fetchSecurityRecords();
 	}, []);
 
@@ -331,4 +308,4 @@ const InwardSecurityPage = () => {
 	);
 };
 
-export default withAuth(InwardSecurityPage, "inward_security");
+export default withAuth(InwardSecurityPage, ["inward_security-update"]);
