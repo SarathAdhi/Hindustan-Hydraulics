@@ -8,10 +8,12 @@ import Link from "next/link";
 import { Button } from "../../components/ui/button";
 import { useRouter } from "next/router";
 import { withoutAuth } from "../../hoc/withoutAuth";
+import axios from "../../lib/axios";
 
 const ResetPasswordPage = () => {
-	const { query } = useRouter();
+	const { query, replace } = useRouter();
 	const token = query?.token;
+
 	console.log({ token });
 
 	const { register, handleSubmit, reset, watch } = useForm({
@@ -23,9 +25,12 @@ const ResetPasswordPage = () => {
 
 	async function handleLogin(values) {
 		try {
-			// const data = await axios.post("/auth/login", values);
+			await axios.post(`/auth/resetPassword/${token}`, {
+				password: values.password,
+			});
+
 			reset();
-			toast.success("Password reset successfully");
+			replace("/auth/login");
 		} catch (error) {
 			console.log({ error });
 		}
