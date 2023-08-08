@@ -61,7 +61,7 @@ const SSecurityForm = ({
 				alert("Something went wrong");
 			}
 
-			reset();
+			reset(defaultValues);
 		} catch (error) {
 			console.log({ error });
 		}
@@ -85,15 +85,16 @@ const SSecurityForm = ({
 			<Checkbox
 				name="bill_checked"
 				defaultChecked={getValues("bill_checked")}
+				value={watch("bill_checked")}
 				onCheckedChange={(e) => setValue("bill_checked", e)}
 				label="Bill Checked"
 				disabled={defaultValues ? !allowedFields?.bill_checked : false}
 			/>
 
 			<Checkbox
-				{...register("security_out", { required: true })}
 				name="security_out"
 				defaultChecked={getValues("security_out")}
+				value={watch("security_out")}
 				onCheckedChange={(e) => setValue("security_out", e)}
 				label="Ready to Go Out"
 				disabled={defaultValues ? !allowedFields?.security_out : false}

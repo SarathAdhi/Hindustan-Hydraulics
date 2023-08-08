@@ -49,7 +49,7 @@ const SStoreForm = ({
 			} else {
 				await axios.post(ApiRoutes.supply.store.entry, values);
 
-				reset();
+				reset(defaultValues);
 			}
 		} catch (error) {
 			console.log({ error });
@@ -69,6 +69,7 @@ const SStoreForm = ({
 				<Select
 					name="store"
 					defaultValue={getValues("store")}
+					value={watch("store")}
 					onValueChange={(e) => setValue("store", e)}
 					disabled={(isAddType || isUpdate) && !allowedFields?.store}
 					required
@@ -94,6 +95,7 @@ const SStoreForm = ({
 
 				<Select
 					defaultValue={getValues("doc_type")}
+					value={watch("doc_type")}
 					onValueChange={(e) => setValue("doc_type", e)}
 					disabled={
 						(isAddType || isUpdate) && !allowedFields?.doc_type
@@ -164,6 +166,7 @@ const SStoreForm = ({
 				<Select
 					name="supply"
 					defaultValue={getValues("supply")}
+					value={watch("supply")}
 					onValueChange={(e) => setValue("supply", e)}
 					disabled={(isAddType || isUpdate) && !allowedFields?.supply}
 					required
@@ -185,6 +188,7 @@ const SStoreForm = ({
 			<Checkbox
 				name="ready"
 				defaultChecked={getValues("ready")}
+				value={watch("ready")}
 				onCheckedChange={(e) => setValue("ready", e)}
 				label="Ready"
 				disabled={(isAddType || isUpdate) && !allowedFields?.ready}
@@ -193,6 +197,7 @@ const SStoreForm = ({
 			<Checkbox
 				name="ready_to_bill"
 				defaultChecked={getValues("ready_to_bill")}
+				value={watch("ready_to_bill")}
 				onCheckedChange={(e) => setValue("ready_to_bill", e)}
 				label="Ready to bill"
 				disabled={

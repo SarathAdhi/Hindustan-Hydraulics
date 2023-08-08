@@ -20,9 +20,10 @@ const CounterForm = ({
 	counterInfo,
 	isUpdate = false,
 }) => {
-	const { register, handleSubmit, setValue, getValues, reset } = useForm({
-		defaultValues,
-	});
+	const { register, handleSubmit, setValue, getValues, reset, watch } =
+		useForm({
+			defaultValues,
+		});
 
 	async function handleCounterForm(values) {
 		try {
@@ -38,7 +39,7 @@ const CounterForm = ({
 			} else {
 				await axios.post(ApiRoutes.supply.counter.entry, values);
 
-				reset();
+				reset(defaultValues);
 			}
 		} catch (error) {
 			console.log({ error });
@@ -57,6 +58,7 @@ const CounterForm = ({
 
 				<Select
 					defaultValue={getValues("counter_no_type")}
+					value={watch("counter_no_type")}
 					onValueChange={(e) => setValue("counter_no_type", e)}
 					disabled={isUpdate && !allowedFields?.counter_no_type}
 					required
@@ -106,6 +108,7 @@ const CounterForm = ({
 
 				<Select
 					defaultValue={getValues("routing")}
+					value={watch("routing")}
 					onValueChange={(e) => setValue("routing", e)}
 					disabled={isUpdate && !allowedFields?.routing}
 					required

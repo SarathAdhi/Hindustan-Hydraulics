@@ -67,6 +67,7 @@ const IStoreForm = ({
 
 				<Select
 					defaultValue={getValues("store")}
+					value={watch("store")}
 					onValueChange={(e) => setValue("store", e)}
 					disabled={isUpdate && !allowedFields?.store}
 					required
@@ -100,6 +101,7 @@ const IStoreForm = ({
 
 				<Select
 					defaultValue={getValues("doc_type")}
+					value={watch("doc_type")}
 					onValueChange={(e) => setValue("doc_type", e)}
 					disabled={isUpdate && !allowedFields?.doc_type}
 					required
@@ -140,8 +142,8 @@ const IStoreForm = ({
 				</Label>
 
 				<Select
-					name="routing"
-					defaultValue={defaultValues?.routing}
+					defaultValue={getValues("routing")}
+					value={watch("routing")}
 					onValueChange={(e) => setValue("routing", e)}
 					disabled={isUpdate && !allowedFields?.routing}
 					required
@@ -178,6 +180,7 @@ const IStoreForm = ({
 			<Checkbox
 				name="received"
 				defaultChecked={getValues("received")}
+				checked={watch("received")}
 				onCheckedChange={(e) => setValue("received", e)}
 				label="Material Received"
 				disabled={isUpdate && !allowedFields?.received}

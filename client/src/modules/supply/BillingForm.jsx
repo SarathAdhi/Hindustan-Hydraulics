@@ -49,7 +49,7 @@ const BillingForm = ({
 					...rest,
 				});
 
-				reset();
+				reset(defaultValues);
 			}
 		} catch (error) {
 			console.log({ error });
@@ -70,6 +70,7 @@ const BillingForm = ({
 					<Select
 						name="order_status"
 						defaultValue={getValues("order_status")}
+						value={watch("order_status")}
 						onValueChange={(e) => setValue("order_status", e)}
 						disabled={isUpdate && !allowedFields?.order_status}
 						required
@@ -112,6 +113,7 @@ const BillingForm = ({
 					<Select
 						name="routing"
 						defaultValue={getValues("routing")}
+						value={watch("routing")}
 						onValueChange={(e) => setValue("routing", e)}
 						disabled={isUpdate && !allowedFields?.routing}
 						required
@@ -148,6 +150,7 @@ const BillingForm = ({
 				<Checkbox
 					name="bill_ready"
 					defaultChecked={getValues("bill_ready")}
+					checked={watch("bill_ready")}
 					onCheckedChange={(e) => setValue("bill_ready", e)}
 					label="Bill ready"
 					required
