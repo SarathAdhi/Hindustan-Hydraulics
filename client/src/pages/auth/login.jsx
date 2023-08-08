@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import PageLayout from "../../layouts/PageLayout";
 import Image from "next/image";
 import { Input } from "../../components/ui/input";
@@ -8,22 +8,13 @@ import { useForm } from "react-hook-form";
 import axios from "../../lib/axios";
 import { setCookie } from "cookies-next";
 import { toast } from "react-hot-toast";
-import { useRouter } from "next/router";
 import { useStore } from "../../utils/store";
 import { Checkbox } from "../../components/ui/checkbox";
+import { withoutAuth } from "../../hoc/withoutAuth";
 
 const LoginPage = () => {
-	const router = useRouter();
-	const { isAuth, getProfile } = useStore();
+	const { getProfile } = useStore();
 	const [showPassword, setShowPassword] = useState(false);
-
-	useEffect(() => {
-		if (isAuth) {
-			const redirect = router.query?.redirect;
-
-			router.replace(redirect || "/");
-		}
-	}, [isAuth]);
 
 	const { register, handleSubmit } = useForm({
 		defaultValues: {
@@ -138,4 +129,4 @@ const LoginPage = () => {
 	);
 };
 
-export default LoginPage;
+export default withoutAuth(LoginPage);

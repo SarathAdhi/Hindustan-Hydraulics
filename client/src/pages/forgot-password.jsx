@@ -6,6 +6,7 @@ import { Input } from "../components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../components/ui/button";
+import { withoutAuth } from "../hoc/withoutAuth";
 
 const ForgotPasswordPage = () => {
 	const { register, handleSubmit, reset } = useForm({
@@ -73,4 +74,4 @@ const ForgotPasswordPage = () => {
 	);
 };
 
-export default ForgotPasswordPage;
+export default withoutAuth(ForgotPasswordPage);

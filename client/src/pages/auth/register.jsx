@@ -6,23 +6,15 @@ import { Button } from "../../components/ui/button";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import axios from "../../lib/axios";
-import { setCookie } from "cookies-next";
 import { useRouter } from "next/router";
-import { useStore } from "../../utils/store";
 import { toast } from "react-hot-toast";
 import { Checkbox } from "../../components/ui/checkbox";
+import { withoutAuth } from "../../hoc/withoutAuth";
 
 const RegisterPage = () => {
 	const router = useRouter();
-	const { isAuth, getProfile } = useStore();
 
 	const [showPassword, setShowPassword] = useState(false);
-
-	if (isAuth) {
-		const redirect = router.query?.redirect;
-
-		router.replace(redirect || "/");
-	}
 
 	const { register, handleSubmit } = useForm({
 		defaultValues: {
@@ -38,10 +30,12 @@ const RegisterPage = () => {
 		try {
 			const data = await axios.post("/auth/signup", values);
 
-			setCookie("token", data?.tokens?.access_token);
-			toast.success("Login successful");
+			// setCookie("token", data?.tokens?.access_token);
+			// Summa testing ku
+			localStorage.setItem("verify-token", data.token);
 
-			getProfile();
+			toast.success("Login successful");
+			router.replace("/auth/login");
 		} catch (error) {
 			console.log({ error });
 		}
@@ -155,4 +149,4 @@ const RegisterPage = () => {
 	);
 };
 
-export default RegisterPage;
+export default withoutAuth(RegisterPage);
