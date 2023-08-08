@@ -32,7 +32,7 @@ const ISecurityForm = ({
 					...securityInfo,
 				});
 
-				reset();
+				reset(defaultValues);
 			} else {
 				const updateValues = parseObject(
 					values,
@@ -66,6 +66,7 @@ const ISecurityForm = ({
 				name="bill_checked"
 				label="Bill Checked"
 				defaultChecked={getValues("bill_checked")}
+				checked={watch("bill_checked")}
 				onCheckedChange={(e) => setValue("bill_checked", e)}
 				disabled={isUpdate && !allowedFields?.bill_checked}
 			/>
@@ -73,6 +74,7 @@ const ISecurityForm = ({
 			<Checkbox
 				name="security_inward"
 				defaultChecked={getValues("security_inward")}
+				checked={watch("security_inward")}
 				onCheckedChange={(e) => setValue("security_inward", e)}
 				label="Security Entry"
 				disabled={isUpdate && !allowedFields?.security_inward}
