@@ -259,4 +259,4 @@ const SupplyStoreEditPage = () => {
 	);
 };
 
-export default withAuth(SupplyStoreEditPage, "inward_store");
+export default withAuth(SupplyStoreEditPage);

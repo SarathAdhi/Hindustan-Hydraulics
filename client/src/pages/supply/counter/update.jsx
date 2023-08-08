@@ -203,4 +203,4 @@ const SupplyCounterUpdatePage = () => {
 	);
 };
 
-export default withAuth(SupplyCounterUpdatePage, "supply_counter");
+export default withAuth(SupplyCounterUpdatePage, "supply_counter-create");

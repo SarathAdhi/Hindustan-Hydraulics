@@ -78,4 +78,4 @@ const SupplyCounterEditPage = () => {
 	);
 };
 
-export default withAuth(SupplyCounterEditPage, "supply_counter");
+export default withAuth(SupplyCounterEditPage, "supply_counter-create");

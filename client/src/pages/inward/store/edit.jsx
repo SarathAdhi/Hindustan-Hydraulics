@@ -97,4 +97,4 @@ const InwardStoreEditPage = () => {
 	);
 };
 
-export default withAuth(InwardStoreEditPage, ["inward_store-modify"]);
+export default withAuth(InwardStoreEditPage, "inward_security-create");

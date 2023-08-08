@@ -77,4 +77,4 @@ const InwardSecurityEditPage = () => {
 	);
 };
 
-export default withAuth(InwardSecurityEditPage, ["inward_security-modify"]);
+export default withAuth(InwardSecurityEditPage, "inward_security-create");
