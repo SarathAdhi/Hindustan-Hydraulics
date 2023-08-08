@@ -4,15 +4,17 @@ import {
 	LogOut,
 	PanelLeftOpen,
 	PanelRightOpen,
+	UserCircle2,
 } from "lucide-react";
 import { useStore } from "../../utils/store";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import MobileSidebar from "./MobileSidebar";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
 const Topbar = ({ showBasicLayout }) => {
-	const { isAuth, isAdmin, logout, isSidebarOpen, toggleSidebar } =
+	const { user, isAuth, isAdmin, logout, isSidebarOpen, toggleSidebar } =
 		useStore();
 
 	return (
@@ -51,15 +53,37 @@ const Topbar = ({ showBasicLayout }) => {
 							</Button>
 						)}
 
-						<Button
-							variant="destructive"
-							onClick={logout}
-							className="space-x-1"
-						>
-							<LogOut size={18} />
+						<Popover>
+							<PopoverTrigger asChild>
+								<Button variant="ghost" className="px-2">
+									<UserCircle2 className="w-8 h-8" />
+								</Button>
+							</PopoverTrigger>
 
-							<span>Logout</span>
-						</Button>
+							<PopoverContent side="bottom" align="end">
+								<div className="grid gap-4">
+									<div>
+										<h5>{user?.name}</h5>
+										<Link
+											className="text-blue-800 hover:underline"
+											href={`mailto:${user?.email}`}
+										>
+											{user?.email}
+										</Link>
+									</div>
+
+									<Button
+										variant="destructive"
+										onClick={logout}
+										className="space-x-1"
+									>
+										<LogOut size={18} />
+
+										<span>Logout</span>
+									</Button>
+								</div>
+							</PopoverContent>
+						</Popover>
 					</>
 				)}
 

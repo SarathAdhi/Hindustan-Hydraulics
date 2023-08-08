@@ -53,9 +53,7 @@ const SupplyStoreEditPage = () => {
 			cell: ({ row }) => {
 				const rowValue = row.getValue("doc_type");
 
-				const value = inwardDocTypeOptions.find(
-					(e) => e.value === rowValue
-				);
+				const value = docTypeOptions.find((e) => e.value === rowValue);
 
 				return <span>{value?.label}</span>;
 			},
@@ -79,46 +77,40 @@ const SupplyStoreEditPage = () => {
 			cell: ({ row }) => {
 				const store = row.original?.store;
 
-				const value = inwardStoreOptions.find((e) => e.value === store);
+				const value = storeOptions.find((e) => e.value === store);
 
 				return <span>{value?.label}</span>;
 			},
 		},
 		{
-			accessorKey: "supplier_name",
-			header: () => <span>SUPPLIER NAME</span>,
-		},
-		{
-			accessorKey: "routing",
-			header: () => <span>ROUTING</span>,
+			accessorKey: "store-type",
+			header: () => <span>SUPPLY TYPE</span>,
 			cell: ({ row }) => {
-				const value = row.getValue("routing");
+				const storeSupply = row.original?.supply;
 
-				const type = routingOptions.find((e) => e.value === value);
-
-				return <span>{type?.label}</span>;
-			},
-		},
-		{
-			accessorKey: "routing_name",
-			header: () => <span>ROUTING NAME</span>,
-		},
-		{
-			accessorKey: "routing_receipt_no",
-			header: () => <span>ROUTING RECEIPT NO</span>,
-		},
-		{
-			accessorKey: "received",
-			header: () => <span>RECEIVED</span>,
-			cell: ({ row }) => {
-				const value = row.getValue("received");
-
-				return (
-					<span className={value ? "text-green-600" : "text-red-600"}>
-						{value ? "YES" : "NO"}
-					</span>
+				const value = storeStatusOptions.find(
+					(e) => e.value === storeSupply
 				);
+
+				return <span>{value?.label}</span>;
 			},
+		},
+		{
+			accessorKey: "po_no",
+			header: () => <span>P O NO</span>,
+		},
+		{
+			accessorKey: "po_date",
+			header: () => <span>P O DATE</span>,
+			cell: ({ row }) => {
+				const value = row.getValue("po_date");
+
+				return value ? dayjs(value).format("DD/MM/YYYY") : "";
+			},
+		},
+		{
+			accessorKey: "customer_name",
+			header: () => <span>CUSTOMER NAME</span>,
 		},
 	];
 
