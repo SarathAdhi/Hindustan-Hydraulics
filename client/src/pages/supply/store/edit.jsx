@@ -110,4 +110,4 @@ const SupplyStorePage = () => {
 	);
 };
 
-export default withAuth(SupplyStorePage, "supply_store");
+export default withAuth(SupplyStorePage, "supply_store-create");

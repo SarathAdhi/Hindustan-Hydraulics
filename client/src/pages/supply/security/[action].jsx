@@ -95,4 +95,4 @@ const SupplySecurityPage = () => {
 	);
 };
 
-export default withAuth(SupplySecurityPage, "supply_security");
+export default withAuth(SupplySecurityPage, "supply_security-create");

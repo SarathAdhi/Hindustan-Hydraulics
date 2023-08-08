@@ -85,4 +85,4 @@ const SupplyBillingEditPage = () => {
 	);
 };
 
-export default withAuth(SupplyBillingEditPage, "supply_billing");
+export default withAuth(SupplyBillingEditPage, "supply_billing-create");

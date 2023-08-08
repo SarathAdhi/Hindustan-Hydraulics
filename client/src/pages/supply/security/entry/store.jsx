@@ -5,7 +5,6 @@ import { withAuth } from "../../../../hoc/withAuth";
 import axios from "../../../../lib/axios";
 import SupplyNavlinks from "../../../../modules/supply/SupplyLayout";
 import {
-	counterTypeOptions,
 	docTypeOptions,
 	routingOptions,
 	storeStatusOptions,
@@ -423,4 +422,4 @@ const SupplySecurityPage = () => {
 	);
 };
 
-export default withAuth(SupplySecurityPage, "supply_security");
+export default withAuth(SupplySecurityPage, "supply_security-create");
