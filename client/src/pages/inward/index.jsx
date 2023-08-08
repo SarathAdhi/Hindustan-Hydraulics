@@ -26,9 +26,11 @@ import {
 import { Close } from "@radix-ui/react-popover";
 import Link from "next/link";
 import { useStore } from "../../utils/store";
+import { useRouter } from "next/router";
 
 const InwardPage = () => {
-	const { isAdmin } = useStore();
+	const { isAdmin, roles, permissions } = useStore();
+	const { replace } = useRouter();
 
 	const [inwardData, setInwardData] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
@@ -56,6 +58,14 @@ const InwardPage = () => {
 	}
 
 	useEffect(() => {
+		const role = "view-dashboard";
+
+		const isRoleExist =
+			roles?.some((e) => e.includes(role) || role.includes(e)) ||
+			permissions?.some((e) => e.includes(role) || role.includes(e));
+
+		if (!isAdmin && !isRoleExist) replace("/");
+
 		fetchInwardData();
 	}, []);
 
@@ -414,4 +424,4 @@ const InwardPage = () => {
 	);
 };
 
-export default withAuth(InwardPage);
+export default withAuth(InwardPage, "view-dashboard");

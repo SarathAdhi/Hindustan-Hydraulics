@@ -32,9 +32,12 @@ import { Input } from "../../components/ui/input";
 import { toast } from "react-hot-toast";
 import { useStore } from "../../utils/store";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const SupplyPage = () => {
-	const { isAdmin } = useStore();
+	const { isAdmin, roles, permissions } = useStore();
+
+	const { replace } = useRouter();
 
 	const [supplyData, setSupplyData] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
@@ -61,6 +64,14 @@ const SupplyPage = () => {
 	}
 
 	useEffect(() => {
+		const role = "view-dashboard";
+
+		const isRoleExist =
+			roles?.some((e) => e.includes(role) || role.includes(e)) ||
+			permissions?.some((e) => e.includes(role) || role.includes(e));
+
+		if (!isAdmin && !isRoleExist) replace("/");
+
 		fetchSupplyData();
 	}, []);
 
@@ -553,4 +564,4 @@ const SupplyPage = () => {
 	);
 };
 
-export default withAuth(SupplyPage);
+export default withAuth(SupplyPage, "view-dashboard");

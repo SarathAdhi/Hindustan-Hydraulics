@@ -14,6 +14,10 @@ const Sidebar = ({
 
 	const { isSidebarOpen, permissions, isAdmin } = useStore();
 
+	const viewDashboard = permissions.some((e) => e === "view-dashboard");
+
+	console.log({ viewDashboard });
+
 	const inwardData = (permissions || [])
 		?.find((e) => e.includes("inward_"))
 		?.split("_")[1]
@@ -56,13 +60,13 @@ const Sidebar = ({
 					name: "Inward",
 					Icon: LogIn,
 					href: "/inward",
-					disabled: !isAdmin,
+					disabled: isAdmin ? false : !viewDashboard,
 				},
 				{
 					name: "Supply",
 					Icon: ShoppingCart,
 					href: "/supply",
-					disabled: !isAdmin,
+					disabled: isAdmin ? false : !viewDashboard,
 				},
 			],
 		},

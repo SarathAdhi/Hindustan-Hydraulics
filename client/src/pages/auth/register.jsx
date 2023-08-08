@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PageLayout from "../../layouts/PageLayout";
 import Image from "next/image";
 import { Input } from "../../components/ui/input";
@@ -10,133 +10,149 @@ import { setCookie } from "cookies-next";
 import { useRouter } from "next/router";
 import { useStore } from "../../utils/store";
 import { toast } from "react-hot-toast";
+import { Checkbox } from "../../components/ui/checkbox";
 
 const RegisterPage = () => {
-  const router = useRouter();
-  const { isAuth, getProfile } = useStore();
+	const router = useRouter();
+	const { isAuth, getProfile } = useStore();
 
-  if (isAuth) {
-    const redirect = router.query?.redirect;
+	const [showPassword, setShowPassword] = useState(false);
 
-    router.replace(redirect || "/");
-  }
+	if (isAuth) {
+		const redirect = router.query?.redirect;
 
-  const { register, handleSubmit } = useForm({
-    defaultValues: {
-      first_name: "",
-      last_name: "",
-      mobile: "",
-      email: "",
-      password: "",
-    },
-  });
+		router.replace(redirect || "/");
+	}
 
-  async function handleRegister(values) {
-    try {
-      const data = await axios.post("/auth/signup", values);
+	const { register, handleSubmit } = useForm({
+		defaultValues: {
+			first_name: "",
+			last_name: "",
+			mobile: "",
+			email: "",
+			password: "",
+		},
+	});
 
-      setCookie("token", data?.tokens?.access_token);
-      toast.success("Login successful");
+	async function handleRegister(values) {
+		try {
+			const data = await axios.post("/auth/signup", values);
 
-      getProfile();
-    } catch (error) {
-      console.log({ error });
-    }
-  }
+			setCookie("token", data?.tokens?.access_token);
+			toast.success("Login successful");
 
-  return (
-    <PageLayout title="Login" noLayout>
-      <div className="pd flex min-h-screen flex-col items-center justify-center">
-        <div className="w-full max-w-full sm:w-[1500px] grid grid-cols-1 sm:grid-cols-2 sm:border-2 rounded-md sm:bg-gray-200">
-          <Image
-            width={500}
-            height={500}
-            className="hidden sm:flex pd m-auto"
-            src="/sphere-design-1.png"
-            alt=""
-          />
+			getProfile();
+		} catch (error) {
+			console.log({ error });
+		}
+	}
 
-          <div className="p-4 sm:p-8 rounded-r-md sm:bg-white">
-            <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-              <Image
-                width={200}
-                height={200}
-                className="mx-auto h-20 w-20"
-                src="/company-logo.png"
-                alt="Your Company"
-              />
+	return (
+		<PageLayout title="Login" noLayout>
+			<div className="pd flex min-h-screen flex-col items-center justify-center">
+				<div className="w-full max-w-full sm:w-[1500px] grid grid-cols-1 sm:grid-cols-2 sm:border-2 rounded-md sm:bg-gray-200">
+					<Image
+						width={500}
+						height={500}
+						className="hidden sm:flex pd m-auto"
+						src="/sphere-design-1.png"
+						alt=""
+					/>
 
-              <h2 className="text-center font-bold leading-9 tracking-tight text-gray-900">
-                Create an account
-              </h2>
-            </div>
+					<div className="p-4 sm:p-8 rounded-r-md sm:bg-white">
+						<div className="sm:mx-auto sm:w-full sm:max-w-sm">
+							<Image
+								width={200}
+								height={200}
+								className="mx-auto h-20 w-20"
+								src="/company-logo.png"
+								alt="Your Company"
+							/>
 
-            <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm space-y-4">
-              <form
-                onSubmit={handleSubmit(handleRegister)}
-                className="flex flex-col gap-4"
-              >
-                <Input
-                  label="First name"
-                  placeholder="Enter your first name"
-                  required
-                  {...register("first_name", { required: true })}
-                />
+							<h2 className="text-center font-bold leading-9 tracking-tight text-gray-900">
+								Create an account
+							</h2>
+						</div>
 
-                <Input
-                  label="Last name"
-                  placeholder="Enter your last name"
-                  required
-                  {...register("last_name", { required: true })}
-                />
+						<div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm space-y-4">
+							<form
+								onSubmit={handleSubmit(handleRegister)}
+								className="flex flex-col gap-4"
+							>
+								<Input
+									label="First name"
+									placeholder="Enter your first name"
+									required
+									{...register("first_name", {
+										required: true,
+									})}
+								/>
 
-                <Input
-                  type="number"
-                  label="Mobile"
-                  placeholder="Enter your mobile"
-                  required
-                  {...register("mobile", { required: true })}
-                />
+								<Input
+									label="Last name"
+									placeholder="Enter your last name"
+									required
+									{...register("last_name", {
+										required: true,
+									})}
+								/>
 
-                <Input
-                  type="email"
-                  label="Email"
-                  placeholder="Enter your name"
-                  required
-                  {...register("email", { required: true })}
-                />
+								<Input
+									type="number"
+									label="Mobile"
+									placeholder="Enter your mobile"
+									required
+									{...register("mobile", { required: true })}
+								/>
 
-                <Input
-                  type="password"
-                  label="Password"
-                  placeholder="Enter your password"
-                  required
-                  {...register("password", { required: true })}
-                />
+								<Input
+									type="email"
+									label="Email"
+									placeholder="Enter your name"
+									required
+									{...register("email", { required: true })}
+								/>
 
-                <Button
-                  className="bg-[#9d2d42] hover:bg-[#9d2d42]/90"
-                  type="submit"
-                >
-                  Register
-                </Button>
-              </form>
+								<Input
+									{...register("password", {
+										required: true,
+									})}
+									type={showPassword ? "text" : "password"}
+									label="Password"
+									placeholder="Enter your password"
+									required
+								/>
 
-              <p className="text-center text-sm text-gray-500">
-                Already have an account?{" "}
-                <Link
-                  href="/auth/login"
-                  className="font-semibold leading-6 text-indigo-600 hover:underline hover:text-indigo-500"
-                >
-                  Login
-                </Link>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </PageLayout>
-  );
+								<Checkbox
+									name="show_password"
+									defaultChecked={showPassword}
+									onCheckedChange={(e) => setShowPassword(e)}
+									label="Show Password"
+								/>
+
+								<Button
+									className="bg-[#9d2d42] hover:bg-[#9d2d42]/90"
+									type="submit"
+								>
+									Register
+								</Button>
+							</form>
+
+							<p className="text-center text-sm text-gray-500">
+								Already have an account?{" "}
+								<Link
+									href="/auth/login"
+									className="font-semibold leading-6 text-indigo-600 hover:underline hover:text-indigo-500"
+								>
+									Login
+								</Link>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</PageLayout>
+	);
 };
 
 export default RegisterPage;

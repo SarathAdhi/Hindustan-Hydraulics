@@ -72,6 +72,7 @@ const BillingForm = ({
 						defaultValue={getValues("order_status")}
 						onValueChange={(e) => setValue("order_status", e)}
 						disabled={isUpdate && !allowedFields?.order_status}
+						required
 					>
 						<SelectTrigger>
 							<SelectValue placeholder="Select an option" />
@@ -113,6 +114,7 @@ const BillingForm = ({
 						defaultValue={getValues("routing")}
 						onValueChange={(e) => setValue("routing", e)}
 						disabled={isUpdate && !allowedFields?.routing}
+						required
 					>
 						<SelectTrigger>
 							<SelectValue placeholder="Select the Routing" />

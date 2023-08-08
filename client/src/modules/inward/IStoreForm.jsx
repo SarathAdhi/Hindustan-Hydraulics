@@ -69,6 +69,7 @@ const IStoreForm = ({
 					defaultValue={getValues("store")}
 					onValueChange={(e) => setValue("store", e)}
 					disabled={isUpdate && !allowedFields?.store}
+					required
 				>
 					<SelectTrigger>
 						<SelectValue placeholder="Select the store" />
@@ -101,6 +102,7 @@ const IStoreForm = ({
 					defaultValue={getValues("doc_type")}
 					onValueChange={(e) => setValue("doc_type", e)}
 					disabled={isUpdate && !allowedFields?.doc_type}
+					required
 				>
 					<SelectTrigger>
 						<SelectValue placeholder="Select the Doc type" />
@@ -142,6 +144,7 @@ const IStoreForm = ({
 					defaultValue={defaultValues?.routing}
 					onValueChange={(e) => setValue("routing", e)}
 					disabled={isUpdate && !allowedFields?.routing}
+					required
 				>
 					<SelectTrigger>
 						<SelectValue placeholder="Select the Routing" />

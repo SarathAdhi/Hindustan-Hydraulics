@@ -59,6 +59,7 @@ const CounterForm = ({
 					defaultValue={getValues("counter_no_type")}
 					onValueChange={(e) => setValue("counter_no_type", e)}
 					disabled={isUpdate && !allowedFields?.counter_no_type}
+					required
 				>
 					<SelectTrigger>
 						<SelectValue placeholder="Select the counter type" />
@@ -107,6 +108,7 @@ const CounterForm = ({
 					defaultValue={getValues("routing")}
 					onValueChange={(e) => setValue("routing", e)}
 					disabled={isUpdate && !allowedFields?.routing}
+					required
 				>
 					<SelectTrigger>
 						<SelectValue placeholder="Select the routing" />

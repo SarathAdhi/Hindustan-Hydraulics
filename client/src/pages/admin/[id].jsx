@@ -57,6 +57,9 @@ const AdminPage = () => {
 	const isAdmin = user?.roles.some((x) => x?.role === "admin");
 
 	const isAdminType = user?.roles.find((x) => x?.role === "admin")?.type;
+	const isViewDashboard = user?.roles.find(
+		(x) => x?.role === "view-dashboard"
+	)?.type;
 
 	roles.forEach((e) => {
 		const form = e.split("_")[0];
@@ -189,6 +192,25 @@ const AdminPage = () => {
 								}
 								onCheckedChange={(e) => {
 									handleRoleAssignment(e, "admin");
+									fetchUser(false);
+								}}
+							/>
+						</div>
+
+						<div className="bg-white rounded-lg p-4 w-full flex items-center justify-between gap-4">
+							<div>
+								<h6>View Dashboard</h6>
+							</div>
+
+							<Switch
+								disabled={toastLoadingState}
+								checked={
+									viewTab === "permanent"
+										? isViewDashboard === "permanent"
+										: isViewDashboard === "temp"
+								}
+								onCheckedChange={(e) => {
+									handleRoleAssignment(e, "view-dashboard");
 									fetchUser(false);
 								}}
 							/>
