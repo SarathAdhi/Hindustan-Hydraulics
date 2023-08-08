@@ -8,7 +8,7 @@ export const useStore = create((set) => ({
 		set((state) => ({
 			isSidebarOpen: !state.isSidebarOpen,
 		})),
-
+	user: null,
 	isAuth: false,
 	isAdmin: false,
 	roles: [],
@@ -26,9 +26,11 @@ export const useStore = create((set) => ({
 			permissions = new Set(permissions);
 			permissions = permissions ? [...permissions] : [];
 
-			console.log({ permissions });
-
 			set({
+				user: {
+					name: res.authData?.user_name,
+					email: res.authData?.email,
+				},
 				isAuth: true,
 				isAdmin: res.authData.roles?.includes("admin"),
 				roles: res.authData.roles,

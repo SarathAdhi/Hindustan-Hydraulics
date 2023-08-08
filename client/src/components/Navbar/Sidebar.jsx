@@ -24,21 +24,27 @@ const Sidebar = ({
 		?.split("_")[1]
 		?.split("-")[1];
 
-	const inwardForm = inwardData ? inwardData[0] : "";
+	const inwardForm = Array.isArray(inwardData)
+		? inwardData[0]
+		: inwardData || "";
+
 	const inwardFormAction =
 		inwardData && !inwardStoreCreate ? inwardData[1] : "";
 
 	const supplyData = permissions
 		?.find((e) => e.includes("supply_"))
 		?.split("_")[1]
-		?.split("-")[0];
+		?.split("-");
 
 	const supplyStoreCreate = (permissions || [])
 		?.find((e) => e.includes("inward_store-create"))
 		?.split("_")[1]
 		?.split("-")[1];
 
-	const supplyForm = supplyData ? supplyData[0] : "";
+	const supplyForm = Array.isArray(supplyData)
+		? supplyData[0]
+		: supplyData || "";
+
 	const supplyFormAction =
 		supplyData && !supplyStoreCreate ? supplyData[1] : "";
 
