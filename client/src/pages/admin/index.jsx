@@ -9,6 +9,7 @@ import { DataTable } from "../../components/DataTable";
 const AdminPage = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [users, setUsers] = useState([]);
+	const [search, setSearch] = useState("");
 
 	async function fetchUsers() {
 		setIsLoading(true);
@@ -62,9 +63,26 @@ const AdminPage = () => {
 		},
 	];
 
+	const filteredUsers = users?.filter((e) =>
+		JSON.stringify(e).toLowerCase().includes(search.toLowerCase())
+	);
+
 	return (
-		<PageLayout>
-			<DataTable isLoading={isLoading} columns={columns} data={users} />
+		<PageLayout className="space-y-4">
+			<div>
+				<input
+					className="bg-white w-72 border border-black rounded-full px-4 py-2 focus:outline-none"
+					placeholder="Search..."
+					value={search}
+					onChange={(e) => setSearch(e.target.value)}
+				/>
+			</div>
+
+			<DataTable
+				isLoading={isLoading}
+				columns={columns}
+				data={filteredUsers}
+			/>
 		</PageLayout>
 	);
 };

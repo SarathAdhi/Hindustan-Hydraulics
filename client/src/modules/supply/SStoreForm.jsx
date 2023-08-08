@@ -71,6 +71,7 @@ const SStoreForm = ({
 					defaultValue={getValues("store")}
 					onValueChange={(e) => setValue("store", e)}
 					disabled={(isAddType || isUpdate) && !allowedFields?.store}
+					required
 				>
 					<SelectTrigger>
 						<SelectValue placeholder="Select the store" />
@@ -97,6 +98,7 @@ const SStoreForm = ({
 					disabled={
 						(isAddType || isUpdate) && !allowedFields?.doc_type
 					}
+					required
 				>
 					<SelectTrigger>
 						<SelectValue placeholder="Select the Doc type" />
@@ -164,6 +166,7 @@ const SStoreForm = ({
 					defaultValue={getValues("supply")}
 					onValueChange={(e) => setValue("supply", e)}
 					disabled={(isAddType || isUpdate) && !allowedFields?.supply}
+					required
 				>
 					<SelectTrigger>
 						<SelectValue placeholder="Select the supply" />

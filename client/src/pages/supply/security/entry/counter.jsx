@@ -120,6 +120,14 @@ const SupplySecurityPage = () => {
 			},
 		},
 		{
+			accessorKey: "routing_name",
+			header: () => <span>ROUTING NAME</span>,
+		},
+		{
+			accessorKey: "routing_receipt_no",
+			header: () => <span>ROUTING RECEIPT NO</span>,
+		},
+		{
 			accessorKey: "customer_name",
 			header: () => <span>CUSTOMER NAME</span>,
 		},

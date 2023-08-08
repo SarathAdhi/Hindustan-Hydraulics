@@ -24,8 +24,6 @@ const InwardPageLayout = ({ className }) => {
 		?.split("_")[1]
 		?.split("-")[1];
 
-	console.log({ inwardStoreStartPage, inwardSecurityStartPage });
-
 	const pages = [
 		{
 			key: "inward_store",
