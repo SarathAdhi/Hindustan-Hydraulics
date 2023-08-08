@@ -219,4 +219,4 @@ const InwardStoreUpdatePage = () => {
 	);
 };
 
-export default withAuth(InwardStoreUpdatePage, "inward_store");
+export default withAuth(InwardStoreUpdatePage, ["inward_store-update"]);

@@ -553,4 +553,4 @@ const SupplyPage = () => {
 	);
 };
 
-export default withAuth(SupplyPage);
+export default withAuth(SupplyPage, [], false);

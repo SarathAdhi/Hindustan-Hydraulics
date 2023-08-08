@@ -12,17 +12,35 @@ const Sidebar = ({
 }) => {
 	const { pathname } = useRouter();
 
-	const { isSidebarOpen, roles, isAdmin } = useStore();
+	const { isSidebarOpen, permissions, isAdmin } = useStore();
 
-	const inwardStartUrl = roles
+	const inwardData = (permissions || [])
 		?.find((e) => e.includes("inward_"))
 		?.split("_")[1]
-		?.split("-")[0];
+		?.split("-");
 
-	const supplyStartUrl = roles
+	const inwardStoreCreate = (permissions || [])
+		?.find((e) => e.includes("inward_store-create"))
+		?.split("_")[1]
+		?.split("-")[1];
+
+	const inwardForm = inwardData ? inwardData[0] : "";
+	const inwardFormAction =
+		inwardData && !inwardStoreCreate ? inwardData[1] : "";
+
+	const supplyData = permissions
 		?.find((e) => e.includes("supply_"))
 		?.split("_")[1]
 		?.split("-")[0];
+
+	const supplyStoreCreate = (permissions || [])
+		?.find((e) => e.includes("inward_store-create"))
+		?.split("_")[1]
+		?.split("-")[1];
+
+	const supplyForm = supplyData ? supplyData[0] : "";
+	const supplyFormAction =
+		supplyData && !supplyStoreCreate ? supplyData[1] : "";
 
 	const pages = [
 		{
@@ -49,15 +67,23 @@ const Sidebar = ({
 					name: "Inward",
 					Icon: LogIn,
 					parentRoute: "/inward/",
-					href: `/inward/${isAdmin ? "store" : inwardStartUrl}`,
-					disabled: !inwardStartUrl && !isAdmin,
+					href: `/inward/${
+						isAdmin
+							? "store"
+							: `${inwardForm}/${inwardFormAction || ""}`
+					}`,
+					disabled: !inwardForm && !isAdmin,
 				},
 				{
 					name: "Supply",
 					Icon: ShoppingCart,
 					parentRoute: "/supply/",
-					href: `/supply/${isAdmin ? "store" : supplyStartUrl}`,
-					disabled: !supplyStartUrl && !isAdmin,
+					href: `/supply/${
+						isAdmin
+							? "store"
+							: `${supplyForm}/${supplyFormAction || ""}`
+					}`,
+					disabled: !supplyForm && !isAdmin,
 				},
 			],
 		},

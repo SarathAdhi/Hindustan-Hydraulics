@@ -12,17 +12,28 @@ export const useStore = create((set) => ({
 	isAuth: false,
 	isAdmin: false,
 	roles: [],
+	_permissions: [],
 	permissions: [],
 	getProfile: async () => {
 		try {
 			const res = await axios.post("/auth/verify");
 			console.log(res.authData);
 
+			let permissions = [
+				...res.authData.roles,
+				...res.authData.permissions,
+			];
+			permissions = new Set(permissions);
+			permissions = permissions ? [...permissions] : [];
+
+			console.log({ permissions });
+
 			set({
 				isAuth: true,
 				isAdmin: res.authData.roles?.includes("admin"),
 				roles: res.authData.roles,
-				permissions: res.authData.permissions,
+				_permissions: res.authData.permissions,
+				permissions,
 			});
 		} catch (error) {
 			deleteCookie("token");
