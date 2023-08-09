@@ -27,6 +27,7 @@ import { Close } from "@radix-ui/react-popover";
 import Link from "next/link";
 import { useStore } from "../../utils/store";
 import { useRouter } from "next/router";
+import { getCookie } from "cookies-next";
 
 const InwardPage = () => {
 	const { isAdmin, roles, permissions } = useStore();
@@ -391,6 +392,8 @@ const InwardPage = () => {
 									);
 
 									try {
+										const token = getCookie("token");
+
 										const { data } = await Axios({
 											url: `${
 												process.env.SERVER_BASE_URL
@@ -399,6 +402,9 @@ const InwardPage = () => {
 											)}`,
 											method: "GET",
 											responseType: "blob",
+											headers: {
+												Authorization: `Bearer ${token}`,
+											},
 										});
 
 										saveAs(data, "inward-report.xlsx");
