@@ -87,6 +87,15 @@ const SupplyCounterUpdatePage = () => {
 			},
 		},
 		{
+			accessorKey: "createdAt",
+			header: () => <span>CREATED AT</span>,
+			cell: ({ row }) => {
+				const value = row.getValue("createdAt");
+
+				return value ? dayjs(value).format("DD/MM/YYYY") : "";
+			},
+		},
+		{
 			accessorKey: "counter_no_type",
 			header: () => <span>COUNTER TYPE</span>,
 			cell: ({ row }) => {

@@ -98,6 +98,15 @@ const SupplyStoreAddPage = () => {
 			header: () => <span>S NO</span>,
 		},
 		{
+			accessorKey: "createdAt",
+			header: () => <span>CREATED AT</span>,
+			cell: ({ row }) => {
+				const value = row.getValue("createdAt");
+
+				return value ? dayjs(value).format("DD/MM/YYYY") : "";
+			},
+		},
+		{
 			accessorKey: "doc_no",
 			header: () => <span>DOC NO</span>,
 		},

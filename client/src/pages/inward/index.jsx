@@ -28,6 +28,9 @@ import Link from "next/link";
 import { useStore } from "../../utils/store";
 import { useRouter } from "next/router";
 import { getCookie } from "cookies-next";
+import { io } from "socket.io-client";
+
+const socket = io(process.env.SERVER_BASE_URL);
 
 const InwardPage = () => {
 	const { isAdmin, roles, permissions } = useStore();
@@ -68,6 +71,16 @@ const InwardPage = () => {
 		if (!isAdmin && !isRoleExist) replace("/");
 
 		fetchInwardData();
+
+		function getInwardData(data) {
+			console.log({ data });
+		}
+
+		socket.on("newData", getInwardData);
+
+		return () => {
+			socket.disconnect();
+		};
 	}, []);
 
 	const columns = [
