@@ -33,6 +33,7 @@ import { toast } from "react-hot-toast";
 import { useStore } from "../../utils/store";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { getCookie } from "cookies-next";
 
 const SupplyPage = () => {
 	const { isAdmin, roles, permissions } = useStore();
@@ -531,6 +532,8 @@ const SupplyPage = () => {
 									);
 
 									try {
+										const token = getCookie("token");
+
 										const { data } = await Axios({
 											url: `${
 												process.env.SERVER_BASE_URL
@@ -539,6 +542,9 @@ const SupplyPage = () => {
 											)}`,
 											method: "GET",
 											responseType: "blob",
+											headers: {
+												Authorization: `Bearer ${token}`,
+											},
 										});
 
 										saveAs(data, "supply-report.xlsx");

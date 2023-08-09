@@ -7,7 +7,6 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import axios from "../../lib/axios";
 import { useRouter } from "next/router";
-import { toast } from "react-hot-toast";
 import { Checkbox } from "../../components/ui/checkbox";
 import { withoutAuth } from "../../hoc/withoutAuth";
 
@@ -31,10 +30,7 @@ const RegisterPage = () => {
 			const data = await axios.post("/auth/signup", values);
 
 			// setCookie("token", data?.tokens?.access_token);
-			// Summa testing ku
-			localStorage.setItem("verify-token", data.token);
 
-			toast.success("Login successful");
 			router.replace("/auth/login");
 		} catch (error) {
 			console.log({ error });

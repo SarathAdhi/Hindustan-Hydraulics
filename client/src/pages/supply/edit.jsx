@@ -5,9 +5,10 @@ import axios from "../../lib/axios";
 import { useRouter } from "next/router";
 import {
 	counterTypeOptions,
-	inwardDocTypeOptions,
-	inwardStoreOptions,
+	docTypeOptions,
 	routingOptions,
+	storeOptions,
+	storeStatusOptions,
 } from "../../utils/constants";
 import dayjs from "dayjs";
 import { DataTable } from "../../components/DataTable";
