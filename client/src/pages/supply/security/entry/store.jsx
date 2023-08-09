@@ -88,6 +88,15 @@ const SupplySecurityPage = () => {
 			header: () => <span>S NO</span>,
 		},
 		{
+			accessorKey: "createdAt",
+			header: () => <span>CREATED AT</span>,
+			cell: ({ row }) => {
+				const value = row.getValue("createdAt");
+
+				return value ? dayjs(value).format("DD/MM/YYYY") : "";
+			},
+		},
+		{
 			accessorKey: "doc_type",
 			header: () => <span>DOC TYPE</span>,
 			cell: ({ row }) => {
