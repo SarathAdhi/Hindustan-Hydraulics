@@ -13,7 +13,9 @@ const axios = Axios.create({
 axios.interceptors.response.use(
 	(response) => {
 		if (response.data.message) {
-			toast.success(response.data.message);
+			toast.success(response.data.message, {
+				duration: 4000,
+			});
 		}
 
 		// if (response.data instanceof Blob) return response.data;

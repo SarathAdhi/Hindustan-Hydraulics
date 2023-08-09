@@ -1,16 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import PageLayout from "../layouts/PageLayout";
 import { useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
 import { Input } from "../components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../components/ui/button";
 import { withoutAuth } from "../hoc/withoutAuth";
 import axios from "../lib/axios";
+import { useRouter } from "next/router";
 
 const ForgotPasswordPage = () => {
-	const { register, handleSubmit, reset } = useForm({
+	const { replace } = useRouter();
+
+	const [redirectTimer, setRedirectTimer] = useState(0);
+	const [isResetLinkSent, setIsResetLinkSent] = useState(false);
+
+	const { register, handleSubmit } = useForm({
 		defaultValues: {
 			email: "",
 		},
@@ -19,6 +24,19 @@ const ForgotPasswordPage = () => {
 	async function handleForgotPassword(values) {
 		try {
 			await axios.post("/auth/forgotPassword", values);
+
+			setIsResetLinkSent(true);
+
+			let count = 0;
+			const interval = setInterval(() => {
+				if (count >= 5) {
+					clearInterval(interval);
+					replace("/auth/login");
+				} else {
+					count += 1;
+					setRedirectTimer(count);
+				}
+			}, 1000);
 		} catch (error) {
 			console.log({ error });
 		}
@@ -44,6 +62,13 @@ const ForgotPasswordPage = () => {
 						We'll send a link to your email to reset your password.
 					</p>
 				</div>
+
+				{isResetLinkSent && (
+					<p className="font-medium text-center">
+						Reset link sent to your email. Redirecting to login page
+						in {5 - redirectTimer}
+					</p>
+				)}
 
 				<form
 					onSubmit={handleSubmit(handleForgotPassword)}
