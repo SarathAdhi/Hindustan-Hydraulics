@@ -55,6 +55,12 @@ export const storeStatusOptions = [
 	},
 ];
 
+export const orderTypeOptions = [
+	"Stock order",
+	"Customer order",
+	"Stock and customer order",
+].map((label) => ({ label, value: label.toLowerCase().replaceAll(" ", "_") }));
+
 export const inwardStoreOptions = [
 	"SMC",
 	"General",

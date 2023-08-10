@@ -47,7 +47,10 @@ const SupplyBillingEditPage = () => {
 
 	return (
 		<>
-			<PageLayout className="flex flex-col items-center gap-4">
+			<PageLayout
+				title={`Supply Billing - ${doc_no}`}
+				className="flex flex-col items-center gap-4"
+			>
 				<SupplyNavlinks className="mx-auto w-full max-w-[500px]" />
 
 				{isLoading ? (

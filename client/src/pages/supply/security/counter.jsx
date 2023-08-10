@@ -115,7 +115,10 @@ const SupplySecurityPage = () => {
 	);
 
 	return (
-		<PageLayout className="flex flex-col gap-4">
+		<PageLayout
+			title="Supply Security - Counter"
+			className="flex flex-col gap-4"
+		>
 			<SupplyNavlinks className="mx-auto w-full max-w-[500px]" />
 
 			<div className="w-full flex flex-col items-center gap-2">

@@ -7,6 +7,7 @@ import InwardPageLayout from "../../../modules/inward/InwardPageLayout";
 import {
 	inwardDocTypeOptions,
 	inwardStoreOptions,
+	orderTypeOptions,
 	routingOptions,
 } from "../../../utils/constants";
 import Link from "next/link";
@@ -142,6 +143,32 @@ const InwardStoreUpdatePage = () => {
 			header: () => <span>SUPPLIER NAME</span>,
 		},
 		{
+			accessorKey: "our_po_no",
+			header: () => <span>OUR P O NO</span>,
+		},
+		{
+			accessorKey: "po_date",
+			header: () => <span>P O DATE</span>,
+			cell: ({ row }) => {
+				const value = row.getValue("po_date");
+
+				return value ? dayjs(value).format("DD/MM/YYYY") : "";
+			},
+		},
+		{
+			accessorKey: "order_type",
+			header: () => <span>ORDER TYPE</span>,
+			cell: ({ row }) => {
+				const rowValue = row.getValue("order_type");
+
+				const value = orderTypeOptions.find(
+					(e) => e.value === rowValue
+				);
+
+				return <span>{value?.label}</span>;
+			},
+		},
+		{
 			accessorKey: "routing",
 			header: () => <span>ROUTING</span>,
 			cell: ({ row }) => {
@@ -180,7 +207,10 @@ const InwardStoreUpdatePage = () => {
 	);
 
 	return (
-		<PageLayout className="flex flex-col gap-4">
+		<PageLayout
+			title="Inward Store - Update"
+			className="flex flex-col gap-4"
+		>
 			<InwardPageLayout className="mx-auto w-full max-w-[500px]" />
 
 			<div className="w-full flex flex-col items-center gap-2">

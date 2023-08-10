@@ -12,6 +12,9 @@ const _defaultValues = {
 	doc_type: "",
 	doc_no: "",
 	doc_date: "",
+	our_po_no: "",
+	po_date: "",
+	order_type: "",
 	routing: "",
 	routing_name: "",
 	routing_receipt_no: "",
@@ -20,7 +23,7 @@ const _defaultValues = {
 
 const InwardStorePage = () => {
 	return (
-		<PageLayout className="flex flex-col gap-4">
+		<PageLayout title="Inward Store" className="flex flex-col gap-4">
 			<InwardPageLayout className="mx-auto w-full max-w-[500px]" />
 
 			<div className="w-full flex flex-col items-center gap-2">

@@ -25,7 +25,10 @@ const SupplyBillingGeneratePage = () => {
 
 	return (
 		<>
-			<PageLayout className="flex flex-col gap-4">
+			<PageLayout
+				title={`Supply Billing Generate - ${doc_no}`}
+				className="flex flex-col gap-4"
+			>
 				<SupplyNavlinks className="mx-auto w-full max-w-[500px]" />
 
 				<div className="mx-auto w-full max-w-[500px] space-y-2">

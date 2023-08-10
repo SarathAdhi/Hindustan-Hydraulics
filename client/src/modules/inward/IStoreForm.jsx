@@ -16,6 +16,7 @@ import { ApiRoutes } from "../../utils/api-routes";
 import {
 	inwardDocTypeOptions,
 	inwardStoreOptions,
+	orderTypeOptions,
 	routingOptions,
 } from "../../utils/constants";
 import { parseObject } from "../../utils/parse-object";
@@ -135,6 +136,48 @@ const IStoreForm = ({
 				required
 				disabled={isUpdate && !allowedFields?.doc_date}
 			/>
+
+			<Input
+				{...register("our_po_no", { required: true })}
+				label="P O number"
+				placeholder="Enter the P O No"
+				required
+				disabled={isUpdate && !allowedFields?.our_po_no}
+			/>
+
+			<Input
+				type="date"
+				{...register("po_date", { required: true })}
+				label="P O Date"
+				required
+				disabled={isUpdate && !allowedFields?.doc_date}
+			/>
+
+			<div className="w-full flex flex-col gap-2">
+				<Label className="capitalize" htmlFor="order_type">
+					Order Type <span className="text-red-500">*</span>
+				</Label>
+
+				<Select
+					defaultValue={getValues("order_type")}
+					value={watch("order_type")}
+					onValueChange={(e) => setValue("order_type", e)}
+					disabled={isUpdate && !allowedFields?.order_type}
+					required
+				>
+					<SelectTrigger>
+						<SelectValue placeholder="Select the order type" />
+					</SelectTrigger>
+
+					<SelectContent>
+						{orderTypeOptions.map(({ label, value }) => (
+							<SelectItem key={value} value={value}>
+								{label}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
+			</div>
 
 			<div className="w-full flex flex-col gap-2">
 				<Label className="capitalize" htmlFor="routing">

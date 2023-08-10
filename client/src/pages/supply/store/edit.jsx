@@ -63,10 +63,11 @@ const SupplyStorePage = () => {
 		if (doc_id && store_name) fetchStoreUnbilled();
 	}, [doc_id, store_name]);
 
-	console.log(doc_id, store_name);
-
 	return (
-		<PageLayout className="flex flex-col gap-4">
+		<PageLayout
+			title={`Supply Store - ${doc_id}`}
+			className="flex flex-col gap-4"
+		>
 			<SupplyNavlinks className="mx-auto w-full max-w-[500px]" />
 
 			<div className="w-full flex flex-col items-center gap-2">
