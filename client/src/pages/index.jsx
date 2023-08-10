@@ -33,7 +33,7 @@ const Home = () => {
 	const rolesValue = Object.entries(_rolesObject);
 
 	return (
-		<PageLayout className="flex flex-col gap-4">
+		<PageLayout title="Home" className="flex flex-col gap-4">
 			<div>
 				<h3>{_user?.name}</h3>
 
@@ -53,6 +53,8 @@ const Home = () => {
 				<div className="w-full space-y-4">
 					{isAdmin ? (
 						<p>You are an ADMIN</p>
+					) : rolesValue.length === 0 ? (
+						<p>No permissions</p>
 					) : (
 						rolesValue.map(([form, _subForm]) => {
 							const subForm = Object.entries(_subForm);

@@ -330,7 +330,10 @@ const SupplyBillingBilledPage = () => {
 	];
 
 	return (
-		<PageLayout className="flex flex-col gap-4">
+		<PageLayout
+			title="Supply Billing - Billed"
+			className="flex flex-col gap-4"
+		>
 			<SupplyNavlinks className="mx-auto w-full max-w-[500px]" />
 
 			<div className="flex flex-col items-start gap-2">

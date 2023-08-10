@@ -30,7 +30,11 @@ const VerifyEmailPage = () => {
 	}, [token]);
 
 	return (
-		<PageLayout className="flex flex-col items-center" showBasicLayout>
+		<PageLayout
+			title="Verify"
+			className="flex flex-col items-center"
+			showBasicLayout
+		>
 			<div className="mt-10">
 				{isVerified && (
 					<div>

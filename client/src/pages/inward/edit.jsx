@@ -140,7 +140,7 @@ const InwardStoreEditPage = () => {
 	}, [doc_id]);
 
 	return (
-		<PageLayout>
+		<PageLayout title={`Inward Store | ${doc_id}`}>
 			<div className="flex flex-col gap-4">
 				<div className="flex items-center justify-between gap-4">
 					<h2>Doc Number: {doc_id}</h2>

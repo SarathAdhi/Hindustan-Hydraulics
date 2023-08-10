@@ -38,7 +38,7 @@ const RegisterPage = () => {
 	}
 
 	return (
-		<PageLayout title="Login" noLayout>
+		<PageLayout title="Register" noLayout>
 			<div className="pd flex min-h-screen flex-col items-center justify-center">
 				<div className="w-full max-w-full sm:w-[1500px] grid grid-cols-1 sm:grid-cols-2 sm:border-2 rounded-md sm:bg-gray-200">
 					<Image

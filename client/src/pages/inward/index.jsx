@@ -7,7 +7,11 @@ import { withAuth } from "../../hoc/withAuth";
 import axios from "../../lib/axios";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
-import { inwardDocTypeOptions, routingOptions } from "../../utils/constants";
+import {
+	inwardDocTypeOptions,
+	orderTypeOptions,
+	routingOptions,
+} from "../../utils/constants";
 import {
 	Dialog,
 	DialogContent,
@@ -277,6 +281,32 @@ const InwardPage = () => {
 			},
 		},
 		{
+			accessorKey: "our_po_no",
+			header: () => <span>OUR P O NO</span>,
+		},
+		{
+			accessorKey: "po_date",
+			header: () => <span>P O DATE</span>,
+			cell: ({ row }) => {
+				const value = row.getValue("po_date");
+
+				return value ? dayjs(value).format("DD/MM/YYYY") : "";
+			},
+		},
+		{
+			accessorKey: "order_type",
+			header: () => <span>ORDER TYPE</span>,
+			cell: ({ row }) => {
+				const rowValue = row.getValue("order_type");
+
+				const value = orderTypeOptions.find(
+					(e) => e.value === rowValue
+				);
+
+				return <span>{value?.label}</span>;
+			},
+		},
+		{
 			accessorKey: "routing",
 			header: () => <span>ROUTING</span>,
 			cell: ({ row }) => {
@@ -345,7 +375,7 @@ const InwardPage = () => {
 	);
 
 	return (
-		<PageLayout className="flex flex-col gap-4">
+		<PageLayout title="Inward Dashboard" className="flex flex-col gap-4">
 			<div className="flex items-center justify-between">
 				<div className="bg-white w-60 border border-black rounded-full flex items-center justify-between">
 					<input

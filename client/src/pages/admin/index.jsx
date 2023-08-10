@@ -68,7 +68,7 @@ const AdminPage = () => {
 	);
 
 	return (
-		<PageLayout className="space-y-4">
+		<PageLayout title="Admin Dashboard" className="space-y-4">
 			<div>
 				<input
 					className="bg-white w-72 border border-black rounded-full px-4 py-2 focus:outline-none"

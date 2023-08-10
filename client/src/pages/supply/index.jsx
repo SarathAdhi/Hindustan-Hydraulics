@@ -472,7 +472,7 @@ const SupplyPage = () => {
 	);
 
 	return (
-		<PageLayout className="flex flex-col gap-4">
+		<PageLayout title="Supply Dashboard" className="flex flex-col gap-4">
 			<div className="flex items-center justify-between">
 				<div className="bg-white w-72 border border-black rounded-full flex items-center justify-between">
 					<input

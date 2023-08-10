@@ -108,7 +108,9 @@ const AdminPage = () => {
 	}
 
 	return (
-		<PageLayout>
+		<PageLayout
+			title={`${user?.first_name} ${user?.last_name} - Permissions`}
+		>
 			{isLoading ? (
 				<div className="grid place-content-center">
 					<Loader size={40} className="animate-spin" />
