@@ -16,8 +16,6 @@ const Sidebar = ({
 
 	const viewDashboard = permissions.some((e) => e === "view-dashboard");
 
-	console.log({ viewDashboard });
-
 	const inwardData = (permissions || [])
 		?.find((e) => e.includes("inward_"))
 		?.split("_")[1]

@@ -17,7 +17,6 @@ export const useStore = create((set) => ({
 	getProfile: async () => {
 		try {
 			const res = await axios.post("/auth/verify");
-			console.log(res.authData);
 
 			let permissions = [
 				...res.authData.roles,
