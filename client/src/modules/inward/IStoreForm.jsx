@@ -138,19 +138,17 @@ const IStoreForm = ({
 			/>
 
 			<Input
-				{...register("our_po_no", { required: true })}
-				label="P O number"
-				placeholder="Enter the P O No"
-				required
+				{...register("our_po_no")}
+				label="Our P O number"
+				placeholder="Enter the Our P O No"
 				disabled={isUpdate && !allowedFields?.our_po_no}
 			/>
 
 			<Input
 				type="date"
-				{...register("po_date", { required: true })}
+				{...register("po_date")}
 				label="P O Date"
-				required
-				disabled={isUpdate && !allowedFields?.doc_date}
+				disabled={isUpdate && !allowedFields?.po_date}
 			/>
 
 			<div className="w-full flex flex-col gap-2">
@@ -163,7 +161,6 @@ const IStoreForm = ({
 					value={watch("order_type")}
 					onValueChange={(e) => setValue("order_type", e)}
 					disabled={isUpdate && !allowedFields?.order_type}
-					required
 				>
 					<SelectTrigger>
 						<SelectValue placeholder="Select the order type" />
