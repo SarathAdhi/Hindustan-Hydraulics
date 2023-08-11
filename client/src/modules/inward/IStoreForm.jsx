@@ -153,7 +153,7 @@ const IStoreForm = ({
 
 			<div className="w-full flex flex-col gap-2">
 				<Label className="capitalize" htmlFor="order_type">
-					Order Type <span className="text-red-500">*</span>
+					Order Type
 				</Label>
 
 				<Select
