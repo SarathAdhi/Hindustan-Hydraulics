@@ -11,12 +11,23 @@ export const useStore = create((set) => ({
 	user: null,
 	isAuth: false,
 	isAdmin: false,
+	isIpWhiteListed: false,
 	roles: [],
 	_permissions: [],
 	permissions: [],
 	getProfile: async () => {
 		try {
 			const res = await axios.post("/auth/verify");
+
+			try {
+				const isIpWhiteListed = await axios.get(
+					"/whitelist/iswhitelisted"
+				);
+
+				set({ isIpWhiteListed: !isIpWhiteListed });
+			} catch (error) {
+				set({ isIpWhiteListed: true });
+			}
 
 			let permissions = [
 				...res.authData.roles,

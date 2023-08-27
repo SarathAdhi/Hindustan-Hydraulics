@@ -59,7 +59,7 @@ const SStoreForm = ({
 	return (
 		<form
 			onSubmit={handleSubmit(handleStoreForm)}
-			className="card flex flex-col gap-4"
+			className="card flex flex-col items-center gap-4"
 		>
 			<div className="w-full flex flex-col gap-2">
 				<Label className="capitalize" htmlFor="store">
