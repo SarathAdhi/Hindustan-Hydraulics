@@ -126,7 +126,7 @@ const WhiteListsPage = () => {
 	);
 
 	return (
-		<PageLayout title="Admin Dashboard" className="space-y-4">
+		<PageLayout title="Whitelist Dashboard" className="space-y-4">
 			<div className="flex items-center justify-between">
 				<input
 					className="bg-white w-72 border border-black rounded-full px-4 py-2 focus:outline-none"
