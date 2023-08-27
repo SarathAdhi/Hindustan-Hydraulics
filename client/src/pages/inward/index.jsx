@@ -34,7 +34,7 @@ import { useRouter } from "next/router";
 import { getCookie } from "cookies-next";
 import { io } from "socket.io-client";
 
-const socket = io(process.env.SERVER_BASE_URL);
+// const socket = io(process.env.SERVER_BASE_URL);
 
 const InwardPage = () => {
 	const { isAdmin, roles, permissions } = useStore();
@@ -76,15 +76,15 @@ const InwardPage = () => {
 
 		fetchInwardData();
 
-		function getInwardData(data) {
-			console.log({ data });
-		}
+		// function getInwardData(data) {
+		// 	console.log({ data });
+		// }
 
-		socket.on("newData", getInwardData);
+		// socket.on("newData", getInwardData);
 
-		return () => {
-			socket.disconnect();
-		};
+		// return () => {
+		// 	socket.disconnect();
+		// };
 	}, []);
 
 	const columns = [

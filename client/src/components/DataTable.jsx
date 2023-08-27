@@ -65,6 +65,12 @@ export function DataTable({
 										<TableHead
 											className="text-black text-base font-bold flex-shrink-0 whitespace-nowrap"
 											key={header.id + i2}
+											style={{
+												width:
+													header.getSize() !== 150
+														? header.getSize()
+														: undefined,
+											}}
 										>
 											{header.isPlaceholder
 												? null

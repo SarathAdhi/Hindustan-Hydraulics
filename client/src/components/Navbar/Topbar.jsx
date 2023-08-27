@@ -48,9 +48,15 @@ const Topbar = ({ showBasicLayout }) => {
 				{isAuth && (
 					<>
 						{isAdmin && (
-							<Button variant="outline" asChild>
-								<Link href="/admin">Users</Link>
-							</Button>
+							<>
+								<Button variant="outline" asChild>
+									<Link href="/admin">Users</Link>
+								</Button>
+
+								<Button variant="outline" asChild>
+									<Link href="/whitelists">WhiteLists</Link>
+								</Button>
+							</>
 						)}
 
 						<Popover>
