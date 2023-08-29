@@ -55,10 +55,9 @@ const ISecurityForm = ({
 			className="card flex flex-col items-center gap-4"
 		>
 			<Input
-				{...register("inward_reg_no", { required: true })}
+				{...register("inward_reg_no")}
 				label="Inward number"
 				placeholder="Enter the Inward number"
-				required
 				disabled={isUpdate && !allowedFields?.inward_reg_no}
 			/>
 

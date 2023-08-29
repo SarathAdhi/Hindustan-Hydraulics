@@ -73,10 +73,9 @@ const SSecurityForm = ({
 			className="card flex flex-col items-center gap-4"
 		>
 			<Input
-				{...register("book_register_no", { required: true })}
+				{...register("book_register_no")}
 				label="Book Register number"
 				placeholder="Enter the Book Register number"
-				required
 				disabled={
 					defaultValues ? !allowedFields?.book_register_no : false
 				}
